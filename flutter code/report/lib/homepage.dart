@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:report/bar.dart';
 import 'package:report/day.dart';
+import 'package:report/mood_record.dart';
+import 'package:report/take_picture_screen.dart';
 import 'package:report/week.dart';
 
 class HomeScreen extends StatelessWidget {
+  int id;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -53,7 +57,7 @@ class HomeScreen extends StatelessWidget {
                   print("Tapped a Container");
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Bar()),
+                    MaterialPageRoute(builder: (context) => CameraScreen(id)),
                   );
                 },
                 child: Container(
@@ -64,7 +68,10 @@ class HomeScreen extends StatelessWidget {
               GestureDetector(
                   onTap: () {
                     print("Tapped a Container");
-                    //TODO 導向下一頁
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MoodRecordPage()),
+                    );
                   },
                   child: putcard('心情追蹤')
               ),

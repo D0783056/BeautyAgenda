@@ -19,7 +19,13 @@ class _CommentPageState extends State<CommentPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Card(
+            Container(
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey[400],
+                    width: 2,
+                  )
+              ),
               margin: EdgeInsets.fromLTRB(100, 20, 100, 40),
 
               child: Container(
@@ -29,7 +35,13 @@ class _CommentPageState extends State<CommentPage> {
               ),
             ),
 
-            Card(
+            Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey[400],
+                      width: 2,
+                    )
+                ),
                 margin: EdgeInsets.fromLTRB(50,0,0,10),
 
                 child: Container(
@@ -47,7 +59,13 @@ class _CommentPageState extends State<CommentPage> {
                 )
             ),
 
-            Card(
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.grey[400],
+                    width: 2,
+                )
+              ),
                 margin: EdgeInsets.fromLTRB(50,0,50,10),
                 child: Container(
                     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),

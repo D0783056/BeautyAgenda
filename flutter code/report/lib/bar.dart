@@ -3,27 +3,24 @@ import 'package:report/choose.dart';
 import 'package:report/drawer.dart';
 import 'package:report/homepage.dart';
 
-class Bar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: _Bar(),
-    );
-  }
-}
-
 /// This is the stateless widget that the main application instantiates.
-class _Bar extends StatelessWidget {
-  String username = '李亞璇';
+class Bar extends StatelessWidget {
+
+  static String username = '李亞璇';
+  String imagePath;
+
+  Bar(String img) {
+    this.imagePath = img;
+  }
   Tabs tabs = new Tabs();
   Toptitle toptitle = new Toptitle();
-  NavDrawerExample navDrawerExample = new NavDrawerExample();
+  NavDrawerExample navDrawerExample = new NavDrawerExample(username);
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: toptitle.Topbar(context,'膚況檢測'),
+      appBar: toptitle.Topbar(context,'膚況檢測' , username),
       body: tabs,
       drawer: navDrawerExample.drawer(context),
     );
@@ -31,11 +28,12 @@ class _Bar extends StatelessWidget {
 }
 
 class Toptitle {
-  PreferredSize Topbar(BuildContext context, String titlename) {
+  int id;
+  PreferredSize Topbar(BuildContext context, String titlename , String username) {
     return PreferredSize(
         child: AppBar(
           backgroundColor: Color(0xFFFFD0D1),
-          leading: NavDrawerExample(),
+          leading: NavDrawerExample(username),
           title: Center(
             child: Text(
               '$titlename',

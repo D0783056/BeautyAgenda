@@ -17,12 +17,12 @@ class Week extends StatelessWidget {
 class MyStatelessWidget extends StatelessWidget {
   MyStatelessWidget({Key key}) : super(key: key);
   Toptitle weektitle = Toptitle();
-  Bar bar = new Bar();
-  NavDrawerExample navDrawerExample = new NavDrawerExample();
+  static String username = '李亞璇';
+  NavDrawerExample navDrawerExample = new NavDrawerExample(username);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: weektitle.Topbar(context,'每週養顏'),
+      appBar: weektitle.Topbar(context,'每週養顏',username),
       body: WeekmenuPage(),
       drawer: navDrawerExample.drawer(context),
     );

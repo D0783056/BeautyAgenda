@@ -217,6 +217,7 @@ class Label {
   }
 }
 
+
 class Degree {
   double degree = 0;
 

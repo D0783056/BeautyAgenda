@@ -15,16 +15,16 @@ class History_bar extends StatelessWidget {
 
 /// This is the stateless widget that the main application instantiates.
 class _History_bar extends StatelessWidget {
-  String username = '李亞璇';
+  static String username = '李亞璇';
   History_tabs history_tabs = new History_tabs();
   Toptitle toptitle = new Toptitle();
-  NavDrawerExample navDrawerExample = new NavDrawerExample();
+  NavDrawerExample navDrawerExample = new NavDrawerExample(username);
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: toptitle.Topbar(context,'檢測歷史'),
+      appBar: toptitle.Topbar(context,'檢測歷史',username),
       body: history_tabs,
       drawer: navDrawerExample.drawer(context),
     );

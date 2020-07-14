@@ -4,7 +4,10 @@ import 'package:report/history_day.dart';
 import 'package:report/skin.dart';
 
 class NavDrawerExample extends StatelessWidget {
-  String username = '李亞璇';
+  String username;
+  NavDrawerExample(String username) {
+    this.username = username;
+  }
   @override
 
   Widget build(context) {
@@ -117,7 +120,7 @@ class NavDrawerExample extends StatelessWidget {
                   color: Colors.white,
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 200),
+                  margin: EdgeInsets.only(top: 170),
                   child: Column(
                     children: <Widget>[
                       Container(

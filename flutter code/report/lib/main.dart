@@ -8,7 +8,10 @@ void main() => runApp(MyApp());
 /// This Widget is the main application widget.
 class MyApp extends StatelessWidget {
 
+
   SplashScreen splashScreen = new SplashScreen();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -19,3 +22,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
