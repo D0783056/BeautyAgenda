@@ -8,17 +8,20 @@ class Bar extends StatelessWidget {
 
   static String username = '李亞璇';
   String imagePath;
+  int id;
 
   Bar(String img) {
     this.imagePath = img;
   }
-  Tabs tabs = new Tabs();
+
+
   Toptitle toptitle = new Toptitle();
   NavDrawerExample navDrawerExample = new NavDrawerExample(username);
 
 
   @override
   Widget build(BuildContext context) {
+    Tabs tabs = new Tabs(imagePath);
     return Scaffold(
       appBar: toptitle.Topbar(context,'膚況檢測' , username),
       body: tabs,

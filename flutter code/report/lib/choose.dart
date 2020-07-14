@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:report/comment.dart';
 import 'package:report/problem.dart';
 
-class Tabs extends StatefulWidget {
-  @override
-  TabsState createState() => TabsState();
-}
-class TabsState extends State<Tabs> {
+class Tabs extends StatelessWidget {
+  String imagePath;
+  int id;
+
+  Tabs(String img) {
+    this.imagePath = img;
+  }
   @override
 
   Widget build(BuildContext context) {
+    CommentPage comment = new CommentPage(imagePath,id);
     final _kTabs = <Tab>[
       Tab(text: '綜合'),
       Tab( text: '問題'),
@@ -32,7 +35,7 @@ class TabsState extends State<Tabs> {
           ),
           body: TabBarView(
             children: <Widget>[
-              CommentPage(),ProblemPage(),
+              comment,ProblemPage(),
             ],
           )
       ),
