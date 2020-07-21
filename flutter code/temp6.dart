@@ -7,18 +7,12 @@ import 'week.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
-class HomePage extends StatefulWidget {
-  int id = 0;
+class HomePage extends StatelessWidget {
+  int id;
+  int test;
   HomePage(int id) {
     this.id = id;
   }
-  HomePageState createState() => HomePageState(id);
-}
-
-class HomePageState extends State {
-  int id = 0;
-  HomePageState(this.id);
-
   void pushToCamera(BuildContext context) async {
     final cameras = await availableCameras();
     Navigator.push(
@@ -29,26 +23,24 @@ class HomePageState extends State {
     );
   }
 
-  _save() async {
+  _readCount() async {
     final prefs = await SharedPreferences.getInstance();
-    try {
-      setState(() async {
-        await prefs.setInt("id", id);
-        print('saved $id');
-      });
-    } catch (err) {
-      err.toString();
-    }
+    final key = 'count';
+    final value = prefs.getDouble(key) ?? 0.0;
   }
 
-  @override
-  void initState() {
-    super.initState();
+  _save(int id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'id';
+    final value = id;
+
+    prefs.setInt(key, value);
+    print('saved $value');
   }
+
 
   @override
   Widget build(BuildContext context) {
-    print(id);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -90,8 +82,8 @@ class HomePageState extends State {
               ),
             ),
             GestureDetector(
-              onTap: () async {
-                _save();
+              onTap: () async{
+                _save(id);
                 print("Tapped a Container");
                 this.pushToCamera(context);
               },
@@ -100,8 +92,8 @@ class HomePageState extends State {
                   child: putcard('膚況檢測')),
             ),
             GestureDetector(
-                onTap: () async {
-                  _save();
+                onTap: () async{
+                  _save(id);
                   print("Tapped a Container");
                   Navigator.push(
                     context,
@@ -112,8 +104,8 @@ class HomePageState extends State {
                 },
                 child: putcard('心情追蹤')),
             GestureDetector(
-                onTap: () async {
-                  _save();
+                onTap: () async{
+                  _save(id);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -123,7 +115,7 @@ class HomePageState extends State {
                 },
                 child: putcard('每日養顏')),
             GestureDetector(
-                onTap: () async {
+                onTap: () async{
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -183,3 +175,4 @@ Card putcard(String name) {
     ),
   );
 }
+

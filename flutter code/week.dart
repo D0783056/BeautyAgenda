@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'choose.dart';
 import 'week_menu.dart';
 import 'bar.dart';
-class Week extends StatelessWidget {
 
+class Week extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: MyStatelessWidget(),
-    );
+    return  MyStatelessWidget();
   }
 }
 
 /// This is the stateless widget that the main application instantiates.
+// ignore: must_be_immutable
 class MyStatelessWidget extends StatelessWidget {
   MyStatelessWidget({Key key}) : super(key: key);
   Tabs tabs = new Tabs("dd",1,1);

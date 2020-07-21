@@ -34,7 +34,7 @@ class LoginUserState extends State {
 
     if (response.statusCode == 200) {
       ii = int.parse(message['id']);
-      print(ii);
+      print('login $ii');
     }
   }
 
@@ -63,7 +63,7 @@ class LoginUserState extends State {
 
     // If the Response Message is Matched.
     if(message == 'Login Success!') {
-      getUserId();
+      await getUserId();
       setState(() {
         visible = false;
       });

@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import 'login.dart';
+import 'SplashScreen.dart';
 
 void main() => runApp(Myapp());
 
@@ -12,7 +12,7 @@ class Myapp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Center(child: LoginPage()),
+        body: Center(child: SplashScreen()),
       ),
     );
   }

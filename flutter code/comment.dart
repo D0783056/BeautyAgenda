@@ -61,6 +61,35 @@ class _CommentPageState extends State<CommentPage> {
     );
   }
 
+  Future userMenu() async {
+    var url = 'https://beautyagenda.000webhostapp.com/fruit.php';
+    String Sname ="黑眼圈";
+    var data = {
+      'id': id,
+      'Sname': Sname,
+    };
+    // Starting Web API Call.
+    var response = await http.post(url, body: json.encode(data));
+    if (response.statusCode == 200) {
+      print("ok1");
+    }
+  }
+
+  Future userDisease() async {
+    var url = 'https://beautyagenda.000webhostapp.com/InsertDisease.php';
+    String Sname ="黑眼圈";
+
+    var data = {
+      'id': id,
+      'Sname': Sname,
+    };
+    // Starting Web API Call.
+    var response = await http.post(url, body: json.encode(data));
+    if (response.statusCode == 200) {
+      print("ok2");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     base64Image = base64Encode(IO.File(imagepath).readAsBytesSync());
@@ -136,9 +165,12 @@ class _CommentPageState extends State<CommentPage> {
           Row(
             children: <Widget>[
               GestureDetector(
-                onTap: () {
-                  String fileName = imagepath.split('/').last;
-                  userRegistration(fileName);
+                onTap: () async {
+                  //String fileName = imagepath.split('/').last;
+                  //userRegistration(fileName);
+                  //TODO 記得還原
+                  userMenu();
+                  userDisease();
                 },
                 child: Container(
                     margin: EdgeInsets.fromLTRB(80, 15, 0, 25),

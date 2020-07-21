@@ -4,9 +4,9 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:intl/intl.dart' show DateFormat;
-import 'emoji.dart';
-import 'emojiCount.dart';
+import 'package:beauty_agenda/emoji.dart';
 import 'mood_trace.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum mood { angry, sad, normal, happy, joy }
 
@@ -24,6 +24,97 @@ class MoodRecordPageState extends State<MoodRecordPage> {
   int normal = 0;
   int happy = 0;
   int joy = 0;
+  int temp;
+  int angry1 = 0;
+  int sad1 = 0;
+  int normal1 = 0;
+  int happy1 = 0;
+  int joy1 = 0;
+
+  _saveAngry() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = "angry";
+    var value1 = prefs.getInt(key) ?? 0 ;
+    value1++;
+    angry1 = value1;
+    prefs.setInt(key, value1);
+    var value2 = prefs.get("sad") ?? 0;
+    sad1 = value2;
+    var value3 = prefs.get("normal") ?? 0;
+    normal1 = value3;
+    var value4 = prefs.get("happy") ?? 0;
+    happy1 = value4;
+    var value5 = prefs.get("joy") ?? 0;
+    joy1 = value5;
+  }
+
+  _saveSad() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = "sad";
+    var value1 = prefs.getInt(key) ?? 0 ;
+    value1++;
+    sad1 = value1;
+    prefs.setInt(key, value1);
+    var value2 = prefs.get("angry") ?? 0;
+    angry1 = value2;
+    var value3 = prefs.get("normal") ?? 0;
+    normal1 = value3;
+    var value4 = prefs.get("happy") ?? 0;
+    happy1 = value4;
+    var value5 = prefs.get("joy") ?? 0;
+    joy1 = value5;
+  }
+
+  _saveNormal() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = "normal";
+    var value1 = prefs.getInt(key) ?? 0 ;
+    value1++;
+    normal1 = value1;
+    prefs.setInt(key, value1);
+    var value2 = prefs.get("angry") ?? 0;
+    angry1 = value2;
+    var value3 = prefs.get("sad") ?? 0;
+    sad1 = value3;
+    var value4 = prefs.get("happy") ?? 0;
+    happy1 = value4;
+    var value5 = prefs.get("joy") ?? 0;
+    joy1 = value5;
+  }
+
+  _saveHappy() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = "happy";
+    var value1 = prefs.getInt(key) ?? 0 ;
+    value1++;
+    happy1 = value1;
+    prefs.setInt(key, value1);
+    var value2 = prefs.get("angry") ?? 0;
+    angry1 = value2;
+    var value3 = prefs.get("sad") ?? 0;
+    sad1 = value3;
+    var value4 = prefs.get("normal") ?? 0;
+    normal1 = value4;
+    var value5 = prefs.get("joy") ?? 0;
+    joy1 = value5;
+  }
+
+  _saveJoy() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = "joy";
+    var value1 = prefs.getInt(key) ?? 0 ;
+    value1++;
+    joy1 = value1;
+    prefs.setInt(key, value1);
+    var value2 = prefs.get("angry") ?? 0;
+    angry1 = value2;
+    var value3 = prefs.get("sad") ?? 0;
+    sad1 = value3;
+    var value4 = prefs.get("normal") ?? 0;
+    normal1 = value4;
+    var value5 = prefs.get("happy") ?? 0;
+    happy1 = value5;
+  }
 
   DateTime _currentDate = DateTime(2020, 7, 3);
   DateTime _currentDate2 = DateTime(2020, 7, 3);
@@ -351,24 +442,30 @@ class MoodRecordPageState extends State<MoodRecordPage> {
                         fontSize: 25.0,
                         color: Colors.white),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (selectedMood == mood.angry) {
+                      _saveAngry();
                       angry++;
                     } else if (selectedMood == mood.sad) {
+                      _saveSad();
                       sad++;
                     } else if (selectedMood == mood.normal) {
+                      _saveNormal();
                       normal++;
                     } else if (selectedMood == mood.happy) {
+                      _saveHappy();
                       happy++;
                     } else if (selectedMood == mood.joy) {
+                      _saveJoy();
                       joy++;
+                    } else {
+                      return;
                     }
-                    EmojiCount emo = EmojiCount(angry, sad, normal, happy, joy);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => MoodTracePage(
-                            emo.angry, emo.sad, emo.normal, emo.happy, emo.joy),
+                           angry1, sad1, normal1, happy1, joy1),
                       ),
                     );
                     print("Tapped a Container");
