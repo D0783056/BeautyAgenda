@@ -7,16 +7,18 @@ class Tabs extends StatelessWidget {
   String imagePath;
   int id;
   int isFront;
+  var test;
 
-  Tabs(String img, int id, int isFront) {
+  Tabs(String img, int id, int isFront, var test) {
     this.imagePath = img;
     this.id = id;
     this.isFront = isFront;
+    this.test = test;
   }
 
   @override
   Widget build(BuildContext context) {
-    CommentPage comment = new CommentPage(imagePath, id, isFront);
+    CommentPage comment = new CommentPage(imagePath, id, isFront, test);
     final _kTabs = <Tab>[
       Tab(text: '綜合'),
       Tab( text: '問題'),
@@ -38,7 +40,7 @@ class Tabs extends StatelessWidget {
           ),
           body: TabBarView(
             children: <Widget>[
-              comment,ProblemPage(),
+              comment,ProblemPage(test,id),
             ],
           )
       ),

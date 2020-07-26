@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'dart:math';
 import 'dart:async';
 
 class WeekmenuPage extends StatefulWidget {
@@ -21,17 +22,61 @@ class _WeekmenuPageState extends State<WeekmenuPage> {
   Color red = Color(0xFFFFD0D1);
   Color white = Colors.white;
   Color colorDecide;
-
+  int count = 0;
+  bool _isCheck1 = false;
+  bool _isCheck2 = false;
+  bool _isCheck3 = false;
+  var intake;
   var recommend = {
     "維生素A": 8100,
     "維生素B": 3000,
     "維生素C": 3600,
     "維生素D": 4500,
-    "維生素E": 6700
+    "維生素E": 6700,
+    "鋅": 3000,
+    "茄紅素": 3560,
+    "β胡蘿蔔素": 1200,
+    "兒茶素": 1300,
+    "花青素": 1800,
+    "ω-3脂肪酸": 900,
+    "菸鹼酸": 2350,
+    "Omega-3脂肪酸": 1900,
+    "檸檬酸": 1568,
+    "果酸": 1400,
+    "β-胡蘿蔔素": 1360,
+    "山茶酚": 1600,
+    "鈣": 1000,
+    "鎂": 1500,
+    "鐵": 2300,
+    "亞麻油酸": 1700,
+    "次亞麻油酸": 600,
+    "蛋白質": 1600,
+    "鉀": 300,
+    "磷": 100,
+    "銀耳多醣體": 200,
+    "軟骨素": 560
   };
+
+  _read(String box) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = box;
+    final value = prefs.getBool(key) ?? false;
+    setState(() {
+      if (box == "box1") {
+        _isCheck1 = value;
+      } else if (box == "box2") {
+        _isCheck2 = value;
+      } else if (box == "box3") {
+        _isCheck3 = value;
+      }
+    });
+  }
 
   @override
   void initState() {
+    _read("box1");
+    _read("box2");
+    _read("box3");
     Timer.run(() => showAlert(context));
     _readCount();
     _readId();
@@ -65,7 +110,7 @@ class _WeekmenuPageState extends State<WeekmenuPage> {
     List<Intake> intake = [];
 
     for (var u in message) {
-      Intake fruitmenu = Intake(int.parse(u["id"]), u["elements"]);
+      Intake fruitmenu = Intake(u["elements"]);
       intake.add(fruitmenu);
     }
     return intake;
@@ -111,9 +156,142 @@ class _WeekmenuPageState extends State<WeekmenuPage> {
             ));
   }
 
+  void weekintake() {
+    var rng = new Random();
+    if (_isCheck1 == true) {
+      count++;
+    }
+    if (_isCheck2 == true) {
+      count++;
+    }
+    if (_isCheck3 == true) {
+      count++;
+    }
+    if (count == 1) {
+      intake = {
+        "維生素A": rng.nextInt(100) + 30,
+        "維生素B": rng.nextInt(100) + 30,
+        "維生素C": rng.nextInt(100) + 30,
+        "維生素D": rng.nextInt(100) + 30,
+        "維生素E": rng.nextInt(100) + 30,
+        "鋅": rng.nextInt(100) + 30,
+        "茄紅素": rng.nextInt(100) + 30,
+        "β胡蘿蔔素": rng.nextInt(100) + 30,
+        "兒茶素": rng.nextInt(100) + 30,
+        "花青素": rng.nextInt(100) + 30,
+        "ω-3脂肪酸": rng.nextInt(100) + 30,
+        "菸鹼酸": rng.nextInt(100) + 30,
+        "Omega-3脂肪酸": rng.nextInt(100) + 30,
+        "檸檬酸": rng.nextInt(100) + 30,
+        "果酸": rng.nextInt(100) + 30,
+        "β-胡蘿蔔素": rng.nextInt(100) + 30,
+        "山茶酚": rng.nextInt(100) + 30,
+        "鈣": rng.nextInt(100) + 30,
+        "鎂": rng.nextInt(100) + 30,
+        "鐵": rng.nextInt(100) + 30,
+        "亞麻油酸": rng.nextInt(100) + 30,
+        "次亞麻油酸": rng.nextInt(100) + 30,
+        "蛋白質": rng.nextInt(100) + 30,
+        "鉀": rng.nextInt(100) + 30,
+        "磷": rng.nextInt(100) + 30,
+        "銀耳多醣體": rng.nextInt(100) + 30,
+        "軟骨素": rng.nextInt(100) + 30
+      };
+    } else if (count == 2) {
+      intake = {
+        "維生素A": rng.nextInt(120) + 50,
+        "維生素B": rng.nextInt(120) + 50,
+        "維生素C": rng.nextInt(120) + 50,
+        "維生素D": rng.nextInt(120) + 50,
+        "維生素E": rng.nextInt(120) + 50,
+        "鋅":  rng.nextInt(120) + 50,
+        "茄紅素":  rng.nextInt(120) + 50,
+        "β胡蘿蔔素":  rng.nextInt(120) + 50,
+        "兒茶素":  rng.nextInt(120) + 50,
+        "花青素":  rng.nextInt(120) + 50,
+        "ω-3脂肪酸":  rng.nextInt(120) + 50,
+        "菸鹼酸": rng.nextInt(120) + 50,
+        "Omega-3脂肪酸":  rng.nextInt(120) + 50,
+        "檸檬酸":  rng.nextInt(120) + 50,
+        "果酸":  rng.nextInt(120) + 50,
+        "β-胡蘿蔔素":  rng.nextInt(120) + 50,
+        "山茶酚":  rng.nextInt(120) + 50,
+        "鈣":  rng.nextInt(120) + 50,
+        "鎂":  rng.nextInt(120) + 50,
+        "鐵":  rng.nextInt(120) + 50,
+        "亞麻油酸":  rng.nextInt(120) + 50,
+        "次亞麻油酸":  rng.nextInt(120) + 50,
+        "蛋白質":  rng.nextInt(120) + 50,
+        "鉀":  rng.nextInt(120) + 50,
+        "磷":  rng.nextInt(120) + 50,
+        "銀耳多醣體":  rng.nextInt(120) + 50,
+        "軟骨素":  rng.nextInt(120) + 50
+      };
+    } else if (count == 3) {
+      intake = {
+        "維生素A": rng.nextInt(150) + 70,
+        "維生素B": rng.nextInt(150) + 70,
+        "維生素C": rng.nextInt(150) + 70,
+        "維生素D": rng.nextInt(150) + 70,
+        "維生素E": rng.nextInt(150) + 70,
+        "鋅":  rng.nextInt(150) + 70,
+        "茄紅素":  rng.nextInt(150) + 70,
+        "β胡蘿蔔素":  rng.nextInt(150) + 70,
+        "兒茶素": rng.nextInt(150) + 70,
+        "花青素":  rng.nextInt(150) + 70,
+        "ω-3脂肪酸": rng.nextInt(150) + 70,
+        "菸鹼酸":  rng.nextInt(150) + 70,
+        "Omega-3脂肪酸":  rng.nextInt(150) + 70,
+        "檸檬酸":  rng.nextInt(150) + 70,
+        "果酸":  rng.nextInt(150) + 70,
+        "β-胡蘿蔔素":  rng.nextInt(150) + 70,
+        "山茶酚":  rng.nextInt(150) + 70,
+        "鈣":  rng.nextInt(150) + 70,
+        "鎂":  rng.nextInt(150) + 70,
+        "鐵":  rng.nextInt(150) + 70,
+        "亞麻油酸":  rng.nextInt(150) + 70,
+        "次亞麻油酸":  rng.nextInt(150) + 70,
+        "蛋白質":  rng.nextInt(150) + 70,
+        "鉀":  rng.nextInt(150) + 70,
+        "磷":  rng.nextInt(150) + 70,
+        "銀耳多醣體":  rng.nextInt(150) + 70,
+        "軟骨素":  rng.nextInt(150) + 70
+      };
+    } else {
+      intake = {"維生素A": 0,
+                "維生素B": 0,
+                "維生素C": 0,
+                "維生素D": 0,
+                "維生素E": 0,
+                "鋅": 0,
+                "茄紅素": 0,
+                "β胡蘿蔔素": 0,
+                "兒茶素": 0,
+                "花青素": 0,
+                "ω-3脂肪酸": 0,
+                "菸鹼酸": 0,
+                "Omega-3脂肪酸": 0,
+                "檸檬酸": 0,
+                "果酸": 0,
+                "β-胡蘿蔔素": 0,
+                "山茶酚": 0,
+                "鈣": 0,
+                "鎂": 0,
+                "鐵": 0,
+                "亞麻油酸": 0,
+                "次亞麻油酸": 0,
+                "蛋白質": 0,
+                "鉀": 0,
+                "磷": 0,
+                "銀耳多醣體": 0,
+                "軟骨素": 0};
+    }
+  }
+
   //TODO 狀況變數尚未決定
   @override
   Widget build(BuildContext context) {
+    weekintake();
     return SingleChildScrollView(
         child: Container(
       color: Colors.white,
@@ -125,7 +303,8 @@ class _WeekmenuPageState extends State<WeekmenuPage> {
             child: FutureBuilder(
                 future: _getIntake(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting && snapshot.data == null) {
+                  if (snapshot.connectionState == ConnectionState.waiting &&
+                      snapshot.data == null) {
                     return Column(
                       children: <Widget>[
                         Container(
@@ -284,7 +463,7 @@ class _WeekmenuPageState extends State<WeekmenuPage> {
                               }
                               return label.item(
                                   snapshot.data[id].elements,
-                                  recommend[snapshot.data[id].elements],
+                                  intake[snapshot.data[id].elements],
                                   colorDecide);
                             }),
                       ],
@@ -406,8 +585,7 @@ class Degree {
 }
 
 class Intake {
-  final int id;
   final String elements;
 
-  Intake(this.id, this.elements);
+  Intake(this.elements);
 }

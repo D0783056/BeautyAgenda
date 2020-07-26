@@ -4,6 +4,7 @@ import 'week_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'nutrient.dart';
 
 class DaymenuPage extends StatefulWidget {
   @override
@@ -29,11 +30,32 @@ class _DaymenuPageState extends State<DaymenuPage> {
   List<int> foodamount = [];
 
   var fruits = {
+    "柳丁": "orange",
     "橘子": "orange",
     "葡萄": "grape",
     "番茄": "tomato",
     "香蕉": "banana",
-    "蘋果": "apple"
+    "蘋果": "apple",
+    "葡萄柚": "grapefruit",
+    "藍莓": "blue_berry",
+    "大骨湯": "bone",
+    "花椰菜": "broccoli",
+    "玉米": "corn",
+    "紅蘿蔔": "corrot",
+    "蔓越莓": "cranberry",
+    "小黃瓜": "cucumber",
+    "綠茶": "green_tea",
+    "檸檬": "lemon",
+    "牛奶": "milk",
+    "燕麥": "oat",
+    "柚子": "pomelo",
+    "鮭魚": "salmon",
+    "秋刀魚": "Samma",
+    "沙丁魚": "sardine",
+    "魚翅": "shark_fin",
+    "銀耳": "Tremella",
+    "鮪魚": "tuna",
+    "地瓜": "yam"
   };
 
   _readId() async {
@@ -84,8 +106,7 @@ class _DaymenuPageState extends State<DaymenuPage> {
     List<FruitMenu> menu = [];
 
     for (var u in message) {
-      FruitMenu fruitmenu = FruitMenu(
-          int.parse(u["id"]), u["food_name"], int.parse(u["food_nums"]));
+      FruitMenu fruitmenu = FruitMenu(int.parse(u["id"]), u["food_name"], int.parse(u["food_nums"]));
       menu.add(fruitmenu);
     }
     return menu;
@@ -196,7 +217,17 @@ class _DaymenuPageState extends State<DaymenuPage> {
             ),
           ],
         ),
-        Image.asset('images/$conversion.jpg', height: 180, fit: BoxFit.fill)
+        GestureDetector(
+            onLongPress: () {
+              Nutrient nutrient = Nutrient(fruit);
+              showDialog(
+                  context: context,
+                  child: new AlertDialog(
+                    content: nutrient.elements(),
+                  ));
+            },
+            child: Image.asset('images/$conversion.jpg',
+                height: 180, fit: BoxFit.fill))
       ],
     );
   }

@@ -14,7 +14,7 @@ class Week extends StatelessWidget {
 // ignore: must_be_immutable
 class MyStatelessWidget extends StatelessWidget {
   MyStatelessWidget({Key key}) : super(key: key);
-  Tabs tabs = new Tabs("dd",1,1);
+  Tabs tabs = new Tabs("dd",1,1,1);
   Toptitle weektitle = Toptitle();
 
   @override

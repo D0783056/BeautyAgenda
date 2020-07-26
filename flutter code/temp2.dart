@@ -272,7 +272,7 @@ class _CameraScreenState extends State {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => Bar(id,imgPath,1)),
+            builder: (context) => Bar(id,imgPath,1,1)),
       );
     } catch (e) {
       _showCameraException(e);

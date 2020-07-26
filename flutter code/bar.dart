@@ -6,15 +6,17 @@ class Bar extends StatelessWidget {
   int id;
   String imagePath;
   int isFront;
+  var test;
 
-  Bar(int id, String imagePath, int isFront){
+  Bar(int id, String imagePath, int isFront, var test){
     this.id = id;
     this.imagePath = imagePath;
     this.isFront = isFront;
+    this.test = test;
   }
   @override
   Widget build(BuildContext context) {
-    Tabs tabs = new Tabs(imagePath, id, isFront);
+    Tabs tabs = new Tabs(imagePath, id, isFront,test);
     Toptitle toptitle = new Toptitle();
     return Scaffold(
       appBar:toptitle.Topbar('膚況報告'),

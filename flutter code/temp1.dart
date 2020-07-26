@@ -2,41 +2,40 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'dart:io' as IO;
 import 'package:http/http.dart' as http;
-import 'package:camera/camera.dart';
-import 'take_picture_screen.dart';
+import 'dart:math' as math;
+import 'package:http_parser/http_parser.dart';
 
 // ignore: must_be_immutable
 class CommentPage extends StatefulWidget {
   String imagePath;
   int id;
-  CommentPage(String img, int id) {
+  int isFront;
+  var test;
+
+  CommentPage(String img, int id, int isFront, var test) {
     this.imagePath = img;
     this.id = id;
+    this.isFront = isFront;
+    this.test = test;
   }
   @override
-  _CommentPageState createState() => _CommentPageState(imagePath, id);
+  _CommentPageState createState() =>
+      _CommentPageState(imagePath, id, isFront, test);
 }
 
 class _CommentPageState extends State<CommentPage> {
+  var test;
   Image faceImage;
-  int grade = 10;
+  int grade = 0;
   String imagepath;
   int id;
+  int isFront;
   String tmpFile;
-  _CommentPageState(this.imagepath, this.id);
+  _CommentPageState(this.imagepath, this.id, this.isFront, this.test);
   String how = "你今天真好看!\n但是你可能有一些小問題喔!";
   String problem1 = "黑眼圈";
   String base64Image;
-
-  void pushToCamera(BuildContext context) async {
-    final cameras = await availableCameras();
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CameraScreen(id),
-      ),
-    );
-  }
+  String ii;
 
   Future userRegistration(String fileName) async {
     var url = 'https://beautyagenda.000webhostapp.com/upload.php';
@@ -68,9 +67,73 @@ class _CommentPageState extends State<CommentPage> {
     );
   }
 
+  Future userMenu() async {
+    var url = 'https://beautyagenda.000webhostapp.com/fruit.php';
+    String Sname = "黑眼圈";
+    var data = {
+      'id': id,
+      'Sname': Sname,
+    };
+    // Starting Web API Call.
+    var response = await http.post(url, body: json.encode(data));
+    if (response.statusCode == 200) {
+      print("ok1");
+    }
+  }
+
+  Future userDisease() async {
+    var url = 'https://beautyagenda.000webhostapp.com/InsertDisease.php';
+    String Sname = "黑眼圈";
+
+    var data = {
+      'id': id,
+      'Sname': Sname,
+    };
+    // Starting Web API Call.
+    var response = await http.post(url, body: json.encode(data));
+    if (response.statusCode == 200) {
+      print("ok2");
+    }
+  }
+
+  uploadFile() async {
+    var request =
+    http.MultipartRequest('POST', Uri.parse("http://140.134.27.136:5000"));
+    request.files.add(await http.MultipartFile.fromPath('image', imagepath));
+    var res = await request.send();
+    res.stream.transform(utf8.decoder).listen((value) {
+      var temp = json.decode(value);
+      print(temp);
+    });
+  }
+
+  Future<List<Symptoms>> getSymptoms() async {
+    var url = "https://beautyagenda.000webhostapp.com/symptom.php";
+
+    var response = await http.post(url, body: json.encode(test));
+    var message = json.decode(response.body);
+    List<Symptoms> symp = [];
+
+    for (var u in message) {
+      Symptoms symps= Symptoms(u["symptom"]);
+      symp.add(symps);
+    }
+    return symp;
+  }
+
   @override
   Widget build(BuildContext context) {
     base64Image = base64Encode(IO.File(imagepath).readAsBytesSync());
+    grade = 100;
+    if (test['acne'] == true) {
+      grade -= 8;
+    }
+    if (test['black circle'] == true) {
+      grade -= 8;
+    }
+    if (test['wrinkle'] == true) {
+      grade -= 8;
+    }
 
     return SingleChildScrollView(
       child: Column(
@@ -80,8 +143,8 @@ class _CommentPageState extends State<CommentPage> {
             margin: EdgeInsets.fromLTRB(100, 20, 100, 40),
             child: Container(
               width: 200,
-              height: 250,
-              child: Image.file(IO.File(imagepath), fit: BoxFit.fill),
+              height: 270,
+              child: displayImg(imagepath, isFront),
             ),
           ),
           Card(
@@ -143,27 +206,20 @@ class _CommentPageState extends State<CommentPage> {
           Row(
             children: <Widget>[
               GestureDetector(
-                onTap: () {
-                  String fileName = imagepath.split('/').last;
-                  userRegistration(fileName);
+                onTap: () async {
+                  //TODO 記得還原
+                  //String fileName = imagepath.split('/').last;
+                  //userRegistration(fileName);
+                  //await userMenu();
+                  //await userDisease();
+                  //await uploadFile();
+                  print(test['acne']);
                 },
                 child: Container(
-                    margin: EdgeInsets.fromLTRB(80, 15, 0, 25),
+                    margin: EdgeInsets.fromLTRB(180, 20, 0, 25),
                     child: Text('儲存',
                         style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'GFDSidot',
-                            color: Color(0XFF818181)))),
-              ),
-              GestureDetector(
-                onTap: () {
-                  this.pushToCamera(context);
-                },
-                child: Container(
-                    margin: EdgeInsets.fromLTRB(70, 15, 0, 25),
-                    child: Text('沒拍好? 在拍一張!',
-                        style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 25,
                             fontFamily: 'GFDSidot',
                             color: Color(0XFF818181)))),
               ),
@@ -173,4 +229,24 @@ class _CommentPageState extends State<CommentPage> {
       ),
     );
   }
+}
+
+Widget displayImg(String imagepath, int isFront) {
+  double mirror;
+  if (isFront == 1) {
+    mirror = math.pi;
+  } else {
+    mirror = 0;
+  }
+
+  return Transform(
+    alignment: Alignment.center,
+    child: Image.file(IO.File(imagepath), fit: BoxFit.fill),
+    transform: Matrix4.rotationY(mirror),
+  );
+}
+
+class Symptoms {
+  final String symptom;
+  Symptoms(this.symptom);
 }

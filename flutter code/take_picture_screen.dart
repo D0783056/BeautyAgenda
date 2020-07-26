@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:beauty_agenda/bar.dart';
+import 'intermediate.dart';
 import 'dart:math' as math;
 
 // ignore: must_be_immutable
@@ -268,13 +268,13 @@ class _CameraScreenState extends State {
 
   void _onCapturePressed(context) async {
     try {
-      final path =
-          join((await getTemporaryDirectory()).path, '${DateTime.now()}.png');
+      final path = join((await getTemporaryDirectory()).path, '${DateTime.now()}.jpg');
       await controller.takePicture(path);
+      print(path);
       imgPath = path;
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Bar(id, imgPath, isFront)),
+        MaterialPageRoute(builder: (context) => IntermediateScreen(imgPath, id, isFront)),
       );
     } catch (e) {
       _showCameraException(e);
