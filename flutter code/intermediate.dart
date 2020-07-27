@@ -30,13 +30,16 @@ class IntermediateScreenState extends State {
   IntermediateScreenState(this.imagePath, this.id, this.isFront);
 
   uploadFile() async {
-    var request = http.MultipartRequest('POST', Uri.parse("http://140.134.27.136:5000"));
-    request.files.add(await http.MultipartFile.fromPath('image', imagePath));
-    var res = await request.send();
-    res.stream.transform(utf8.decoder).listen((value) {
-       test = json.decode(value);
-       print(test);
-    });
+    try{
+      var request = http.MultipartRequest('POST', Uri.parse("http://140.134.27.136:5000"));
+      request.files.add(await http.MultipartFile.fromPath('image', imagePath));
+      var res = await request.send();
+      res.stream.transform(utf8.decoder).listen((value) {
+        print(jsonDecode(value));
+      });
+    } catch(e) {
+      print(e);
+    }
   }
 
   Future userMenu() async {
@@ -50,9 +53,15 @@ class IntermediateScreenState extends State {
 
   @override
   Widget build(BuildContext context) {
-    test = {"acne": false,
-            "black circle": true,
-            "wrinkle": true};
+   test = {
+        "forehead": true,
+        "chuan": false,
+        "crow": false,
+        "dark_circle": false,
+        "smile_line": true,
+        "acne": false,
+        "freckle": true
+          };
     return Scaffold(
       appBar: PreferredSize(
           child: AppBar(

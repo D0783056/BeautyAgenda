@@ -36,6 +36,7 @@ class _CommentPageState extends State<CommentPage> {
   String problem1 = "黑眼圈";
   String base64Image;
   String ii;
+  var date = DateTime.now();
 
   Future userRegistration(String fileName) async {
     var url = 'https://beautyagenda.000webhostapp.com/upload.php';
@@ -69,6 +70,7 @@ class _CommentPageState extends State<CommentPage> {
 
   Future userMenu() async {
     var url = 'https://beautyagenda.000webhostapp.com/fruit.php';
+    // ignore: non_constant_identifier_names
     String Sname = "黑眼圈";
     var data = {
       'id': id,
@@ -104,6 +106,19 @@ class _CommentPageState extends State<CommentPage> {
     return symp;
   }
 
+  Future saveHistory() async {
+    var url = 'https://beautyagenda.000webhostapp.com/saveHistory.php';
+
+    test.addAll({"id": id});
+    test.addAll({"grade": grade});
+    test.addAll({"time": date.toString()});
+    test.addAll({"base64": base64Image});
+    var response = await http.post(url, body: json.encode(test));
+    if (response.statusCode == 200) {
+      print("ok2");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     base64Image = base64Encode(IO.File(imagepath).readAsBytesSync());
@@ -111,12 +126,25 @@ class _CommentPageState extends State<CommentPage> {
     if (test['acne'] == true) {
       grade -= 8;
     }
-    if (test['black circle'] == true) {
+    if (test['dark_circle'] == true) {
       grade -= 8;
     }
-    if (test['wrinkle'] == true) {
+    if (test['forehead'] == true) {
       grade -= 8;
     }
+    if (test['crow'] == true) {
+      grade -= 8;
+    }
+    if (test['smile_line'] == true) {
+      grade -= 8;
+    }
+    if (test['freckle'] == true) {
+      grade -= 8;
+    }
+    if (test['chuan'] == true) {
+      grade -= 8;
+    }
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -229,10 +257,9 @@ class _CommentPageState extends State<CommentPage> {
                               onTap: () async {
                                 //TODO 記得還原
                                 //String fileName = imagepath.split('/').last;
-                                //userRegistration(fileName);
-                                //await userMenu();
-                                //await uploadFile();
-                                await userDisease();
+                                //await userRegistration(fileName);
+                                //await userDisease();
+                                await saveHistory();
                               },
                               child: Container(
                                   margin: EdgeInsets.fromLTRB(180, 20, 0, 25),

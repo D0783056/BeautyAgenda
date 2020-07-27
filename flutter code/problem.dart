@@ -22,9 +22,13 @@ class _ProblemPageState extends State<ProblemPage> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          object.causes3(),
           object.causes1(),
           object.causes2(),
+          object.causes3(),
+          object.causes4(),
+          object.causes5(),
+          object.causes6(),
+          object.causes7(),
           GestureDetector(
             onTap: () {
             },
