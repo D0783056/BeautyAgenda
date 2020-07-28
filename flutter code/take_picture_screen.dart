@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'intermediate.dart';
-import 'dart:math' as math;
+import 'drawer.dart';
+import 'bar.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 // ignore: must_be_immutable
 class CameraScreen extends StatefulWidget {
@@ -23,8 +26,18 @@ class _CameraScreenState extends State {
   String imgPath;
   int id;
   int isFront;
+  var test = new Map<String, dynamic>();
 
   _CameraScreenState(this.id);
+
+  Future uploadFile() async {
+    var request = http.MultipartRequest('POST', Uri.parse("http://140.134.27.136:5000"));
+    request.files.add(await http.MultipartFile.fromPath('image', imgPath));
+    var res = await request.send();
+    res.stream.transform(utf8.decoder).listen((value) async {
+      test = await jsonDecode(value);
+    });
+  }
 
   @override
   void deactivate() {
@@ -81,36 +94,12 @@ class _CameraScreenState extends State {
 
   @override
   Widget build(BuildContext context) {
+    NavDrawerExample navDrawerExample = new NavDrawerExample();
+    Toptitle toptitle = new Toptitle();
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: PreferredSize(
-            child: AppBar(
-              backgroundColor: Color(0xFFFFD0D1),
-              leading: IconButton(
-                icon: Icon(Icons.person),
-                iconSize: 40,
-                onPressed: () {},
-              ),
-              title: Center(
-                child: Text(
-                  '膚況檢測',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 35,
-                    fontFamily: 'GFSDidot',
-                  ),
-                ),
-              ),
-              actions: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.home),
-                  iconSize: 40,
-                  onPressed: () {},
-                ),
-              ],
-            ),
-            preferredSize: Size.fromHeight(60)),
+        appBar:toptitle.Topbar(context,'膚況檢測',id),
         body: Column(
           children: <Widget>[
             SizedBox(
@@ -144,8 +133,8 @@ class _CameraScreenState extends State {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      width: 364,
-                      height: 516,
+                      width: 330,
+                      height: 520,
                       child: _cameraPreviewWidget(),
                     ),
                     Align(
@@ -170,6 +159,7 @@ class _CameraScreenState extends State {
             ),
           ],
         ),
+        drawer: navDrawerExample.drawer(context),
       ),
     );
   }
@@ -270,8 +260,9 @@ class _CameraScreenState extends State {
     try {
       final path = join((await getTemporaryDirectory()).path, '${DateTime.now()}.jpg');
       await controller.takePicture(path);
-      print(path);
       imgPath = path;
+      //await uploadFile();
+
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => IntermediateScreen(imgPath, id, isFront)),

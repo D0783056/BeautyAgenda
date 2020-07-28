@@ -4,6 +4,8 @@ import 'dart:math' as math;
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:beauty_agenda/bar.dart';
+import 'drawer.dart';
+import 'bar.dart';
 
 // ignore: must_be_immutable
 class IntermediateScreen extends StatefulWidget {
@@ -29,17 +31,21 @@ class IntermediateScreenState extends State {
 
   IntermediateScreenState(this.imagePath, this.id, this.isFront);
 
-  uploadFile() async {
-    try{
-      var request = http.MultipartRequest('POST', Uri.parse("http://140.134.27.136:5000"));
-      request.files.add(await http.MultipartFile.fromPath('image', imagePath));
-      var res = await request.send();
-      res.stream.transform(utf8.decoder).listen((value) {
-        print(jsonDecode(value));
-      });
-    } catch(e) {
-      print(e);
-    }
+  @override
+  void initState() {
+    uploadFile();
+    super.initState();
+  }
+
+  Future uploadFile() async {
+    var request =
+        http.MultipartRequest('POST', Uri.parse("http://140.134.27.136:5000"));
+    request.files.add(await http.MultipartFile.fromPath('image', imagePath));
+    var res = await request.send();
+    res.stream.transform(utf8.decoder).listen((value) async {
+      test = await jsonDecode(value);
+    });
+    print(test);
   }
 
   Future userMenu() async {
@@ -51,46 +57,39 @@ class IntermediateScreenState extends State {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-   test = {
-        "forehead": true,
-        "chuan": false,
-        "crow": false,
-        "dark_circle": false,
-        "smile_line": true,
-        "acne": false,
-        "freckle": true
-          };
-    return Scaffold(
-      appBar: PreferredSize(
-          child: AppBar(
-            backgroundColor: Color(0xFFFFD0D1),
-            leading: IconButton(
-              icon: Icon(Icons.person),
-              iconSize: 40,
-              onPressed: () {
-              },
-            ),
-            title: Center(
-              child: Text(
-                '膚況檢測',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 35,
-                  fontFamily: 'GFSDidot',
-                ),
-              ),
-            ),
+  void isFace() {
+    if (test['is_no_face'] == true) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text("明明就不是人臉! 給我重拍!"),
             actions: <Widget>[
-              IconButton(
-                icon: const Icon(Icons.home),
-                iconSize: 40,
-                onPressed: () {},
+              FlatButton(
+                child: new Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
             ],
-          ),
-          preferredSize: Size.fromHeight(60)),
+          );
+        },
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Bar(id, imagePath, isFront, test)),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    NavDrawerExample navDrawerExample = new NavDrawerExample();
+    Toptitle toptitle = new Toptitle();
+    return Scaffold(
+      appBar: toptitle.Topbar(context, '膚況報告', id),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -105,12 +104,7 @@ class IntermediateScreenState extends State {
               children: <Widget>[
                 GestureDetector(
                   onTap: () async {
-                    test.addAll({"id": id});
-                    await userMenu();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Bar(id, imagePath, isFront, test)),
-                    );
+                    isFace();
                   },
                   child: Container(
                       margin: EdgeInsets.fromLTRB(54, 15, 0, 25),
@@ -137,6 +131,7 @@ class IntermediateScreenState extends State {
           ],
         ),
       ),
+      drawer: navDrawerExample.drawer(context),
     );
   }
 }
@@ -153,10 +148,8 @@ Widget displayImg(String imagepath, int isFront) {
     alignment: Alignment.center,
     child: Container(
         margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        width: 360,
-        height: 516,
-        child:
-            Image.file(IO.File(imagepath), width: 360, fit: BoxFit.fitWidth)),
+        height: 520,
+        child: Image.file(IO.File(imagepath), width: 324, fit: BoxFit.fill)),
     transform: Matrix4.rotationY(mirror),
   );
 }

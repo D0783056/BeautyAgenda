@@ -4,8 +4,9 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:intl/intl.dart' show DateFormat;
-import 'emoji.dart';
-import 'emojiCount.dart';
+import 'drawer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'bar.dart';
 
 // ignore: must_be_immutable
 class MoodTracePage extends StatefulWidget {
@@ -29,7 +30,17 @@ class MoodTracePageState extends State<MoodTracePage> {
   int normal;
   int happy;
   int joy;
+  int id;
   MoodTracePageState(this.angry, this.sad, this.normal, this.happy, this.joy);
+
+  _readId() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'id';
+    final value = prefs.getInt(key) ?? 0;
+    setState(() {
+      id = value;
+    });
+  }
 
   DateTime _currentDate = DateTime(2020, 7, 3);
   DateTime _currentDate2 = DateTime(2020, 7, 3);
@@ -79,6 +90,7 @@ class MoodTracePageState extends State<MoodTracePage> {
 
   @override
   void initState() {
+    _readId();
     /// Add more events to _markedDateMap EventList
     _markedDateMap.add(
         new DateTime(2020, 2, 25),
@@ -118,6 +130,7 @@ class MoodTracePageState extends State<MoodTracePage> {
 
   @override
   Widget build(BuildContext context) {
+    NavDrawerExample navDrawerExample = new NavDrawerExample();
     /// Example Calendar Carousel without header and custom prev & next button
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
       todayBorderColor: Colors.green,
@@ -181,33 +194,7 @@ class MoodTracePageState extends State<MoodTracePage> {
     );
 
     return new Scaffold(
-        appBar: PreferredSize(
-            child: AppBar(
-              backgroundColor: Color(0xFFFFD0D1),
-              leading: IconButton(
-                icon: Icon(Icons.person),
-                iconSize: 40,
-                onPressed: () {},
-              ),
-              title: Center(
-                child: Text(
-                  '心情追蹤',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 35,
-                    fontFamily: 'GFSDidot',
-                  ),
-                ),
-              ),
-              actions: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.home),
-                  iconSize: 40,
-                  onPressed: () {},
-                ),
-              ],
-            ),
-            preferredSize: Size.fromHeight(60)),
+        appBar: Toptitle().Topbar(context,"心情追蹤", id),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -327,6 +314,8 @@ class MoodTracePageState extends State<MoodTracePage> {
               ),
             ],
           ),
-        ));
+        ),
+        drawer: navDrawerExample.drawer(context),
+    );
   }
 }

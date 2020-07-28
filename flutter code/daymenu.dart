@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'nutrient.dart';
+import 'drawer.dart';
+import 'bar.dart';
 
 class DaymenuPage extends StatefulWidget {
   @override
@@ -235,34 +237,10 @@ class _DaymenuPageState extends State<DaymenuPage> {
   //TODO 狀況變數尚未決定
   @override
   Widget build(BuildContext context) {
+    NavDrawerExample navDrawerExample = new NavDrawerExample();
+
     return Scaffold(
-      appBar: PreferredSize(
-          child: AppBar(
-            backgroundColor: Color(0xFFFFD0D1),
-            leading: IconButton(
-              icon: Icon(Icons.person),
-              iconSize: 40,
-              onPressed: () {},
-            ),
-            title: Center(
-              child: Text(
-                '每日養顏',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 35,
-                  fontFamily: 'GFSDidot',
-                ),
-              ),
-            ),
-            actions: <Widget>[
-              IconButton(
-                icon: const Icon(Icons.home),
-                iconSize: 40,
-                onPressed: () {},
-              ),
-            ],
-          ),
-          preferredSize: Size.fromHeight(60)),
+      appBar: Toptitle().Topbar(context,"每日養顏", id),
       body: SingleChildScrollView(
         physics: ScrollPhysics(),
         child: Column(
@@ -356,6 +334,7 @@ class _DaymenuPageState extends State<DaymenuPage> {
                 double cnt = count / 21;
                 print(cnt);
                 _saveCount(cnt);
+                Navigator.of(context).pop();
               },
               child: Container(
                   margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
@@ -390,6 +369,7 @@ class _DaymenuPageState extends State<DaymenuPage> {
           ],
         ),
       ),
+      drawer: navDrawerExample.drawer(context),
     );
   }
 }

@@ -28,6 +28,7 @@ class _WeekmenuPageState extends State<WeekmenuPage> {
   bool _isCheck3 = false;
   var intake;
   var recommend = {
+    "維他命A": 4100,
     "維生素A": 8100,
     "維生素B": 3000,
     "維生素C": 3600,
@@ -169,6 +170,7 @@ class _WeekmenuPageState extends State<WeekmenuPage> {
     }
     if (count == 1) {
       intake = {
+        "維他命A": rng.nextInt(100) + 30,
         "維生素A": rng.nextInt(100) + 30,
         "維生素B": rng.nextInt(100) + 30,
         "維生素C": rng.nextInt(100) + 30,
@@ -199,6 +201,7 @@ class _WeekmenuPageState extends State<WeekmenuPage> {
       };
     } else if (count == 2) {
       intake = {
+        "維他命A": rng.nextInt(120) + 50,
         "維生素A": rng.nextInt(120) + 50,
         "維生素B": rng.nextInt(120) + 50,
         "維生素C": rng.nextInt(120) + 50,
@@ -229,6 +232,7 @@ class _WeekmenuPageState extends State<WeekmenuPage> {
       };
     } else if (count == 3) {
       intake = {
+        "維他命A": rng.nextInt(150) + 70,
         "維生素A": rng.nextInt(150) + 70,
         "維生素B": rng.nextInt(150) + 70,
         "維生素C": rng.nextInt(150) + 70,
@@ -258,7 +262,8 @@ class _WeekmenuPageState extends State<WeekmenuPage> {
         "軟骨素":  rng.nextInt(150) + 70
       };
     } else {
-      intake = {"維生素A": 0,
+      intake = {"維他命A": 0,
+                "維生素A": 0,
                 "維生素B": 0,
                 "維生素C": 0,
                 "維生素D": 0,

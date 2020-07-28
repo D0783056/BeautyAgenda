@@ -1,312 +1,281 @@
-import 'dart:async';
+import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'week_menu.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'intermediate.dart';
+import 'drawer.dart';
+import 'bar.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class DaymenuPage extends StatefulWidget {
+// ignore: must_be_immutable
+class CameraScreen extends StatefulWidget {
+  int id;
+  CameraScreen(int id) {
+    this.id = id;
+  }
   @override
-  _DaymenuPageState createState() => _DaymenuPageState();
+  _CameraScreenState createState() => _CameraScreenState(id);
 }
 
-class _DaymenuPageState extends State<DaymenuPage> {
-  var nowTime = new DateTime.now(); //获取当前时间
-  Label label = new Label();
-  Degree complete = new Degree();
-  bool _isCheck1 = false;
-  bool _isCheck2 = false;
-  bool _isCheck3 = false;
-  int flag1 = 0;
-  int flag2 = 0;
-  int flag3 = 0;
-  bool temp = false;
-  double count = 0.0;
-  int id = 0;
-  List<String> foodlist = [];
-  List<int> foodamount = [];
+class _CameraScreenState extends State {
+  CameraController controller;
+  List cameras;
+  int selectedCameraIndex;
+  String imgPath;
+  int id;
+  int isFront;
+  var test = new Map<String, dynamic>();
 
-  var fruits = {
-    "橘子": "orange",
-    "葡萄": "grape",
-    "番茄": "tomato",
-    "香蕉": "banana",
-    "蘋果": "apple"
-  };
+  _CameraScreenState(this.id);
+
+  Future uploadFile() async {
+    var request = http.MultipartRequest('POST', Uri.parse("http://140.134.27.136:5000"));
+    request.files.add(await http.MultipartFile.fromPath('image', imgPath));
+    var res = await request.send();
+    res.stream.transform(utf8.decoder).listen((value) async {
+      test = await jsonDecode(value);
+    });
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    controller.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
-    _read("box1");
-    _read("box2");
-    _read("box3");
-    getMenu();
-    Timer.run(() => showAlert(context));
-  }
+    availableCameras().then((availableCameras) {
+      cameras = availableCameras;
 
-  _save(String box, bool isCheck) async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = box;
-    final value = isCheck;
-    prefs.setBool(key, value);
-  }
-
-  _readId() async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = 'id';
-    final value = prefs.getInt(key) ?? 0;
-    setState(() {
-      id = value;
+      if (cameras.length > 0) {
+        setState(() {
+          selectedCameraIndex = 1;
+          isFront = 1;
+        });
+        _initCameraController(cameras[selectedCameraIndex]).then((void v) {});
+      } else {
+        print('No camera available');
+      }
+    }).catchError((err) {
+      print('Error :${err.code}Error message : ${err.message}');
     });
   }
 
-  _read(String box) async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = box;
-    final value = prefs.getBool(key) ?? false;
-    setState(() {
-      if (box == "box1") {
-        _isCheck1 = value;
-      } else if (box == "box2") {
-        _isCheck2 = value;
-      } else if (box == "box3") {
-        _isCheck3 = value;
+  Future _initCameraController(CameraDescription cameraDescription) async {
+    if (controller != null) {
+      await controller.dispose();
+    }
+    controller = CameraController(cameraDescription, ResolutionPreset.high,
+        enableAudio: false);
+
+    controller.addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
+
+      if (controller.value.hasError) {
+        print('Camera error ${controller.value.errorDescription}');
       }
     });
-  }
-
-  _saveCount(double add) async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = 'count';
-    final value = add;
-    prefs.setDouble(key, value);
-  }
-
-  Future<void> getMenu() async {
-    var url = 'https://beautyagenda.000webhostapp.com/getMenu.php';
-    var data = {'id': 19};
 
     try {
-      var response = await http.post(url, body: json.encode(data));
-      var message = jsonDecode(response.body);
-      if (response.statusCode == 200 && response.body.isNotEmpty) {
-        for (int i = 0; i < 3; i++) {
-          setState(() {
-            foodlist.add(message[i]['food_name']);
-            foodamount.add(int.parse(message[i]['food_nums']));
-          });
-        }
-      }
-    } catch (e) {
-      print(e);
+      await controller.initialize();
+    } on CameraException catch (e) {
+      _showCameraException(e);
+    }
+    if (mounted) {
+      setState(() {});
     }
   }
 
-  void showAlert(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Icon(Icons.lightbulb_outline,
-                      color: Color(0xFF818181), size: 30),
-                  SizedBox(width: 5),
-                  Text(
-                    "小提示",
-                    style: TextStyle(
-                        fontFamily: 'GFSDidot',
-                        fontSize: 22,
-                        color: Color(0xFF818181)),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10),
-              Text(
-                "這裡會顯示每天需要攝取的營養素，並且介紹營養素相關資訊，讓你安心跟著Beauty Agenda !",
-                style: TextStyle(
-                    fontFamily: 'GFSDidot',
-                    fontSize: 20,
-                    color: Color(0xFF818181)),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Row(
-                children: <Widget>[
-                  Icon(Icons.check_box, color: Color(0xFF818181), size: 35),
-                  SizedBox(width: 10),
-                  Text(
-                    "食用完畢記得打勾",
-                    style: TextStyle(
-                        fontFamily: 'GFSDidot',
-                        fontSize: 20,
-                        color: Color(0xFF818181)),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 5,
-              ),
-            ],
-          ),
-        ));
-  }
-
-  Widget menuinfo(bool _isCheck, String box, String fruit, int num) {
-    String conversion = fruits[fruit];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        SizedBox(height: 15),
-        Row(
+  @override
+  Widget build(BuildContext context) {
+    NavDrawerExample navDrawerExample = new NavDrawerExample();
+    Toptitle toptitle = new Toptitle();
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar:toptitle.Topbar(context,'膚況檢測',id),
+        body: Column(
           children: <Widget>[
-            SizedBox(width: 20),
-            Container(
-              child: Checkbox(
-                tristate: false,
-                value: _isCheck,
-                onChanged: (isCheck) async {
-                  setState(() {
-                    _save(box, isCheck);
-                    _read(box);
-                  });
-                },
-              ),
+            SizedBox(
+              height: 20,
             ),
-            Text(
-              "$fruit",
-              style: TextStyle(
-                fontFamily: 'GFSDidot',
-                fontSize: 25.0,
-                color: const Color(0xFF818181),
-              ),
+            Row(
+              children: <Widget>[
+                Container(
+                  height: 50,
+                  width: 20,
+                  color: Color(0xFFFFD0D1),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  '拍照',
+                  style: TextStyle(
+                    fontFamily: 'GFSDidot',
+                    color: const Color(0xFF818181),
+                    fontSize: 30,
+                  ),
+                ),
+              ],
             ),
             SizedBox(
-              width: 5,
+              height: 20,
             ),
-            Text(
-              "$num個",
-              style: TextStyle(
-                fontFamily: 'GFSDidot',
-                fontSize: 25.0,
-                color: const Color(0xFF818181),
+            Container(
+              child: SafeArea(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      width: 330,
+                      height: 520,
+                      child: _cameraPreviewWidget(),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        height: 80,
+                        padding: EdgeInsets.all(15),
+                        color: Colors.white,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            _cameraToggleRowWidget(),
+                            _cameraControlWidget(context),
+                            Spacer()
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ],
         ),
-        Image.asset('images/$conversion.jpg', height: 180, fit: BoxFit.fill)
-      ],
+        drawer: navDrawerExample.drawer(context),
+      ),
     );
   }
 
-  //TODO 狀況變數尚未決定
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-          child: AppBar(
-            backgroundColor: Color(0xFFFFD0D1),
-            leading: IconButton(
-              icon: Icon(Icons.person),
-              iconSize: 40,
-              onPressed: () {},
-            ),
-            title: Center(
-              child: Text(
-                '每日養顏',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 35,
-                  fontFamily: 'GFSDidot',
-                ),
-              ),
-            ),
-            actions: <Widget>[
-              IconButton(
-                icon: const Icon(Icons.home),
-                iconSize: 40,
-                onPressed: () {},
-              ),
-            ],
-          ),
-          preferredSize: Size.fromHeight(60)),
-      body: SingleChildScrollView(
-        child: Container(
+  /// Display Camera preview.
+  Widget _cameraPreviewWidget() {
+    if (controller == null || !controller.value.isInitialized) {
+      return const Text(
+        'Loading',
+        style: TextStyle(
           color: Colors.white,
-          child: Column(
-            children: <Widget>[
-              label.label('${nowTime.year} / ${nowTime.month} / ${nowTime.day}'),
-              menuinfo(_isCheck1, "box1", foodlist[0], foodamount[0]),
-              menuinfo(_isCheck2, "box2", foodlist[1], foodamount[1]),
-              menuinfo(_isCheck3, "box3", foodlist[2], foodamount[2]),
-              GestureDetector(
-                onTap: () async {
-                  _read("box1");
-                  _read("box2");
-                  _read("box3");
-                  print(_isCheck1);
-                  print(_isCheck2);
-                  print(_isCheck3);
-                  if (_isCheck1 == true) {
-                    flag1 = 1;
-                  }
-                  if (_isCheck2 == true) {
-                    flag2 = 1;
-                  }
-                  if (_isCheck3 == true) {
-                    flag3 = 1;
-                  }
-                  if (flag1 == 1) {
-                    count++;
-                  }
-                  if (flag2 == 1) {
-                    count++;
-                  }
-                  if (flag3 == 1) {
-                    count++;
-                  }
-                  print(count);
-                  double cnt = count / 21;
-                  print(cnt);
-                  _saveCount(cnt);
-                },
-                child: Container(
-                    margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
-                    child: Text('儲存',
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontFamily: 'GFDSidot',
-                            color: Color(0XFF818181)))),
+          fontSize: 20.0,
+          fontWeight: FontWeight.w900,
+        ),
+      );
+    }
+
+    return AspectRatio(
+      aspectRatio: controller.value.aspectRatio,
+      child: CameraPreview(controller),
+    );
+  }
+
+  /// Display the control bar with buttons to take pictures
+  Widget _cameraControlWidget(context) {
+    return Expanded(
+      child: Align(
+        alignment: Alignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            FloatingActionButton(
+              child: Icon(
+                Icons.camera,
+                color: Colors.black,
+                size: 35,
               ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      Icons.unfold_more,
-                      size: 20,
-                      color: Colors.grey,
-                    ),
-                    Text(
-                      '上下滑動',
-                      style: TextStyle(
-                        fontSize: 23,
-                        fontFamily: 'GFDSidot',
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              backgroundColor: Colors.white70,
+              onPressed: () {
+                _onCapturePressed(context);
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Display a row of toggle to select the camera (or a message if no camera is available).
+  Widget _cameraToggleRowWidget() {
+    if (cameras == null || cameras.isEmpty) {
+      return Spacer();
+    }
+    CameraDescription selectedCamera = cameras[selectedCameraIndex];
+    CameraLensDirection lensDirection = selectedCamera.lensDirection;
+
+    return Expanded(
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: FlatButton.icon(
+          onPressed: _onSwitchCamera,
+          icon: Icon(
+            _getCameraLensIcon(lensDirection),
+            color: Colors.black,
+            size: 24,
+          ),
+          label: Text(
+            '${lensDirection.toString().substring(lensDirection.toString().indexOf('.') + 1).toUpperCase()}',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
           ),
         ),
       ),
     );
+  }
+
+  IconData _getCameraLensIcon(CameraLensDirection direction) {
+    switch (direction) {
+      case CameraLensDirection.back:
+        isFront = 0;
+        return CupertinoIcons.switch_camera;
+      case CameraLensDirection.front:
+        isFront = 1;
+        return CupertinoIcons.switch_camera_solid;
+      case CameraLensDirection.external:
+        return Icons.camera;
+      default:
+        return Icons.device_unknown;
+    }
+  }
+
+  void _showCameraException(CameraException e) {
+    String errorText = 'Error:${e.code}\nError message : ${e.description}';
+    print(errorText);
+  }
+
+  void _onCapturePressed(context) async {
+    try {
+      final path = join((await getTemporaryDirectory()).path, '${DateTime.now()}.jpg');
+      await controller.takePicture(path);
+      imgPath = path;
+      await uploadFile();
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => IntermediateScreen(imgPath, id, isFront)),
+      );
+    } catch (e) {
+      _showCameraException(e);
+    }
+  }
+
+  void _onSwitchCamera() {
+    selectedCameraIndex =
+    selectedCameraIndex < cameras.length - 1 ? selectedCameraIndex + 1 : 0;
+    CameraDescription selectedCamera = cameras[selectedCameraIndex];
+    _initCameraController(selectedCamera);
   }
 }

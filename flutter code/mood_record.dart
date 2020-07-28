@@ -7,6 +7,10 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:beauty_agenda/emoji.dart';
 import 'mood_trace.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'drawer.dart';
+import 'bar.dart';
+import 'week_menu.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 enum mood { angry, sad, normal, happy, joy }
 
@@ -30,11 +34,23 @@ class MoodRecordPageState extends State<MoodRecordPage> {
   int normal1 = 0;
   int happy1 = 0;
   int joy1 = 0;
+  int id;
+  var nowTime = new DateTime.now();
+  String year;
+
+  _readId() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'id';
+    final value = prefs.getInt(key) ?? 0;
+    setState(() {
+      id = value;
+    });
+  }
 
   _saveAngry() async {
     final prefs = await SharedPreferences.getInstance();
     final key = "angry";
-    var value1 = prefs.getInt(key) ?? 0 ;
+    var value1 = prefs.getInt(key) ?? 0;
     value1++;
     angry1 = value1;
     prefs.setInt(key, value1);
@@ -51,7 +67,7 @@ class MoodRecordPageState extends State<MoodRecordPage> {
   _saveSad() async {
     final prefs = await SharedPreferences.getInstance();
     final key = "sad";
-    var value1 = prefs.getInt(key) ?? 0 ;
+    var value1 = prefs.getInt(key) ?? 0;
     value1++;
     sad1 = value1;
     prefs.setInt(key, value1);
@@ -68,7 +84,7 @@ class MoodRecordPageState extends State<MoodRecordPage> {
   _saveNormal() async {
     final prefs = await SharedPreferences.getInstance();
     final key = "normal";
-    var value1 = prefs.getInt(key) ?? 0 ;
+    var value1 = prefs.getInt(key) ?? 0;
     value1++;
     normal1 = value1;
     prefs.setInt(key, value1);
@@ -85,7 +101,7 @@ class MoodRecordPageState extends State<MoodRecordPage> {
   _saveHappy() async {
     final prefs = await SharedPreferences.getInstance();
     final key = "happy";
-    var value1 = prefs.getInt(key) ?? 0 ;
+    var value1 = prefs.getInt(key) ?? 0;
     value1++;
     happy1 = value1;
     prefs.setInt(key, value1);
@@ -102,7 +118,7 @@ class MoodRecordPageState extends State<MoodRecordPage> {
   _saveJoy() async {
     final prefs = await SharedPreferences.getInstance();
     final key = "joy";
-    var value1 = prefs.getInt(key) ?? 0 ;
+    var value1 = prefs.getInt(key) ?? 0;
     value1++;
     joy1 = value1;
     prefs.setInt(key, value1);
@@ -164,6 +180,8 @@ class MoodRecordPageState extends State<MoodRecordPage> {
 
   @override
   void initState() {
+    _readId();
+
     /// Add more events to _markedDateMap EventList
     _markedDateMap.add(
         new DateTime(2020, 2, 25),
@@ -203,6 +221,9 @@ class MoodRecordPageState extends State<MoodRecordPage> {
 
   @override
   Widget build(BuildContext context) {
+    Label label = new Label();
+    NavDrawerExample navDrawerExample = new NavDrawerExample();
+
     /// Example Calendar Carousel without header and custom prev & next button
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
       todayBorderColor: Colors.green,
@@ -265,215 +286,190 @@ class MoodRecordPageState extends State<MoodRecordPage> {
       },
     );
 
-    return new Scaffold(
-        appBar: PreferredSize(
-            child: AppBar(
-              backgroundColor: Color(0xFFFFD0D1),
-              leading: IconButton(
-                icon: Icon(Icons.person),
-                iconSize: 40,
-                onPressed: () {},
+    return Scaffold(
+      appBar: Toptitle().Topbar(context, "心情追蹤", id),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            //custom icon
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 16.0),
+              child: _calendarCarousel,
+            ), // This trailing comma makes auto-formatting nicer for build methods.
+            //custom icon without header
+            Container(
+              margin: EdgeInsets.only(
+                top: 30.0,
+                bottom: 16.0,
+                left: 16.0,
+                right: 16.0,
               ),
-              title: Center(
-                child: Text(
-                  '心情追蹤',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 35,
-                    fontFamily: 'GFSDidot',
-                  ),
-                ),
-              ),
-              actions: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.home),
-                  iconSize: 40,
-                  onPressed: () {},
-                ),
-              ],
-            ),
-            preferredSize: Size.fromHeight(60)),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              //custom icon
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 16.0),
-                child: _calendarCarousel,
-              ), // This trailing comma makes auto-formatting nicer for build methods.
-              //custom icon without header
-              Container(
-                margin: EdgeInsets.only(
-                  top: 30.0,
-                  bottom: 16.0,
-                  left: 16.0,
-                  right: 16.0,
-                ),
-                child: new Row(
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.chevron_left),
-                      iconSize: 40,
-                      color: const Color(0xFF818181),
-                      onPressed: () {
-                        setState(() {
-                          _targetDateTime = DateTime(
-                              _targetDateTime.year, _targetDateTime.month - 1);
-                          _currentMonth =
-                              DateFormat.yMMM().format(_targetDateTime);
-                        });
-                      },
-                    ),
-                    SizedBox(width: 80.0),
-                    Expanded(
-                        child: Text(
-                      _currentMonth,
-                      style: TextStyle(
-                        fontFamily: 'GFSDidot',
-                        color: const Color(0xFF818181),
-                        fontSize: 30.0,
-                      ),
-                    )),
-                    IconButton(
-                      icon: Icon(Icons.chevron_right),
-                      iconSize: 40,
-                      color: const Color(0xFF818181),
-                      onPressed: () {
-                        setState(() {
-                          _targetDateTime = DateTime(
-                              _targetDateTime.year, _targetDateTime.month + 1);
-                          _currentMonth =
-                              DateFormat.yMMM().format(_targetDateTime);
-                        });
-                      },
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 16.0),
-                child: _calendarCarouselNoHeader,
-              ),
-              Row(
+              child: new Row(
                 children: <Widget>[
-                  Container(
-                    height: 50,
-                    width: 20,
-                    color: Color(0xFFFFD0D1),
+                  IconButton(
+                    icon: Icon(Icons.chevron_left),
+                    iconSize: 40,
+                    color: const Color(0xFF818181),
+                    onPressed: () {
+                      setState(() {
+                        _targetDateTime = DateTime(
+                            _targetDateTime.year, _targetDateTime.month - 1);
+                        _currentMonth =
+                            DateFormat.yMMM().format(_targetDateTime);
+                      });
+                    },
                   ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text(
-                    '2020/07/08', //TODO 要用變數!!
+                  SizedBox(width: 80.0),
+                  Expanded(
+                      child: Text(
+                    _currentMonth,
                     style: TextStyle(
                       fontFamily: 'GFSDidot',
                       color: const Color(0xFF818181),
-                      fontSize: 30,
+                      fontSize: 30.0,
                     ),
-                  ),
+                  )),
+                  IconButton(
+                    icon: Icon(Icons.chevron_right),
+                    iconSize: 40,
+                    color: const Color(0xFF818181),
+                    onPressed: () {
+                      setState(() {
+                        _targetDateTime = DateTime(
+                            _targetDateTime.year, _targetDateTime.month + 1);
+                        _currentMonth =
+                            DateFormat.yMMM().format(_targetDateTime);
+                      });
+                    },
+                  )
                 ],
               ),
-              Emoji(
-                mood: '憤怒   (#｀皿´)',
-                onPress: () {
-                  setState(() {
-                    selectedMood = mood.angry;
-                  });
-                  print(selectedMood);
-                },
-                colour:
-                    selectedMood == mood.angry ? kActiveColor : kInactiveColor,
-              ), // TODO 表情記得改!!
-              Emoji(
-                mood: '悲傷.. (#｀皿´)',
-                onPress: () {
-                  print(selectedMood);
-                  setState(() {
-                    selectedMood = mood.sad;
-                  });
-                  print(selectedMood);
-                },
-                colour:
-                    selectedMood == mood.sad ? kActiveColor : kInactiveColor,
-              ),
-              Emoji(
-                mood: '平常心 (#｀皿´)',
-                onPress: () {
-                  setState(() {
-                    selectedMood = mood.normal;
-                  });
-                },
-                colour:
-                    selectedMood == mood.normal ? kActiveColor : kInactiveColor,
-              ),
-              Emoji(
-                mood: '小開心 (#｀皿´)',
-                onPress: () {
-                  setState(() {
-                    selectedMood = mood.happy;
-                  });
-                },
-                colour:
-                    selectedMood == mood.happy ? kActiveColor : kInactiveColor,
-              ),
-              Emoji(
-                mood: '超歡樂 (#｀皿´)',
-                onPress: () {
-                  setState(() {
-                    selectedMood = mood.joy;
-                  });
-                },
-                colour:
-                    selectedMood == mood.joy ? kActiveColor : kInactiveColor,
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(135, 15, 50, 15),
-                height: 55.0,
-                width: 150.0,
-                child: RaisedButton(
-                  color: const Color(0xFFFFD0D1),
-                  child: Text(
-                    "儲存",
-                    style: TextStyle(
-                        fontFamily: 'GFSDidot',
-                        fontSize: 25.0,
-                        color: Colors.white),
-                  ),
-                  onPressed: () async {
-                    if (selectedMood == mood.angry) {
-                      _saveAngry();
-                      angry++;
-                    } else if (selectedMood == mood.sad) {
-                      _saveSad();
-                      sad++;
-                    } else if (selectedMood == mood.normal) {
-                      _saveNormal();
-                      normal++;
-                    } else if (selectedMood == mood.happy) {
-                      _saveHappy();
-                      happy++;
-                    } else if (selectedMood == mood.joy) {
-                      _saveJoy();
-                      joy++;
-                    } else {
-                      return;
-                    }
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MoodTracePage(
-                           angry1, sad1, normal1, happy1, joy1),
-                      ),
-                    );
-                    print("Tapped a Container");
-                  },
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 16.0),
+              child: _calendarCarouselNoHeader,
+            ),
+            Row(
+              children: <Widget>[
+                Container(
+                  height: 50,
+                  width: 20,
+                  color: Color(0xFFFFD0D1),
                 ),
+                SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  '${nowTime.year} / ${nowTime.month} / ${nowTime.day}', //TODO 要用變數!!
+                  style: TextStyle(
+                    color: const Color(0xFF818181),
+                    fontSize: 23,
+                  ),
+                ),
+              ],
+            ),
+            Emoji(
+              mood: '憤怒    ヽ(#`Д´)ﾉ',
+              onPress: () {
+                setState(() {
+                  selectedMood = mood.angry;
+                });
+                print(selectedMood);
+              },
+              colour:
+                  selectedMood == mood.angry ? kActiveColor : kInactiveColor,
+            ), // TODO 表情記得改!!
+            Emoji(
+              mood: '悲傷..     ( ´;ω;` )',
+              onPress: () {
+                print(selectedMood);
+                setState(() {
+                  selectedMood = mood.sad;
+                });
+                print(selectedMood);
+              },
+              colour: selectedMood == mood.sad ? kActiveColor : kInactiveColor,
+            ),
+            Emoji(
+              mood: '平常心       (*’ｰ’*)',
+              onPress: () {
+                setState(() {
+                  selectedMood = mood.normal;
+                });
+              },
+              colour:
+                  selectedMood == mood.normal ? kActiveColor : kInactiveColor,
+            ),
+            Emoji(
+              mood: '小開心    (｡◕∀◕｡)',
+              onPress: () {
+                setState(() {
+                  selectedMood = mood.happy;
+                });
+              },
+              colour:
+                  selectedMood == mood.happy ? kActiveColor : kInactiveColor,
+            ),
+            Emoji(
+              mood: '超歡樂ヽ(✿ﾟ▽ﾟ)ノ',
+              onPress: () {
+                setState(() {
+                  selectedMood = mood.joy;
+                });
+              },
+              colour: selectedMood == mood.joy ? kActiveColor : kInactiveColor,
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(135, 30, 50, 15),
+              height: 55.0,
+              width: 150.0,
+              child: RaisedButton(
+                color: const Color(0xFFFFD0D1),
+                child: Text(
+                  "儲存",
+                  style: TextStyle(
+                      fontFamily: 'GFSDidot',
+                      fontSize: 25.0,
+                      color: Colors.white),
+                ),
+                onPressed: () async {
+                  if (selectedMood == mood.angry) {
+                    _saveAngry();
+                    angry++;
+                  } else if (selectedMood == mood.sad) {
+                    _saveSad();
+                    sad++;
+                  } else if (selectedMood == mood.normal) {
+                    _saveNormal();
+                    normal++;
+                  } else if (selectedMood == mood.happy) {
+                    _saveHappy();
+                    happy++;
+                  } else if (selectedMood == mood.joy) {
+                    _saveJoy();
+                    joy++;
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "請先點選今天的心情!", backgroundColor: Colors.grey,);
+                    return;
+                  }
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          MoodTracePage(angry1, sad1, normal1, happy1, joy1),
+                    ),
+                  );
+                  print("Tapped a Container");
+                },
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+      drawer: navDrawerExample.drawer(context),
+    );
   }
 }

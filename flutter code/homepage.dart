@@ -148,10 +148,11 @@ class HomePageState extends State {
                   child: putcard('每日養顏')),
               GestureDetector(
                   onTap: () async {
+                    _save();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Week(),
+                        builder: (context) => Week(id),
                       ),
                     );
                   },

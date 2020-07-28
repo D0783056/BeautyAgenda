@@ -1,239 +1,151 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io' as IO;
+import 'dart:math' as math;
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:beauty_agenda/bar.dart';
+import 'drawer.dart';
+import 'bar.dart';
 
-class WeekmenuPage extends StatefulWidget {
+// ignore: must_be_immutable
+class IntermediateScreen extends StatefulWidget {
+  String imagePath;
+  int id;
+  int isFront;
+  var test;
+  IntermediateScreen(String img, int id, int isFront, var test) {
+    this.imagePath = img;
+    this.id = id;
+    this.isFront = isFront;
+    this.test = test;
+  }
   @override
-  _WeekmenuPageState createState() => _WeekmenuPageState();
+  IntermediateScreenState createState() =>
+      IntermediateScreenState(imagePath, id, isFront, test);
 }
 
-class _WeekmenuPageState extends State<WeekmenuPage> {
-  Label label = new Label();
-  Degree complete = new Degree();
-  double dot = 0.0;
-  Image faceImage;
-  int grade = 10;
-  String how = "你今天真好看!\n但是你可能有一些小問題喔!";
-  String problem1 = "黑眼圈";
+class IntermediateScreenState extends State {
+  String imagePath;
+  int id;
+  int isFront;
+  var test;
 
-  @override
-  void initState() {
-    _readCount();
-    super.initState();
-  }
+  IntermediateScreenState(this.imagePath, this.id, this.isFront, this.test);
 
-  _readCount() async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = 'count';
-    final value = prefs.getDouble(key) ?? 0.0;
-    setState(() {
-      dot = value;
+  Future uploadFile() async {
+    var temp = new Map<String, dynamic>();
+    var request =
+    http.MultipartRequest('POST', Uri.parse("http://140.134.27.136:5000"));
+    request.files.add(await http.MultipartFile.fromPath('image', imagePath));
+    var res = await request.send();
+    res.stream.transform(utf8.decoder).listen((value) async {
+      temp = await jsonDecode(value);
     });
+    print(temp);
   }
 
-  //TODO 狀況變數尚未決定
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: Container(
-          color: Colors.white,
-          child: Column(
-            children: <Widget>[
-              label.label('建議攝取量'),
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Column(
-                  children: <Widget>[
-                    label.item('維生素A', 10000, Color(0xFFFFD0D1)),
-                    label.item('維生素B', 10000, Colors.white),
-                    label.item('維生素C', 10000, Color(0xFFFFD0D1)),
-                    label.item('維生素D', 10000, Colors.white),
-                    label.item('維生素E', 10000, Color(0xFFFFD0D1)),
-                  ],
-                ),
-              ),
-              label.label('實際攝取量'),
+  Future userMenu() async {
+    var url = 'https://beautyagenda.000webhostapp.com/fruit.php';
 
-              Container(
-                height: 60,
-                margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-                decoration: BoxDecoration(
-                    color: Color(0XFFF0EFEF),
-                    borderRadius: BorderRadius.circular(10.0)),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-                  child: Card(
-                      child: LinearProgressIndicator(
-                        backgroundColor: Colors.white,
-                        valueColor: AlwaysStoppedAnimation(Color(0XFFB2AFAF)),
-                        value: dot,
-                      ),
-                      elevation: 10.0),
-                ),
-              ),
+    var response = await http.post(url, body: json.encode(test));
+    if (response.statusCode == 200) {
+      print("ok1");
+    }
+  }
 
-              Container(
-                width: double.maxFinite,
-                child: Flex(
-                  direction: Axis.horizontal,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 5,
-                      child: Container(
-                        margin: EdgeInsets.only(left: 30),
-                        height: 30.0,
-                        child: Text(
-                          '0%', //營養素名稱
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: 'GFDSidot',
-                            color: Color(0XFF818181),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 6,
-                      child: Container(
-                        margin: EdgeInsets.only(left: 30),
-                        height: 30.0,
-                        child: Text(
-                          '50%', //營養素名稱
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: 'GFDSidot',
-                            color: Color(0XFF818181),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        height: 30.0,
-                        child: Text(
-                          '100%',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: 'GFDSidot',
-                            color: Color(0XFF818181),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Column(
-                  children: <Widget>[
-                    label.item('維生素A', 10000, Color(0xFFFFD0D1)),
-                    label.item('維生素B', 10000, Colors.white),
-                    label.item('維生素C', 10000, Color(0xFFFFD0D1)),
-                    label.item('維生素D', 10000, Colors.white),
-                    label.item('維生素E', 10000, Color(0xFFFFD0D1)),
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 70.0, bottom:35),
-                child: Text(
-                  "Almost there. Hold your horses!",
-                  style: TextStyle(
-                    fontFamily: 'GFSDidot',
-                    fontSize: 22.0,
-                    color: const Color(0xFF818181),
-                  ),
-                ),
+  void isFace() {
+    if (test['is_no_face'] == true) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text("明明就不是人臉! 給我重拍!"),
+            actions: <Widget>[
+              FlatButton(
+                child: new Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
             ],
-          ),
-        ));
-  }
-}
-
-class Label {
-  Container label(String labelname) {
-    // 小標
-    return Container(
-      child: Row(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(top: 20),
-            height: 50,
-            width: 20,
-            color: Color(0xFFFFD0D1),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 20),
-            child: Text(
-              '$labelname',
-              style: TextStyle(
-                fontSize: 23,
-                fontFamily: 'GFDSidot',
-                color: Color(0XFF818181),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+          );
+        },
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Bar(id, imagePath, isFront, test)),
+      );
+    }
   }
 
-  Container item(String nutrients, int intake, Color color) {
-    //攝取營養素項目
-    return Container(
-      color: color, //整條項目的背景顏色
-      width: double.maxFinite,
-      child: Flex(
-        direction: Axis.horizontal,
-        children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: Container(
-              margin: EdgeInsets.only(left: 30),
-              height: 30.0,
-              child: Text(
-                '$nutrients', //營養素名稱
-                style: TextStyle(
-                  fontSize: 18,
-                  fontFamily: 'GFDSidot',
-                  color: Color(0XFF818181),
-                ),
-              ),
+  @override
+  Widget build(BuildContext context) {
+    NavDrawerExample navDrawerExample = new NavDrawerExample();
+    Toptitle toptitle = new Toptitle();
+    return Scaffold(
+      appBar: toptitle.Topbar(context, '膚況報告', id),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 50,
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              height: 30.0,
-              child: Text(
-                '$intake毫克', //攝取量
-                style: TextStyle(
-                  fontSize: 18,
-                  fontFamily: 'GFDSidot',
-                  color: Color(0XFF818181),
-                ),
-              ),
+            displayImg(imagePath, isFront),
+            SizedBox(
+              height: 30,
             ),
-          ),
-        ],
+            Row(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () async {
+                    isFace();
+                  },
+                  child: Container(
+                      margin: EdgeInsets.fromLTRB(54, 15, 0, 25),
+                      child: Text('查看結果',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'GFDSidot',
+                              color: Color(0XFF818181)))),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
+                      margin: EdgeInsets.fromLTRB(70, 15, 0, 25),
+                      child: Text('沒拍好? 在拍一張!',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'GFDSidot',
+                              color: Color(0XFF818181)))),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
+      drawer: navDrawerExample.drawer(context),
     );
   }
 }
 
-class Degree {
-  double degree ;
-
-  double getDegree() {
-    return this.degree;
+Widget displayImg(String imagepath, int isFront) {
+  double mirror;
+  if (isFront == 1) {
+    mirror = math.pi;
+  } else {
+    mirror = 0;
   }
+
+  return Transform(
+    alignment: Alignment.center,
+    child: Container(
+        margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        height: 520,
+        child: Image.file(IO.File(imagepath), width: 324, fit: BoxFit.fill)),
+    transform: Matrix4.rotationY(mirror),
+  );
 }

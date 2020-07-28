@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'dart:io' as IO;
 import 'package:http/http.dart' as http;
 import 'dart:math' as math;
-import 'package:http_parser/http_parser.dart';
 
 // ignore: must_be_immutable
 class CommentPage extends StatefulWidget {
@@ -68,24 +67,9 @@ class _CommentPageState extends State<CommentPage> {
     );
   }
 
-  Future userMenu() async {
-    var url = 'https://beautyagenda.000webhostapp.com/fruit.php';
-    // ignore: non_constant_identifier_names
-    String Sname = "黑眼圈";
-    var data = {
-      'id': id,
-      'Sname': Sname,
-    };
-    // Starting Web API Call.
-    var response = await http.post(url, body: json.encode(data));
-    if (response.statusCode == 200) {
-      print("ok1");
-    }
-  }
-
   Future userDisease() async {
     var url = 'https://beautyagenda.000webhostapp.com/InsertDisease.php';
-
+    print(test);
     var response = await http.post(url, body: json.encode(test));
     if (response.statusCode == 200) {
       print("ok2");
@@ -94,11 +78,9 @@ class _CommentPageState extends State<CommentPage> {
 
   Future<List<Symptoms>> getSymptoms() async {
     var url = "https://beautyagenda.000webhostapp.com/symptom.php";
-
     var response = await http.post(url, body: json.encode(test));
     var message = json.decode(response.body);
     List<Symptoms> symp = [];
-
     for (var u in message) {
       Symptoms symps = Symptoms(u);
       symp.add(symps);
@@ -109,16 +91,25 @@ class _CommentPageState extends State<CommentPage> {
   Future saveHistory() async {
     var url = 'https://beautyagenda.000webhostapp.com/saveHistory.php';
 
-    test.addAll({"id": id});
     test.addAll({"grade": grade});
     test.addAll({"time": date.toString()});
     test.addAll({"base64": base64Image});
+    print(test);
     var response = await http.post(url, body: json.encode(test));
     if (response.statusCode == 200) {
-      print("ok2");
+      print("ok3");
     }
   }
 
+  Future userMenu() async {
+    var url = 'https://beautyagenda.000webhostapp.com/fruit.php';
+    test.addAll({"id": id});
+    print(test);
+    var response = await http.post(url, body: json.encode(test));
+    if (response.statusCode == 200) {
+      print("ok1");
+    }
+  }
   @override
   Widget build(BuildContext context) {
     base64Image = base64Encode(IO.File(imagepath).readAsBytesSync());
@@ -181,7 +172,7 @@ class _CommentPageState extends State<CommentPage> {
                           margin: EdgeInsets.fromLTRB(100, 20, 100, 40),
                           child: Container(
                             width: 200,
-                            height: 270,
+                            height: 280,
                             child: displayImg(imagepath, isFront),
                           ),
                         ),
@@ -255,10 +246,8 @@ class _CommentPageState extends State<CommentPage> {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () async {
-                                //TODO 記得還原
-                                //String fileName = imagepath.split('/').last;
-                                //await userRegistration(fileName);
-                                //await userDisease();
+                                await userMenu();
+                                await userDisease();
                                 await saveHistory();
                               },
                               child: Container(
@@ -292,7 +281,7 @@ Widget displayImg(String imagepath, int isFront) {
 
   return Transform(
     alignment: Alignment.center,
-    child: Image.file(IO.File(imagepath), fit: BoxFit.fill),
+    child: Image.file(IO.File(imagepath), width: 320, fit: BoxFit.fill),
     transform: Matrix4.rotationY(mirror),
   );
 }
