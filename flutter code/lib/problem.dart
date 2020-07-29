@@ -1,81 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:report/day.dart';
-import 'package:report/week.dart';
-import 'package:report/week_menu.dart';
+import 'cause.dart';
+
+// ignore: must_be_immutable
 class ProblemPage extends StatefulWidget {
+  var test;
+  int id;
+  ProblemPage(this.test,this.id);
 
   @override
-  _ProblemPageState createState() => _ProblemPageState();
+  _ProblemPageState createState() => _ProblemPageState(test,id);
 }
 
 class _ProblemPageState extends State<ProblemPage> {
-  Label label = new Label();
-  String problem_title = '黑眼圈';
-  String why = '過度曝曬';
-  String information = '        建議你做好防曬，外出可以撐陽傘，補充一些抗曬的營養素';
-  String username = '李亞璇';
+  var test;
+  int id;
+  _ProblemPageState(this.test,this.id);
 
   @override
   Widget build(BuildContext context) {
+    Cause object = Cause(test);
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          label.label('$problem_title'),
-          Container(
-            margin: EdgeInsets.fromLTRB(45, 20, 30, 0),
-            child: Text(
-              '你有$problem_title喔!\n經過影像的判斷和你的作息做比對後，發現你發現可能的成因有下列幾點:',
-              style: TextStyle(
-                fontSize: 18,
-                fontFamily: 'GFDSidot',
-                color: Color(0XFF818181),
-              ),
-            ),
-          ),
-          Row(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.fromLTRB(30, 10, 0, 0),
-                child: Icon(
-                  Icons.fiber_manual_record,
-                  size: 15,
-                  color: Color(0XFF818181),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 10, 30, 0),
-                child: Text(
-                  '$why',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontFamily: 'GFDSidot',
-                    color: Color(0XFF818181),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Container(
-            margin: EdgeInsets.fromLTRB(45, 10, 30, 50),
-            child: Text(
-              '$information',
-              style: TextStyle(
-                fontSize: 18,
-                fontFamily: 'GFDSidot',
-                color: Color(0XFF818181),
-              ),
-            ),
-          ),
+          object.causes1(),
+          object.causes2(),
+          object.causes3(),
+          object.causes4(),
+          object.causes5(),
+          object.causes6(),
+          object.causes7(),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Day()),
-              );
             },
             child: Container(
               width: 500,
-              padding: EdgeInsets.only(right: 22.0, top: 10.0, bottom: 100.0),
+              padding: EdgeInsets.only(right: 22.0, top: 50.0, bottom: 100.0),
               child: Text(
                 "點擊看養顏建議",
                 textAlign: TextAlign.right,

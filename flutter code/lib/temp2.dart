@@ -3,16 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'intermediate.dart';
-import 'drawer.dart';
-import 'bar.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:beauty_agenda/bar.dart';
+import 'dart:math' as math;
 
 // ignore: must_be_immutable
 class CameraScreen extends StatefulWidget {
   int id;
-  CameraScreen(int id) {
+  CameraScreen(int id){
     this.id = id;
   }
   @override
@@ -25,25 +22,15 @@ class _CameraScreenState extends State {
   int selectedCameraIndex;
   String imgPath;
   int id;
-  int isFront;
-  var test = new Map<String, dynamic>();
 
   _CameraScreenState(this.id);
-
-  Future uploadFile() async {
-    var request = http.MultipartRequest('POST', Uri.parse("http://140.134.27.136:5000"));
-    request.files.add(await http.MultipartFile.fromPath('image', imgPath));
-    var res = await request.send();
-    res.stream.transform(utf8.decoder).listen((value) async {
-      test = await jsonDecode(value);
-    });
-  }
 
   @override
   void deactivate() {
     super.deactivate();
     controller.dispose();
   }
+
 
   @override
   void initState() {
@@ -54,7 +41,6 @@ class _CameraScreenState extends State {
       if (cameras.length > 0) {
         setState(() {
           selectedCameraIndex = 1;
-          isFront = 1;
         });
         _initCameraController(cameras[selectedCameraIndex]).then((void v) {});
       } else {
@@ -69,8 +55,7 @@ class _CameraScreenState extends State {
     if (controller != null) {
       await controller.dispose();
     }
-    controller = CameraController(cameraDescription, ResolutionPreset.high,
-        enableAudio: false);
+    controller = CameraController(cameraDescription, ResolutionPreset.high,enableAudio: false);
 
     controller.addListener(() {
       if (mounted) {
@@ -94,12 +79,37 @@ class _CameraScreenState extends State {
 
   @override
   Widget build(BuildContext context) {
-    NavDrawerExample navDrawerExample = new NavDrawerExample(id);
-    Toptitle toptitle = new Toptitle();
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar:toptitle.Topbar(context,'膚況檢測',id),
+        appBar: PreferredSize(
+            child: AppBar(
+              backgroundColor: Color(0xFFFFD0D1),
+              leading: IconButton(
+                icon: Icon(Icons.person),
+                iconSize: 40,
+                onPressed: () {
+                },
+              ),
+              title: Center(
+                child: Text(
+                  '膚況檢測',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 35,
+                    fontFamily: 'GFSDidot',
+                  ),
+                ),
+              ),
+              actions: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.home),
+                  iconSize: 40,
+                  onPressed: () {},
+                ),
+              ],
+            ),
+            preferredSize: Size.fromHeight(60)),
         body: Column(
           children: <Widget>[
             SizedBox(
@@ -133,8 +143,8 @@ class _CameraScreenState extends State {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      width: 330,
-                      height: 520,
+                      width: 364,
+                      height: 516,
                       child: _cameraPreviewWidget(),
                     ),
                     Align(
@@ -159,7 +169,6 @@ class _CameraScreenState extends State {
             ),
           ],
         ),
-        drawer: navDrawerExample.drawer(context),
       ),
     );
   }
@@ -176,10 +185,11 @@ class _CameraScreenState extends State {
         ),
       );
     }
-
-    return AspectRatio(
-      aspectRatio: controller.value.aspectRatio,
+    final double mirror = selectedCameraIndex == 1 ? math.pi : 0;
+    return Transform(
+      alignment: Alignment.center,
       child: CameraPreview(controller),
+      transform: Matrix4.rotationY(mirror),
     );
   }
 
@@ -239,10 +249,8 @@ class _CameraScreenState extends State {
   IconData _getCameraLensIcon(CameraLensDirection direction) {
     switch (direction) {
       case CameraLensDirection.back:
-        isFront = 0;
         return CupertinoIcons.switch_camera;
       case CameraLensDirection.front:
-        isFront = 1;
         return CupertinoIcons.switch_camera_solid;
       case CameraLensDirection.external:
         return Icons.camera;
@@ -258,14 +266,13 @@ class _CameraScreenState extends State {
 
   void _onCapturePressed(context) async {
     try {
-      final path = join((await getTemporaryDirectory()).path, '${DateTime.now()}.jpg');
+      final path = join((await getTemporaryDirectory()).path, '${DateTime.now()}.png');
       await controller.takePicture(path);
       imgPath = path;
-      //await uploadFile();
-
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => IntermediateScreen(imgPath, id, isFront)),
+        MaterialPageRoute(
+            builder: (context) => Bar(id,imgPath,1,1)),
       );
     } catch (e) {
       _showCameraException(e);
@@ -274,8 +281,10 @@ class _CameraScreenState extends State {
 
   void _onSwitchCamera() {
     selectedCameraIndex =
-        selectedCameraIndex < cameras.length - 1 ? selectedCameraIndex + 1 : 0;
+    selectedCameraIndex < cameras.length - 1 ? selectedCameraIndex + 1 : 0;
     CameraDescription selectedCamera = cameras[selectedCameraIndex];
     _initCameraController(selectedCamera);
   }
+
 }
+

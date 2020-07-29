@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:report/week.dart';
-import 'package:report/week_menu.dart';
+import 'week_menu.dart';
+
+
+// ignore: camel_case_types
 class History_problem extends StatefulWidget {
   @override
   _History_problemState createState() => _History_problemState();
 }
 
+// ignore: camel_case_types
 class _History_problemState extends State<History_problem> {
   Label label = new Label();
+  // ignore: non_constant_identifier_names
   String problem_title = '黑眼圈';
   String why = '過度曝曬';
   String information = '        建議你做好防曬，外出可以撐陽傘，補充一些抗曬的營養素';

@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:report/bar.dart';
-import 'package:report/history_comment.dart';
-import 'package:report/history_problem.dart';
+import 'bar.dart';
+import 'history_comment.dart';
+import 'history_problem.dart';
 
 
 class History_tabs extends StatefulWidget {
+  History_tabs(this.id);
+  int id;
   @override
-  History_tabsState createState() => History_tabsState();
+  History_tabsState createState() => History_tabsState(id);
 }
 class History_tabsState extends State<History_tabs> {
+  Toptitle toptitle = new Toptitle();
+  History_tabsState(this.id);
+  int id;
   @override
-
   Widget build(BuildContext context) {
     final _kTabs = <Tab>[
       Tab(text: '綜合'),
@@ -35,7 +39,7 @@ class History_tabsState extends State<History_tabs> {
           ),
           body: TabBarView(
             children: <Widget>[
-              HistoryComment(),History_problem(),
+              HistoryComment(id),History_problem(),
             ],
           )
       ),

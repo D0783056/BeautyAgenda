@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:report/history_day.dart';
-import 'package:report/skin.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
+import 'skin.dart';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'history_day.dart';
 
+// ignore: must_be_immutable
 class NavDrawerExample extends StatelessWidget {
-  String username;
   int id;
+  String username;
+  NavDrawerExample(this.id);
 
   Future getName() async {
-    var gradeurl = 'http://140.134.27.136:5001/getName.php';
+    var gradeurl = 'https://beautyagenda.000webhostapp.com/getName.php';
+
     var User_id = {
-      'users_id': id,
+      'id': id,
     };
-    var res = await http.post(gradeurl, body: json.encode(User_id));
-    var getNmae = jsonDecode(res.body);
-    for (var u in getNmae) {
-      username = u['name'];
-    }
+    http.Response res = await http.post(gradeurl, body: json.encode(User_id));
+    String jsonDataString = res.body.toString();
+    var getName = jsonDecode(jsonDataString);
+    username = getName.toString().substring(7,getName.toString().length-2);
     return username;
   }
 
   @override
   Widget build(context) {
+    print(id);
     return Builder(
       builder: (BuildContext context) {
         return IconButton(
@@ -129,7 +131,7 @@ class NavDrawerExample extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => History_day()),
+                      MaterialPageRoute(builder: (context) => History_day(id)),
                     );
                   },
                   child: list(Icons.event_note, '檢測歷史'),
@@ -142,7 +144,7 @@ class NavDrawerExample extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Skin()),
+                      MaterialPageRoute(builder: (context) => Skin(id)),
                     );
                   },
                   child: list(Icons.insert_chart, '膚況變化'),
@@ -152,7 +154,7 @@ class NavDrawerExample extends StatelessWidget {
                   color: Colors.white,
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 330),
+                  margin: EdgeInsets.only(top: 200),
                   child: Column(
                     children: <Widget>[
                       Container(

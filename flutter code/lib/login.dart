@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:report/register.dart';
+import 'package:beauty_agenda/register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'forgetpasswd.dart';
 import 'homepage.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -16,8 +16,6 @@ class LoginUserState extends State {
   String password;
   bool visible = false;
   int ii;
-  String username;
-  int id;
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -27,22 +25,24 @@ class LoginUserState extends State {
 
   Future getUserId() async {
     String email = emailController.text;
+
     var url = 'https://beautyagenda.000webhostapp.com/getTest.php';
     var data = {'email': email};
 
-    var response = await http.post(url, body: json.encode(data));
+    var response =  await http.post(url, body: json.encode(data));
     var message = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
       ii = int.parse(message['id']);
-      print(ii);
+      print('login $ii');
     }
   }
 
-  Future userLogin() async {
+  Future userLogin() async{
+
     // Showing CircularProgressIndicator.
     setState(() {
-      visible = true;
+      visible = true ;
     });
 
     // Getting value from Controller
@@ -50,10 +50,10 @@ class LoginUserState extends State {
     String password = passwordController.text;
 
     // SERVER LOGIN API URL
-    var url = 'http://beautyagenda.000webhostapp.com/login.php';
+    var url = 'https://beautyagenda.000webhostapp.com/login.php';
 
     // Store all data with Param Name.
-    var data = {'email': email, 'password': password};
+    var data = {'email': email, 'password' : password};
 
     // Starting Web API Call.
     var response = await http.post(url, body: json.encode(data));
@@ -62,8 +62,8 @@ class LoginUserState extends State {
     var message = jsonDecode(response.body);
 
     // If the Response Message is Matched.
-    if (message == 'Login Success!') {
-      getUserId();
+    if(message == 'Login Success!') {
+      await getUserId();
       setState(() {
         visible = false;
       });
@@ -78,7 +78,7 @@ class LoginUserState extends State {
                 onPressed: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                      MaterialPageRoute(builder: (context) => HomePage(ii))
                   );
                 },
               ),
@@ -86,7 +86,7 @@ class LoginUserState extends State {
           );
         },
       );
-    } else {
+    } else{
       setState(() {
         visible = false;
       });
@@ -168,8 +168,7 @@ class LoginUserState extends State {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 20),
+                        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                         child: TextFormField(
                           keyboardType: TextInputType.emailAddress,
                           controller: emailController,
@@ -189,12 +188,10 @@ class LoginUserState extends State {
                             ),
                           ),
                           validator: (String value) {
-                            bool emailValid = RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                .hasMatch(value);
+                            bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
                             if (value.isEmpty) {
                               return 'Email Address is required';
-                            } else if (emailValid == false) {
+                            } else if(emailValid == false) {
                               return 'Please Enter Valid Email Address!';
                             } else {
                               return null;
@@ -206,18 +203,15 @@ class LoginUserState extends State {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.symmetric(
-                            vertical: 30.0, horizontal: 20),
+                        margin: EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
                         child: TextFormField(
                           controller: passwordController,
                           obscureText: true,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(),
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0))),
-                            contentPadding: EdgeInsets.fromLTRB(
-                                25.0, 25.0, 25.0, 25.0),
+                                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                            contentPadding: EdgeInsets.fromLTRB(25.0, 25.0, 25.0, 25.0),
                             prefixIcon: Icon(Icons.lock),
                             labelText: "密碼",
                             labelStyle: TextStyle(
@@ -239,32 +233,51 @@ class LoginUserState extends State {
                           },
                         ),
                       ),
-                      Container(
-                        width: double.infinity,
-                            margin: EdgeInsets.only(right: 20),
-                            child:GestureDetector(
-                              onTap: () {
-                                print("Tapped a Container");
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => RegisterPage()));
-                              },
-                              child: Container(
-                                  width: 200,
-                                  padding: EdgeInsets.only(
-                                      right: 18.0, bottom: 20.0),
-                                  child: Text(
-                                    "尚未註冊?",
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                      fontSize: 21.0,
-                                      fontFamily: 'GFSDidot',
-                                      color: const Color(0xFF818181),
-                                    ),
-                                  )),
-                            ),
-
+                      Row(
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () {
+                              print("Tapped a Container");
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ForgetPasswd()));
+                            },
+                            child: Container(
+                                width: 200,
+                                padding: EdgeInsets.only(left:25,right: 22.0, bottom: 20.0),
+                                child: Text(
+                                  "忘記密碼?",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontFamily: 'GFSDidot',
+                                    color: const Color(0xFF818181),
+                                  ),
+                                )),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              print("Tapped a Container");
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RegisterPage()));
+                            },
+                            child: Container(
+                                width: 200,
+                                padding: EdgeInsets.only(right: 18.0, bottom: 20.0),
+                                child: Text(
+                                  "尚未註冊?",
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontFamily: 'GFSDidot',
+                                    color: const Color(0xFF818181),
+                                  ),
+                                )),
+                          ),
+                        ],
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 15),
@@ -274,9 +287,7 @@ class LoginUserState extends State {
                           color: const Color(0xFFFFD0D1),
                           child: Text(
                             "下一步",
-                            style: TextStyle(fontFamily: 'GFSDidot',
-                                fontSize: 30.0,
-                                color: Colors.white),
+                            style: TextStyle(fontFamily: 'GFSDidot',fontSize: 30.0, color: Colors.white),
                           ),
                           onPressed: () {
                             print("Tapped a Container");
@@ -298,7 +309,7 @@ class LoginUserState extends State {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(top: 60.0, left: 105),
+                padding: EdgeInsets.only(top: 70.0, left: 105),
                 child: Text(
                   "Beauty & Health ,",
                   style: TextStyle(

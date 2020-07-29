@@ -21,29 +21,25 @@ class _Cylinder extends StatelessWidget {
 }
 
 class CylinderChart extends StatefulWidget {
+  int id;
+  CylinderChart(this.id);
   @override
-  _CylinderChartState createState() => _CylinderChartState();
+  _CylinderChartState createState() => _CylinderChartState(id);
 }
 
 class _CylinderChartState extends State<CylinderChart> {
-  var id = 19;
+  int id;
+  _CylinderChartState(this.id);
 
 
   List<double> _heightList = [];
   List<String> labelList = ['1','2','3','4','5','6','7'];
 
-  _readId() async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = 'id';
-    final value = prefs.getInt(key) ?? 0;
-    setState(() {
-      id = value;
-    });
-  }
+
   Future getData() async{
     var gradeurl = 'http://140.134.27.136:5001/grade.php';
     var User_id = {
-      'users_id': id,
+      'User_id': id,
     };
 
     var res = await http.post(gradeurl, body: json.encode(User_id));
@@ -54,14 +50,13 @@ class _CylinderChartState extends State<CylinderChart> {
     while(_heightList.length <= 7){
       _heightList.add(0);
     }
-      //前7次的分數
-      return _heightList;
+    //前7次的分數
+    return _heightList;
 
   }
 
   @override
   void initState(){
-    _readId();
     super.initState();
     this.getData();
   }
@@ -95,14 +90,14 @@ class _CylinderChartState extends State<CylinderChart> {
                               child: Container(
                                 margin: EdgeInsets.fromLTRB(40, 0, 20, 30),
                                 child :Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children:List.generate(7, (index) {
-                                      return _Cylinder(
-                                        height: _heightList[index]*2.25,
-                                      );
-                                      }
-                                    ),
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children:List.generate(7, (index) {
+                                    return _Cylinder(
+                                      height: _heightList[index]*2.25,
+                                    );
+                                  }
+                                  ),
                                 ),
                               )
                           ),

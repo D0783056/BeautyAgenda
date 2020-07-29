@@ -261,7 +261,7 @@ class _CameraScreenState extends State {
       final path = join((await getTemporaryDirectory()).path, '${DateTime.now()}.jpg');
       await controller.takePicture(path);
       imgPath = path;
-      //await uploadFile();
+      await uploadFile();
 
       Navigator.push(
         context,
@@ -274,7 +274,7 @@ class _CameraScreenState extends State {
 
   void _onSwitchCamera() {
     selectedCameraIndex =
-        selectedCameraIndex < cameras.length - 1 ? selectedCameraIndex + 1 : 0;
+    selectedCameraIndex < cameras.length - 1 ? selectedCameraIndex + 1 : 0;
     CameraDescription selectedCamera = cameras[selectedCameraIndex];
     _initCameraController(selectedCamera);
   }

@@ -1,27 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:report/history_bar.dart';
+import 'history_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Testdate extends StatefulWidget {
-  final String year;
-  final String month;
-  final String day;
-  final String nowtime;
-
-  Testdate({this.year,this.month,this.day,this.nowtime});
+  String year;
+  String month;
+  String day;
+  String nowtime;
+  int id;
+  Testdate({this.year,this.month,this.day,this.nowtime,this.id});
 
   @override
-  _TestdateState createState() => _TestdateState(year,month,day,nowtime);
+  _TestdateState createState() => _TestdateState(year,month,day,nowtime,id);
 }
 
 class _TestdateState extends State<Testdate> {
 
-  final String year;
-  final String month;
-  final String day;
-  final String nowtime;
-  _TestdateState(this.year,this.month,this.day,this.nowtime);
+  String year;
+  String month;
+  String day;
+  String nowtime;
+  int id;
+  _TestdateState(this.year,this.month,this.day,this.nowtime,this.id);
 
   _save() async {
     print(nowtime);
@@ -38,6 +39,7 @@ class _TestdateState extends State<Testdate> {
 
   @override
   Widget build(BuildContext context){
+    print("date_List $id");
     return Container(
       margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
       child: Center(
@@ -46,7 +48,7 @@ class _TestdateState extends State<Testdate> {
             _save();
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => History_bar()),
+              MaterialPageRoute(builder: (context) => History_bar(id)),
             );
           },
           child: Text(

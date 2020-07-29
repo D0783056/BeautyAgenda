@@ -1,25 +1,19 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:report/login.dart';
-import 'spalshScreen.dart';
+import "package:flutter/material.dart";
+import 'SplashScreen.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(Myapp());
 
-/// This Widget is the main application widget.
-class MyApp extends StatelessWidget {
-
-  SplashScreen splashScreen = new SplashScreen();
-
+class Myapp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '123',
-      theme: new ThemeData(
-        primarySwatch: Colors.red,
+      theme: ThemeData(
+        primarySwatch: Colors.blueGrey,
       ),
-        home: splashScreen,
-      );
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Center(child: SplashScreen()),
+      ),
+    );
   }
 }
-
-

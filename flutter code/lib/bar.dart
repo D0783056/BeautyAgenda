@@ -1,43 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:report/choose.dart';
-import 'package:report/drawer.dart';
-import 'package:report/homepage.dart';
+import 'choose.dart';
+import 'drawer.dart';
+import 'homepage.dart';
 
-/// This is the stateless widget that the main application instantiates.
+// ignore: must_be_immutable
 class Bar extends StatelessWidget {
-
-  String username = '李亞璇';
-  String imagePath;
   int id;
+  String imagePath;
+  int isFront;
+  var test;
 
-  Bar(String img) {
-    this.imagePath = img;
+  Bar(int id, String imagePath, int isFront, var test){
+    this.id = id;
+    this.imagePath = imagePath;
+    this.isFront = isFront;
+    this.test = test;
   }
-
-
-  Toptitle toptitle = new Toptitle();
-  NavDrawerExample navDrawerExample = new NavDrawerExample();
 
   @override
   Widget build(BuildContext context) {
-    Tabs tabs = new Tabs(imagePath);
-    return SafeArea(
-      child: Scaffold(
-        appBar: toptitle.Topbar(context,'膚況檢測' , username),
-        body: tabs,
-        drawer: navDrawerExample.drawer(context),
-      ),
+    Tabs tabs = new Tabs(imagePath, id, isFront,test);
+    Toptitle toptitle = new Toptitle();
+    NavDrawerExample navDrawerExample = new NavDrawerExample(id);
+    return Scaffold(
+      appBar:toptitle.Topbar(context,'膚況報告',id),
+      body: tabs,
+      drawer: navDrawerExample.drawer(context),
     );
   }
 }
 
 class Toptitle {
-
-  PreferredSize Topbar(BuildContext context, String titlename , String username) {
+  PreferredSize Topbar(BuildContext context, String titlename,int id) {
     return PreferredSize(
         child: AppBar(
           backgroundColor: Color(0xFFFFD0D1),
-          leading: NavDrawerExample(),
+          leading: NavDrawerExample(id),
           title: Center(
             child: Text(
               '$titlename',
@@ -55,7 +53,7 @@ class Toptitle {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  MaterialPageRoute(builder: (context) => HomePage(id)),
                 );
               },
             ),

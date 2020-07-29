@@ -1,30 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:report/drawer.dart';
-import 'package:report/week_menu.dart';
-import 'package:report/bar.dart';
+import 'choose.dart';
+import 'week_menu.dart';
+import 'bar.dart';
+import 'drawer.dart';
 
 class Week extends StatelessWidget {
-
+  int id;
+  Week(this.id);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: MyStatelessWidget(),
-    );
+    return  MyStatelessWidget(id);
   }
 }
 
 /// This is the stateless widget that the main application instantiates.
+// ignore: must_be_immutable
 class MyStatelessWidget extends StatelessWidget {
-  String username = '李亞璇';
-  NavDrawerExample navDrawerExample = new NavDrawerExample();
+  int id;
+  MyStatelessWidget(this.id);
+  Tabs tabs = new Tabs("dd",1,1,1);
+  Toptitle weektitle = Toptitle();
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: Toptitle().Topbar(context,'每週養顏',username),
-        body: WeekmenuPage(),
-        drawer: navDrawerExample.drawer(context),
-      ),
+    NavDrawerExample navDrawerExample = new NavDrawerExample(id);
+    return Scaffold(
+      appBar: weektitle.Topbar(context,'每週養顏',id),
+      body: WeekmenuPage(),
+      drawer: navDrawerExample.drawer(context),
     );
   }
 }

@@ -1,34 +1,38 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:report/week_menu.dart';
+import 'week_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+// ignore: must_be_immutable
 class HistoryComment extends StatefulWidget {
+  int id;
+  HistoryComment(this.id);
   @override
-  _HistoryCommentState createState() => _HistoryCommentState();
+  _HistoryCommentState createState() => _HistoryCommentState(id);
 }
 
 class _HistoryCommentState extends State<HistoryComment> {
+  int id;
+  _HistoryCommentState(this.id);
   Label label = new Label();
   String img;
   Uint8List img2;
   int grade;
   String how = "你今天真好看!\n但是你可能有一些小問題喔!";
-  int id;
   String nowtime;
   List<String> diseaselist = [];
 
-  _readId() async {
+  /*_readId() async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'id';
     final value = prefs.getInt(key) ?? 0;
     setState(() {
       id = value;
     });
-  }
+  }*/
+
   _readnowtime() async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'nowtime';
@@ -40,8 +44,9 @@ class _HistoryCommentState extends State<HistoryComment> {
 
   Future _getJudgeresult() async {
     var gradeurl = 'http://140.134.27.136:5001/get_Judge_result.php';
+    print("sadsdsa $id");
     var User = {
-      'Users_id': id,
+      'User_id': id,
       'nowtime' : nowtime,
     };
     diseaselist = [];
@@ -81,11 +86,11 @@ class _HistoryCommentState extends State<HistoryComment> {
   //TODO 狀況變數尚未決定
   @override
   void initState() {
-    _readId();
     _readnowtime();
     super.initState();
   }
   Widget build(BuildContext context) {
+    print("history_comment $id");
     return SingleChildScrollView(
       physics: ScrollPhysics(),
       child: Column(
@@ -122,15 +127,15 @@ class _HistoryCommentState extends State<HistoryComment> {
                             '${nowtime.substring(0,4)} / ${nowtime.substring(5,7)} / ${nowtime.substring(8,10)}'),
                         Card(
                           margin: EdgeInsets.fromLTRB(100, 20, 100, 40),
-
                           child: Container(
-                            width: 200,
-                            height: 250,
-                            child: Image.memory(
-                              img2,
-                              fit: BoxFit.fill,
-                            )//TODO 圖片路徑
+                              width: 200,
+                              height: 250,
+                              child: Image.memory(
+                                img2,
+                                fit: BoxFit.fill,
+                              )//TODO 圖片路徑
                           ),
+
                         ),
 
                         Card(

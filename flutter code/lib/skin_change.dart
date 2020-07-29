@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:report/columnnar.dart';
+import 'columnnar.dart';
 
 
 class Skin_change extends StatefulWidget {
   @override
-
-  _Skin_changeState createState() => _Skin_changeState();
+  int id;
+  Skin_change(this.id);
+  _Skin_changeState createState() => _Skin_changeState(id);
 }
 
 class _Skin_changeState extends State<Skin_change> {
-
+  int id;
+  _Skin_changeState(this.id);
   //TODO 狀況變數尚未決定
   @override
   Widget build(BuildContext context) {
@@ -76,7 +77,7 @@ class _Skin_changeState extends State<Skin_change> {
 
               Container(
                 margin: EdgeInsets.fromLTRB(0, 80, 0, 50),//TODO 調整
-                child: CylinderChart(),
+                child: CylinderChart(id),
               ),
 
               Container(

@@ -3,5 +3,6 @@ class Date {
   String month;
   String day;
   String nowtime;
-  Date({this.year,this.month,this.day,this.nowtime});
+  int id;
+  Date({this.year,this.month,this.day,this.nowtime,this.id});
 }

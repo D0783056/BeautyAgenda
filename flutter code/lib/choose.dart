@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:report/comment.dart';
-import 'package:report/problem.dart';
+import 'comment.dart';
+import 'problem.dart';
 
+// ignore: must_be_immutable
 class Tabs extends StatelessWidget {
   String imagePath;
   int id;
+  int isFront;
+  var test;
 
-  Tabs(String img) {
+  Tabs(String img, int id, int isFront, var test) {
     this.imagePath = img;
+    this.id = id;
+    this.isFront = isFront;
+    this.test = test;
   }
-  @override
 
+  @override
   Widget build(BuildContext context) {
-    CommentPage comment = new CommentPage(imagePath,id);
+    CommentPage comment = new CommentPage(imagePath, id, isFront, test);
     final _kTabs = <Tab>[
       Tab(text: '綜合'),
       Tab( text: '問題'),
@@ -20,7 +26,6 @@ class Tabs extends StatelessWidget {
     return DefaultTabController(
       length: _kTabs.length,
       child: Scaffold(
-          backgroundColor: Colors.white,
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(100),
             child: TabBar(
@@ -35,7 +40,7 @@ class Tabs extends StatelessWidget {
           ),
           body: TabBarView(
             children: <Widget>[
-              comment,ProblemPage(),
+              comment,ProblemPage(test,id),
             ],
           )
       ),
