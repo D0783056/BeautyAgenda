@@ -9,7 +9,6 @@ import 'mood_trace.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'drawer.dart';
 import 'bar.dart';
-import 'week_menu.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 enum mood { angry, sad, normal, happy, joy }
@@ -221,12 +220,11 @@ class MoodRecordPageState extends State<MoodRecordPage> {
 
   @override
   Widget build(BuildContext context) {
-    Label label = new Label();
-    NavDrawerExample navDrawerExample = new NavDrawerExample();
+    NavDrawerExample navDrawerExample = new NavDrawerExample(id);
 
     /// Example Calendar Carousel without header and custom prev & next button
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
-      todayBorderColor: Colors.green,
+      todayBorderColor: Color(0xFF818181),
       onDayPressed: (DateTime date, List<Event> events) {
         this.setState(() => _currentDate2 = date);
         events.forEach((event) => print(event.title));
@@ -241,7 +239,6 @@ class MoodRecordPageState extends State<MoodRecordPage> {
 //      firstDayOfWeek: 4,
       markedDatesMap: _markedDateMap,
       height: 350.0,
-      selectedDateTime: _currentDate2,
       targetDateTime: _targetDateTime,
       customGridViewPhysics: NeverScrollableScrollPhysics(),
       markedDateCustomShapeBorder:
@@ -261,7 +258,7 @@ class MoodRecordPageState extends State<MoodRecordPage> {
       // },
       // markedDateMoreShowTotal:
       //     true,
-      todayButtonColor: Colors.green,
+      todayButtonColor: Colors.grey,
       selectedDayTextStyle: TextStyle(
         color: Colors.yellow,
       ),

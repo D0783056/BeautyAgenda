@@ -23,7 +23,7 @@ class MyStatelessWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    NavDrawerExample navDrawerExample = new NavDrawerExample();
+    NavDrawerExample navDrawerExample = new NavDrawerExample(id);
     return Scaffold(
       appBar: weektitle.Topbar(context,'每週養顏',id),
       body: WeekmenuPage(),

@@ -314,12 +314,12 @@ class _WeekmenuPageState extends State<WeekmenuPage> {
                       children: <Widget>[
                         Container(
                           margin: EdgeInsets.fromLTRB(0, 15, 0, 10),
-                          child: CircularProgressIndicator(),
+                          child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0XFF818181))),
                         ),
                         Text(
                           "loading...",
                           style: TextStyle(
-                              fontSize: 15.0,
+                              fontSize: 20.0,
                               color: Color(0xFF818181),
                               fontFamily: 'GFSDidot'),
                         ),
@@ -345,7 +345,7 @@ class _WeekmenuPageState extends State<WeekmenuPage> {
                     return Container(
                       margin: EdgeInsets.fromLTRB(0, 15, 0, 10),
                       child: Text(
-                        "目前查無資料",
+                        "目前尚無資料",
                         style: TextStyle(
                             fontSize: 20.0,
                             color: Color(0xFF818181),
@@ -367,12 +367,12 @@ class _WeekmenuPageState extends State<WeekmenuPage> {
                       children: <Widget>[
                         Container(
                           margin: EdgeInsets.fromLTRB(0, 15, 0, 10),
-                          child: CircularProgressIndicator(),
+                          child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0XFF818181))),
                         ),
                         Text(
                           "loading...",
                           style: TextStyle(
-                              fontSize: 15.0,
+                              fontSize: 20.0,
                               color: Color(0xFF818181),
                               fontFamily: 'GFSDidot'),
                         ),
@@ -477,7 +477,7 @@ class _WeekmenuPageState extends State<WeekmenuPage> {
                     return Container(
                       margin: EdgeInsets.fromLTRB(0, 15, 0, 10),
                       child: Text(
-                        "目前查無資料",
+                        "目前尚無資料",
                         style: TextStyle(
                             fontSize: 20.0,
                             color: Color(0xFF818181),

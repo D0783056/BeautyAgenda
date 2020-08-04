@@ -82,7 +82,7 @@ class IntermediateScreenState extends State {
 
   @override
   Widget build(BuildContext context) {
-    NavDrawerExample navDrawerExample = new NavDrawerExample();
+    NavDrawerExample navDrawerExample = new NavDrawerExample(id);
     Toptitle toptitle = new Toptitle();
     return Scaffold(
       appBar: toptitle.Topbar(context, '膚況報告', id),

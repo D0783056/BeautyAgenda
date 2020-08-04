@@ -114,19 +114,20 @@ class LoginUserState extends State {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
+        top: false,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
                 color: const Color(0xFFFFD0D1),
-                height: 150.0,
+                height: 190.0,
                 width: 700.0,
                 child: Column(
                   children: <Widget>[
                     Container(
                         width: 500.0,
-                        padding: EdgeInsets.only(left: 48.0),
+                        padding: EdgeInsets.only(top: 30.0, left: 48.0),
                         child: Text(
                           "Beauty",
                           textAlign: TextAlign.left,
@@ -138,7 +139,7 @@ class LoginUserState extends State {
                         )),
                     Container(
                         width: 500.0,
-                        padding: EdgeInsets.only(right: 48.0),
+                        padding: EdgeInsets.only(top: 10.0, right: 48.0),
                         child: Text(
                           "Agenda",
                           textAlign: TextAlign.right,
@@ -152,7 +153,7 @@ class LoginUserState extends State {
                 ),
               ),
               Container(
-                  padding: EdgeInsets.only(left: 25, top: 10.0, bottom: 15.0),
+                  padding: EdgeInsets.only(left: 25, top: 20.0, bottom: 15.0),
                   child: Text(
                     "登入",
                     style: TextStyle(

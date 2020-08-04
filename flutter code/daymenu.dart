@@ -190,6 +190,7 @@ class _DaymenuPageState extends State<DaymenuPage> {
               child: Checkbox(
                 tristate: false,
                 value: _isCheck,
+                activeColor: Color(0xFF818181),
                 onChanged: (isCheck) async {
                   setState(() {
                     _save(box, isCheck);
@@ -237,9 +238,8 @@ class _DaymenuPageState extends State<DaymenuPage> {
   //TODO 狀況變數尚未決定
   @override
   Widget build(BuildContext context) {
-    NavDrawerExample navDrawerExample = new NavDrawerExample();
-
-    return Scaffold(
+    NavDrawerExample navDrawerExample = new NavDrawerExample(id);
+    return new Scaffold(
       appBar: Toptitle().Topbar(context,"每日養顏", id),
       body: SingleChildScrollView(
         physics: ScrollPhysics(),
@@ -256,12 +256,12 @@ class _DaymenuPageState extends State<DaymenuPage> {
                         children: <Widget>[
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 250, 0, 10),
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0XFF818181))),
                           ),
                           Text(
                             "loading...",
                             style: TextStyle(
-                                fontSize: 15.0,
+                                fontSize: 20.0,
                                 fontFamily: 'GFDSidot',
                                 color: Color(0XFF818181)),
                           ),
@@ -294,7 +294,7 @@ class _DaymenuPageState extends State<DaymenuPage> {
                       return Container(
                         margin: EdgeInsets.fromLTRB(0, 250, 0, 180),
                         child: Text(
-                          "目前查無資料",
+                          "目前尚無資料",
                           style: TextStyle(
                               fontSize: 25.0,
                               color: Color(0xFF818181),

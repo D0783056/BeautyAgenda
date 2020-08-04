@@ -130,10 +130,10 @@ class MoodTracePageState extends State<MoodTracePage> {
 
   @override
   Widget build(BuildContext context) {
-    NavDrawerExample navDrawerExample = new NavDrawerExample();
+    NavDrawerExample navDrawerExample = new NavDrawerExample(id);
     /// Example Calendar Carousel without header and custom prev & next button
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
-      todayBorderColor: Colors.green,
+      todayBorderColor: Color(0xFF818181),
       onDayPressed: (DateTime date, List<Event> events) {
         this.setState(() => _currentDate2 = date);
         events.forEach((event) => print(event.title));
@@ -148,7 +148,6 @@ class MoodTracePageState extends State<MoodTracePage> {
 //      firstDayOfWeek: 4,
       markedDatesMap: _markedDateMap,
       height: 350.0,
-      selectedDateTime: _currentDate2,
       targetDateTime: _targetDateTime,
       customGridViewPhysics: NeverScrollableScrollPhysics(),
       markedDateCustomShapeBorder:
@@ -168,7 +167,7 @@ class MoodTracePageState extends State<MoodTracePage> {
       // },
       // markedDateMoreShowTotal:
       //     true,
-      todayButtonColor: Colors.green,
+      todayButtonColor: Colors.grey,
       selectedDayTextStyle: TextStyle(
         color: Colors.yellow,
       ),

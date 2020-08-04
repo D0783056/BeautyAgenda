@@ -94,6 +94,7 @@ class _CommentPageState extends State<CommentPage> {
     test.addAll({"grade": grade});
     test.addAll({"time": date.toString()});
     test.addAll({"base64": base64Image});
+    test.addAll({"isfront": isFront});
     print(test);
     var response = await http.post(url, body: json.encode(test));
     if (response.statusCode == 200) {
@@ -115,25 +116,25 @@ class _CommentPageState extends State<CommentPage> {
     base64Image = base64Encode(IO.File(imagepath).readAsBytesSync());
     grade = 100;
     if (test['acne'] == true) {
-      grade -= 8;
+      grade -= 9;
     }
     if (test['dark_circle'] == true) {
-      grade -= 8;
+      grade -= 9;
     }
     if (test['forehead'] == true) {
-      grade -= 8;
+      grade -= 5;
     }
     if (test['crow'] == true) {
-      grade -= 8;
+      grade -= 5;
     }
     if (test['smile_line'] == true) {
-      grade -= 8;
+      grade -= 7;
     }
     if (test['freckle'] == true) {
-      grade -= 8;
+      grade -= 7;
     }
     if (test['chuan'] == true) {
-      grade -= 8;
+      grade -= 3;
     }
 
     return SingleChildScrollView(
@@ -150,7 +151,7 @@ class _CommentPageState extends State<CommentPage> {
                         Center(
                           child: Container(
                             margin: EdgeInsets.fromLTRB(0, 250, 0, 10),
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0XFF818181))),
                           ),
                         ),
                         Center(

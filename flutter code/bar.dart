@@ -21,7 +21,7 @@ class Bar extends StatelessWidget {
   Widget build(BuildContext context) {
     Tabs tabs = new Tabs(imagePath, id, isFront,test);
     Toptitle toptitle = new Toptitle();
-    NavDrawerExample navDrawerExample = new NavDrawerExample();
+    NavDrawerExample navDrawerExample = new NavDrawerExample(id);
     return Scaffold(
       appBar:toptitle.Topbar(context,'膚況報告',id),
       body: tabs,
@@ -35,7 +35,7 @@ class Toptitle {
     return PreferredSize(
         child: AppBar(
           backgroundColor: Color(0xFFFFD0D1),
-          leading: NavDrawerExample(),
+          leading: NavDrawerExample(id),
           title: Center(
             child: Text(
               '$titlename',

@@ -94,7 +94,7 @@ class _CameraScreenState extends State {
 
   @override
   Widget build(BuildContext context) {
-    NavDrawerExample navDrawerExample = new NavDrawerExample();
+    NavDrawerExample navDrawerExample = new NavDrawerExample(id);
     Toptitle toptitle = new Toptitle();
     return SafeArea(
       child: Scaffold(
