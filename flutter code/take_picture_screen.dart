@@ -136,13 +136,13 @@ class _CameraScreenState extends State {
                   children: <Widget>[
                     Container(
                       width: 330,
-                      height: 520,
+                      height: 530,
                       child: _cameraPreviewWidget(),
                     ),
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
-                        height: 80,
+                        height: 120,
                         padding: EdgeInsets.all(15),
                         color: Colors.white,
                         child: Row(

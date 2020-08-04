@@ -118,6 +118,9 @@ class _DaymenuPageState extends State<DaymenuPage> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
+          backgroundColor: Colors.grey[250],
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -226,6 +229,9 @@ class _DaymenuPageState extends State<DaymenuPage> {
               showDialog(
                   context: context,
                   child: new AlertDialog(
+                    backgroundColor: Colors.grey[250],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(32.0))),
                     content: nutrient.elements(),
                   ));
             },

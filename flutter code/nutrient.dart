@@ -10,7 +10,11 @@ class Nutrient {
       return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
         titles("維生素A"),
         contents("增進皮膚與黏膜的健康、幫助牙齒和骨骼的發育與生長"),
-        SizedBox(height: 10.0,),
+        Container(
+          margin: EdgeInsets.only(top:10.0, bottom: 10.0),
+          height: 2,
+          color: Colors.grey[500],
+        ),
         titles("維生素C"),
         contents("抗氧化、能促進膠原蛋白合成、維持心血管健康"),
       ]);
@@ -18,7 +22,11 @@ class Nutrient {
       return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
         titles("維生素A"),
         contents("增進皮膚與黏膜的健康、幫助牙齒和骨骼的發育與生長"),
-        SizedBox(height: 10.0,),
+        Container(
+          margin: EdgeInsets.only(top:10.0, bottom: 10.0),
+          height: 2,
+          color: Colors.grey[500],
+        ),
         titles("維生素D"),
         contents("有促進鈣質吸收、預防骨鬆的作用、以及調解免疫功能、避免慢性發炎"),
       ]);
@@ -26,7 +34,11 @@ class Nutrient {
       return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
         titles("維生素C"),
         contents("抗氧化、能促進膠原蛋白合成、維持心血管健康"),
-        SizedBox(height: 10.0,),
+        Container(
+          margin: EdgeInsets.only(top:10.0, bottom: 10.0),
+          height: 2,
+          color: Colors.grey[500],
+        ),
         titles("β-胡蘿蔔素"),
         contents("避免皮膚多屑、角質化、延緩衰老"),
       ]);
@@ -44,7 +56,11 @@ class Nutrient {
       return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
         titles("維生素C"),
         contents("抗氧化、能促進膠原蛋白合成、維持心血管健康"),
-        SizedBox(height: 10.0,),
+        Container(
+          margin: EdgeInsets.only(top:10.0, bottom: 10.0),
+          height: 2,
+          color: Colors.grey[500],
+        ),
         titles("β-胡蘿蔔素"),
         contents("避免皮膚多屑、角質化、延緩衰老"),
       ]);
@@ -67,10 +83,18 @@ class Nutrient {
       return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
         titles("維生素A"),
         contents("增進皮膚與黏膜的健康、幫助牙齒和骨骼的發育與生長"),
-        SizedBox(height: 10.0,),
+        Container(
+          margin: EdgeInsets.only(top:10.0, bottom: 10.0),
+          height: 2,
+          color: Colors.grey[500],
+        ),
         titles("維生素B"),
         contents("促進及支持紅血球生長、視力、腦部與神經功能"),
-        SizedBox(height: 10.0,),
+        Container(
+          margin: EdgeInsets.only(top:10.0, bottom: 10.0),
+          height: 2,
+          color: Colors.grey[500],
+        ),
         titles("茄紅素"),
         contents("抗氧化、美白、抗皺"),
       ]);
@@ -78,7 +102,11 @@ class Nutrient {
       return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
         titles("β-胡蘿蔔素"),
         contents("增進皮膚與黏膜的健康、幫助牙齒和骨骼的發育與生長"),
-        SizedBox(height: 10.0,),
+        Container(
+          margin: EdgeInsets.only(top:10.0, bottom: 10.0),
+          height: 2,
+          color: Colors.grey[500],
+        ),
         titles("維生素A"),
         contents("抗氧化、美白、抗皺"),
       ]);
@@ -131,7 +159,11 @@ class Nutrient {
       return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
         titles("菸鹼酸"),
         contents("增生皮膚屏障，達到保濕效果、改善粉刺、痘痘生成並有助縮小毛孔"),
-        SizedBox(height: 10.0,),
+        Container(
+          margin: EdgeInsets.only(top:10.0, bottom: 10.0),
+          height: 2,
+          color: Colors.grey[500],
+        ),
         titles("維生素B"),
         contents("促進及支持紅血球生長、視力、腦部與神經功能、食慾與消化機能"),
       ]);
@@ -144,10 +176,18 @@ class Nutrient {
       return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
         titles("檸檬酸"),
         contents("增強食慾和促進體內鈣、磷物質的消化吸收"),
-        SizedBox(height: 10.0,),
+        Container(
+          margin: EdgeInsets.only(top:10.0, bottom: 10.0),
+          height: 2,
+          color: Colors.grey[500],
+        ),
         titles("維生素B"),
         contents("促進及支持紅血球生長、視力、腦部與神經功能、食慾與消化機能"),
-        SizedBox(height: 10.0,),
+        Container(
+          margin: EdgeInsets.only(top:10.0, bottom: 10.0),
+          height: 2,
+          color: Colors.grey[500],
+        ),
         titles("果酸"),
         contents("去除皮膚老化角質細胞、補濕及加強彈性、促進皮膚新生"),
       ]);
@@ -155,10 +195,18 @@ class Nutrient {
       return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
         titles("鐵"),
         contents("補血功效、使身體健康及有紅潤臉色"),
-        SizedBox(height: 10.0,),
+        Container(
+          margin: EdgeInsets.only(top:10.0, bottom: 10.0),
+          height: 2,
+          color: Colors.grey[500],
+        ),
         titles("維生素E"),
         contents("抗氧化、增強免疫系統、抗凝血、抗老化"),
-        SizedBox(height: 10.0,),
+        Container(
+          margin: EdgeInsets.only(top:10.0, bottom: 10.0),
+          height: 2,
+          color: Colors.grey[500],
+        ),
         titles("鋅"),
         contents("幫助治療痤瘡、減少發炎、抗老化"),
       ]);
@@ -166,10 +214,18 @@ class Nutrient {
       return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
         titles("鈣"),
         contents("維持骨骼與牙齒正常發育及健康、穩定神經，幫助入睡"),
-        SizedBox(height: 10.0,),
+        Container(
+          margin: EdgeInsets.only(top:10.0, bottom: 10.0),
+          height: 2,
+          color: Colors.grey[500],
+        ),
         titles("鉀"),
         contents("維持神經健康、心跳規律正常，可以預防中風"),
-        SizedBox(height: 10.0,),
+        Container(
+          margin: EdgeInsets.only(top:10.0, bottom: 10.0),
+          height: 2,
+          color: Colors.grey[500],
+        ),
         titles("銀耳多醣體"),
         contents("提高皮膚含水率，降低皮膚水分散失量"),
       ]);
@@ -182,10 +238,18 @@ class Nutrient {
       return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
         titles("維生素C"),
         contents("抗氧化、能促進膠原蛋白合成、維持心血管健康"),
-        SizedBox(height: 10.0,),
+        Container(
+          margin: EdgeInsets.only(top:10.0, bottom: 10.0),
+          height: 2,
+          color: Colors.grey[500],
+        ),
         titles("茄紅素"),
         contents("抗氧化、美白、抗皺"),
-        SizedBox(height: 10.0,),
+        Container(
+          margin: EdgeInsets.only(top:10.0, bottom: 10.0),
+          height: 2,
+          color: Colors.grey[500],
+        ),
         titles("山茶酚"),
         contents("抗脂質過氧化，預防衰老、人體易消化吸收"),
       ]);
@@ -194,14 +258,18 @@ class Nutrient {
 }
 
 Widget titles(String element) {
-  return Text(element,
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        fontFamily: 'GFSDidot',
-        fontSize: 22.0,
-        color: const Color(0xFF818181),
-      ));
+  return Container(
+    margin: EdgeInsets.only(bottom: 5.0),
+    child: Text(element,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontFamily: 'GFSDidot',
+          fontSize: 22.0,
+          color: const Color(0xFF818181),
+        )),
+  );
 }
+
 Widget contents(String element) {
   return Text(element,
       textAlign: TextAlign.center,

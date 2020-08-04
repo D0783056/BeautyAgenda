@@ -70,8 +70,9 @@ class LoginUserState extends State {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: new Text(message),
+          return AlertDialog(shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            title: new Text(message,textAlign: TextAlign.center),
             actions: <Widget>[
               FlatButton(
                 child: new Text("OK"),
@@ -94,6 +95,8 @@ class LoginUserState extends State {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
             title: new Text(message),
             actions: <Widget>[
               FlatButton(

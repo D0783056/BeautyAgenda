@@ -1,235 +1,216 @@
-import 'dart:typed_data';
+import 'take_picture_screen.dart';
 import 'package:flutter/material.dart';
-import 'week_menu.dart';
+import 'mood_record.dart';
+import 'daymenu.dart';
+import 'week.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'login.dart';
 
 // ignore: must_be_immutable
-class HistoryComment extends StatefulWidget {
-  int id;
-  HistoryComment(this.id);
-  @override
-  _HistoryCommentState createState() => _HistoryCommentState(id);
+class HomePage extends StatefulWidget {
+  int id = 0;
+  HomePage(int id) {
+    this.id = id;
+  }
+  HomePageState createState() => HomePageState(id);
 }
 
-class _HistoryCommentState extends State<HistoryComment> {
-  int id;
-  _HistoryCommentState(this.id);
-  Label label = new Label();
-  String img;
-  Uint8List img2;
-  int grade;
-  String how = "你今天真好看!\n但是你可能有一些小問題喔!";
-  String nowtime;
-  List<String> diseaselist = [];
+class HomePageState extends State {
+  int id = 0;
+  HomePageState(this.id);
 
-  /*_readId() async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = 'id';
-    final value = prefs.getInt(key) ?? 0;
-    setState(() {
-      id = value;
-    });
-  }*/
-
-  _readnowtime() async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = 'nowtime';
-    final value = prefs.getString(key) ?? null;
-    setState(() {
-      nowtime = value;
-    });
+  void pushToCamera(BuildContext context) async {
+    //final cameras = await availableCameras();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CameraScreen(id),
+      ),
+    );
   }
 
-  Future _getJudgeresult() async {
-    var gradeurl =
-        'https://beautyagenda.000webhostapp.com/get_Judge_result.php';
-    print("sadsdsa $id");
-    var User = {
-      'User_id': id,
-      'nowtime': nowtime,
-    };
-    diseaselist = [];
-    var res = await http.post(gradeurl, body: json.encode(User));
-    var data = jsonDecode(res.body);
-
-    for (var u in data) {
-      grade = int.parse(u['grades']);
-      img = Base64Decoder().convert(u['base64']).toString();
-      img2 = Base64Decoder().convert(u['base64']);
-      diseaselist = [];
-      if (int.parse(u['forehead']) == 1) {
-        diseaselist.add('抬頭紋');
-      }
-      if (int.parse(u['chuan']) == 1) {
-        diseaselist.add('川字紋');
-      }
-      if (int.parse(u['crow']) == 1) {
-        diseaselist.add('魚尾紋');
-      }
-      if (int.parse(u['smile_line']) == 1) {
-        diseaselist.add('法令紋');
-      }
-      if (int.parse(u['dark_circle']) == 1) {
-        diseaselist.add('黑眼圈');
-      }
-      if (int.parse(u['acne']) == 1) {
-        diseaselist.add('痘痘');
-      }
-      if (int.parse(u['freckle']) == 1) {
-        diseaselist.add('雀斑');
-      }
+  _save() async {
+    final prefs = await SharedPreferences.getInstance();
+    try {
+      setState(() async {
+        await prefs.setInt("id", id);
+        print('saved $id');
+      });
+    } catch (err) {
+      err.toString();
     }
   }
 
-  //TODO 狀況變數尚未決定
   @override
   void initState() {
-    _readnowtime();
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
-    print("history_comment $id");
-    return SingleChildScrollView(
-      physics: ScrollPhysics(),
-      child: Column(
-        children: <Widget>[
-          Container(
-            child: FutureBuilder<dynamic>(
-              future: _getJudgeresult(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting &&
-                    snapshot.data == null) {
-                  return Column(
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 250, 0, 10),
-                        child: CircularProgressIndicator(
-                            valueColor: new AlwaysStoppedAnimation<Color>(
-                                Color(0XFF818181))),
-                      ),
-                      Text(
-                        "loading...",
-                        style: TextStyle(
-                            fontSize: 15.0,
-                            fontFamily: 'GFDSidot',
-                            color: Color(0XFF818181)),
-                      ),
-                      SizedBox(height: 200),
-                    ],
-                  );
-                } else {
-                  return Container(
-                    color: Colors.white,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        label.label(
-                            '${nowtime.substring(0, 4)} / ${nowtime.substring(5, 7)} / ${nowtime.substring(8, 10)}'),
-                        Card(
-                          margin: EdgeInsets.fromLTRB(100, 20, 100, 40),
-                          child: Container(
-                              width: 200,
-                              height: 250,
-                              child: Image.memory(
-                                img2,
-                                fit: BoxFit.fill,
-                              ) //TODO 圖片路徑
-                          ),
-                        ),
-                        Card(
-                            margin: EdgeInsets.fromLTRB(50, 0, 0, 10),
-                            child: Container(
-                                height: 50,
-                                width: 100,
-                                child: Center(
-                                  child: Text(
-                                    '$grade',
-                                    style: TextStyle(
-                                      fontSize: 30,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ))),
-                        Card(
-                            margin: EdgeInsets.fromLTRB(50, 0, 50, 10),
-                            child: Container(
-                                padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                                height: 300,
-                                width: double.maxFinite,
-                                child: Column(
-                                  children: <Widget>[
-                                    Text(
-                                      //TODO 顯示排版
-                                      "$how",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: Color(0XFF818181)),
-                                    ), //TODO 症狀
-                                    ListView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: diseaselist.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return ResultDisease(
-                                          disease: diseaselist[index],
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ))),
-                        SizedBox(
-                          height: 50,
-                        )
-                      ],
+    print(id);
+    return WillPopScope(
+      onWillPop: () => showDialog<bool>(
+        context: context,
+        builder: (c) => AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          title: Text('Do you want to log out?'),
+          actions: [
+            FlatButton(
+                child: Text('Yes',style: TextStyle(color: const Color(0xFF818181))),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginPage(),
                     ),
                   );
                 }
-              },
             ),
-          )
-        ],
+            FlatButton(
+              child: Text('No',style: TextStyle(color: const Color(0xFF818181))),
+              onPressed: () => Navigator.pop(c, false),
+            ),
+          ],
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          top: false,
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  color: const Color(0xFFFFD0D1),
+                  height: 150.0,
+                  width: double.maxFinite,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                          width: 500.0,
+                          padding: EdgeInsets.fromLTRB(80, 30, 0, 0),
+                          child: Text(
+                            "Beauty",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontFamily: 'GFSDidot',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 40.0,
+                              color: Colors.white,
+                            ),
+                          )),
+                      Container(
+                          width: 500.0,
+                          padding: EdgeInsets.fromLTRB(0, 0, 80, 0),
+                          child: Text(
+                            "Agenda",
+                            textAlign: TextAlign.right,
+                            style: new TextStyle(
+                              fontFamily: 'GFSDidot',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 40.0,
+                              color: Colors.white,
+                            ),
+                          )),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    _save();
+                    print("Tapped a Container");
+                    this.pushToCamera(context);
+                  },
+                  child: Container(
+                      margin: EdgeInsets.fromLTRB(0, 60, 0, 0),
+                      child: putcard('膚況檢測')),
+                ),
+                GestureDetector(
+                    onTap: () async {
+                      _save();
+                      print("Tapped a Container");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MoodRecordPage(),
+                        ),
+                      );
+                    },
+                    child: putcard('心情追蹤')),
+                GestureDetector(
+                    onTap: () async {
+                      _save();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DaymenuPage(),
+                        ),
+                      );
+                    },
+                    child: putcard('每日養顏')),
+                GestureDetector(
+                    onTap: () async {
+                      _save();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Week(id),
+                        ),
+                      );
+                    },
+                    child: putcard('每週養顏')),
+                Container(
+                  padding: EdgeInsets.only(top: 70.0),
+                  child: Text(
+                    "Beauty & Health,",
+                    style: TextStyle(
+                      fontFamily: 'GFSDidot',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25.0,
+                      color: const Color(0xFF818181),
+                    ),
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    "Make your day.",
+                    style: TextStyle(
+                      fontFamily: 'GFSDidot',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22.0,
+                      color: const Color(0xFF818181),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 }
 
-class ResultDisease extends StatelessWidget {
-  final String disease;
-  ResultDisease({this.disease});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-              child: Icon(
-                Icons.fiber_manual_record,
-                size: 15,
-                color: Color(0XFF818181),
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Container(
-              child: Text(
-                '$disease',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: 'GFDSidot',
-                    color: Color(0XFF818181)),
-              ),
-            ),
-          ],
+Card putcard(String name) {
+  return Card(
+    margin: EdgeInsets.fromLTRB(40, 10, 40, 20),
+    elevation: 10,
+    child: Container(
+      width: 200,
+      height: 60,
+      child: Center(
+        child: Text(
+          "$name",
+          textAlign: TextAlign.right,
+          style: TextStyle(
+            fontSize: 35.0,
+            fontFamily: 'GFSDidot',
+            color: const Color(0xFF818181),
+          ),
         ),
-      ],
-    );
-  }
+      ),
+    ),
+  );
 }

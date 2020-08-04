@@ -38,7 +38,8 @@ class IntermediateScreenState extends State {
   }
 
   Future uploadFile() async {
-    var request = http.MultipartRequest('POST', Uri.parse("http://140.134.27.136:5000"));
+    var request =
+        http.MultipartRequest('POST', Uri.parse("http://140.134.27.136:5000"));
     request.files.add(await http.MultipartFile.fromPath('image', imagePath));
     var res = await request.send();
     res.stream.transform(utf8.decoder).listen((value) async {
@@ -62,6 +63,8 @@ class IntermediateScreenState extends State {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0))),
             title: new Text("明明就不是人臉! 給我重拍!"),
             actions: <Widget>[
               FlatButton(

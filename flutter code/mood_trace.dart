@@ -42,10 +42,10 @@ class MoodTracePageState extends State<MoodTracePage> {
     });
   }
 
-  DateTime _currentDate = DateTime(2020, 7, 3);
-  DateTime _currentDate2 = DateTime(2020, 7, 3);
-  String _currentMonth = DateFormat.yMMM().format(DateTime(2020, 7, 3));
-  DateTime _targetDateTime = DateTime(2020, 7, 3);
+  DateTime _currentDate = DateTime(2020, 8, 3);
+  DateTime _currentDate2 = DateTime(2020, 8, 3);
+  String _currentMonth = DateFormat.yMMM().format(DateTime(2020, 8, 3));
+  DateTime _targetDateTime = DateTime(2020, 8, 3);
 //  List<DateTime> _markedDate = [DateTime(2018, 9, 20), DateTime(2018, 10, 11)];
   static Widget _eventIcon = new Container(
     decoration: new BoxDecoration(
@@ -227,7 +227,7 @@ class MoodTracePageState extends State<MoodTracePage> {
                         });
                       },
                     ),
-                    SizedBox(width: 80.0),
+                    SizedBox(width: 70.0),
                     Expanded(
                         child: Text(
                       _currentMonth,
@@ -258,7 +258,7 @@ class MoodTracePageState extends State<MoodTracePage> {
                 child: _calendarCarouselNoHeader,
               ),
               Card(
-                margin: EdgeInsets.fromLTRB(40, 5, 35, 10),
+                margin: EdgeInsets.fromLTRB(40, 25, 35, 10),
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                   height: 240,

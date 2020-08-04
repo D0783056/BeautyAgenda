@@ -69,118 +69,115 @@ class NavDrawerExample extends StatelessWidget {
 
   Widget drawer(BuildContext context) {
     return Drawer(
-      child: SafeArea(
-        top: false,
-        child: ListView(
-          children: <Widget>[
-            DrawerHeader(
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    width: 80,
-                    height: 80,
-                    child: CircleAvatar(
-                      child: Icon(
-                        Icons.person,
-                        color: Colors.white,
-                        size: 40,
-                      ),
-                      backgroundColor: Color(0XFFFFD0D1),
+      child: ListView(
+        children: <Widget>[
+          DrawerHeader(
+            child: Row(
+              children: <Widget>[
+                Container(
+                  width: 80,
+                  height: 80,
+                  child: CircleAvatar(
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.white,
+                      size: 40,
                     ),
+                    backgroundColor: Color(0XFFFFD0D1),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(left: 10),
-                    child: FutureBuilder<dynamic>(
-                      future: getName(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting &&
-                            snapshot.data == null) {
-                          return Container(
-                          );
-                        } else {
-                          return Text(
-                            '$username',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 30,
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                  )
-                ],
-              ),
-              decoration: BoxDecoration(
-                color: Color(0XFFFAE2E3),
-              ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 10),
+                  child: FutureBuilder<dynamic>(
+                    future: getName(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting &&
+                          snapshot.data == null) {
+                        return Container(
+                        );
+                      } else {
+                        return Text(
+                          '$username',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                )
+              ],
             ),
-            Container(
-              color: Color(0XFFFFD0D1),
-              child: Column(
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => History_day(id)),
-                      );
-                    },
-                    child: list(Icons.event_note, '檢測歷史'),
+            decoration: BoxDecoration(
+              color: Color(0XFFFAE2E3),
+            ),
+          ),
+          Container(
+            color: Color(0XFFFFD0D1),
+            child: Column(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => History_day(id)),
+                    );
+                  },
+                  child: list(Icons.event_note, '檢測歷史'),
+                ),
+                Container(
+                  height: 1,
+                  color: Colors.white,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Skin(id)),
+                    );
+                  },
+                  child: list(Icons.insert_chart, '膚況變化'),
+                ),
+                Container(
+                  height: 1,
+                  color: Colors.white,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 380),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                          padding: EdgeInsets.fromLTRB(0, 0, 90, 0),
+                          child: Text(
+                            "Beauty",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontFamily: 'GFSDidot',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 35.0,
+                              color: Colors.white,
+                            ),
+                          )),
+                      Container(
+                          padding: EdgeInsets.fromLTRB(90, 10, 0, 30),
+                          child: Text(
+                            "Agenda",
+                            textAlign: TextAlign.right,
+                            style: new TextStyle(
+                              fontFamily: 'GFSDidot',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 35.0,
+                              color: Colors.white,
+                            ),
+                          )),
+                    ],
                   ),
-                  Container(
-                    height: 1,
-                    color: Colors.white,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Skin(id)),
-                      );
-                    },
-                    child: list(Icons.insert_chart, '膚況變化'),
-                  ),
-                  Container(
-                    height: 1,
-                    color: Colors.white,
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 380),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                            padding: EdgeInsets.fromLTRB(0, 0, 90, 0),
-                            child: Text(
-                              "Beauty",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontFamily: 'GFSDidot',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 35.0,
-                                color: Colors.white,
-                              ),
-                            )),
-                        Container(
-                            padding: EdgeInsets.fromLTRB(90, 10, 0, 30),
-                            child: Text(
-                              "Agenda",
-                              textAlign: TextAlign.right,
-                              style: new TextStyle(
-                                fontFamily: 'GFSDidot',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 35.0,
-                                color: Colors.white,
-                              ),
-                            )),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

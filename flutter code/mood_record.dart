@@ -131,10 +131,10 @@ class MoodRecordPageState extends State<MoodRecordPage> {
     happy1 = value5;
   }
 
-  DateTime _currentDate = DateTime(2020, 7, 3);
-  DateTime _currentDate2 = DateTime(2020, 7, 3);
-  String _currentMonth = DateFormat.yMMM().format(DateTime(2020, 7, 3));
-  DateTime _targetDateTime = DateTime(2020, 7, 3);
+  DateTime _currentDate = DateTime(2020, 8, 3);
+  DateTime _currentDate2 = DateTime(2020, 8, 3);
+  String _currentMonth = DateFormat.yMMM().format(DateTime(2020, 8, 3));
+  DateTime _targetDateTime = DateTime(2020, 8, 3);
 //  List<DateTime> _markedDate = [DateTime(2018, 9, 20), DateTime(2018, 10, 11)];
   static Widget _eventIcon = new Container(
     decoration: new BoxDecoration(
@@ -318,7 +318,7 @@ class MoodRecordPageState extends State<MoodRecordPage> {
                       });
                     },
                   ),
-                  SizedBox(width: 80.0),
+                  SizedBox(width: 70.0),
                   Expanded(
                       child: Text(
                     _currentMonth,
@@ -348,6 +348,7 @@ class MoodRecordPageState extends State<MoodRecordPage> {
               margin: EdgeInsets.symmetric(horizontal: 16.0),
               child: _calendarCarouselNoHeader,
             ),
+            SizedBox(height: 25.0),
             Row(
               children: <Widget>[
                 Container(
@@ -367,6 +368,7 @@ class MoodRecordPageState extends State<MoodRecordPage> {
                 ),
               ],
             ),
+            SizedBox(height: 10.0),
             Emoji(
               mood: '憤怒    ヽ(#`Д´)ﾉ',
               onPress: () {

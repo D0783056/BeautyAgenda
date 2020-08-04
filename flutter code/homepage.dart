@@ -20,7 +20,6 @@ class HomePageState extends State {
   HomePageState(this.id);
 
   void pushToCamera(BuildContext context) async {
-    //final cameras = await availableCameras();
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -53,136 +52,206 @@ class HomePageState extends State {
       onWillPop: () => showDialog<bool>(
         context: context,
         builder: (c) => AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
           title: Text('Do you want to log out?'),
           actions: [
             FlatButton(
-              child: Text('Yes'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoginPage(),
-                  ),
-                );
-              }
+                child: Text('Yes',style: TextStyle(color: const Color(0xFF818181))),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginPage(),
+                    ),
+                  );
+                }
             ),
             FlatButton(
-              child: Text('No'),
+              child: Text('No',style: TextStyle(color: const Color(0xFF818181))),
               onPressed: () => Navigator.pop(c, false),
             ),
           ],
         ),
       ),
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          top: false,
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  color: const Color(0xFFFFD0D1),
-                  height: 150.0,
-                  width: double.maxFinite,
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                          width: 500.0,
-                          padding: EdgeInsets.fromLTRB(80, 30, 0, 0),
-                          child: Text(
-                            "Beauty",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontFamily: 'GFSDidot',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 40.0,
-                              color: Colors.white,
-                            ),
-                          )),
-                      Container(
-                          width: 500.0,
-                          padding: EdgeInsets.fromLTRB(0, 0, 80, 0),
-                          child: Text(
-                            "Agenda",
-                            textAlign: TextAlign.right,
-                            style: new TextStyle(
-                              fontFamily: 'GFSDidot',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 40.0,
-                              color: Colors.white,
-                            ),
-                          )),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    _save();
-                    print("Tapped a Container");
-                    this.pushToCamera(context);
-                  },
-                  child: Container(
-                      margin: EdgeInsets.fromLTRB(0, 60, 0, 0),
-                      child: putcard('膚況檢測')),
-                ),
-                GestureDetector(
-                    onTap: () async {
-                      _save();
-                      print("Tapped a Container");
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MoodRecordPage(),
-                        ),
-                      );
-                    },
-                    child: putcard('心情追蹤')),
-                GestureDetector(
-                    onTap: () async {
-                      _save();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DaymenuPage(),
-                        ),
-                      );
-                    },
-                    child: putcard('每日養顏')),
-                GestureDetector(
-                    onTap: () async {
-                      _save();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Week(id),
-                        ),
-                      );
-                    },
-                    child: putcard('每週養顏')),
-                Container(
-                  padding: EdgeInsets.only(top: 70.0),
-                  child: Text(
-                    "Beauty & Health,",
-                    style: TextStyle(
-                      fontFamily: 'GFSDidot',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25.0,
-                      color: const Color(0xFF818181),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: Colors.white,
+          body: SafeArea(
+            top: false,
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    color: const Color(0xFFFFD0D1),
+                    height: 180.0,
+                    width: double.maxFinite,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                            width: 500.0,
+                            padding: EdgeInsets.fromLTRB(80, 40, 0, 0),
+                            child: Text(
+                              "Beauty",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontFamily: 'GFSDidot',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 40.0,
+                                color: Colors.white,
+                              ),
+                            )),
+                        Container(
+                            width: 500.0,
+                            padding: EdgeInsets.fromLTRB(0, 10, 80, 0),
+                            child: Text(
+                              "Agenda",
+                              textAlign: TextAlign.right,
+                              style: new TextStyle(
+                                fontFamily: 'GFSDidot',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 40.0,
+                                color: Colors.white,
+                              ),
+                            )),
+                      ],
                     ),
                   ),
-                ),
-                Container(
-                  child: Text(
-                    "Make your day.",
-                    style: TextStyle(
-                      fontFamily: 'GFSDidot',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22.0,
-                      color: const Color(0xFF818181),
+                  Container(
+                    child: Stack(
+                      children: <Widget>[
+                        Positioned(
+                            child: Container(
+                              color: Color(0XFFFFD0D1),
+                              height: 500,
+                            )),
+                        Positioned(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: new BorderRadius.vertical(
+                                    top: Radius.elliptical(50, 50)),
+                              ),
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          flex: 1,
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              _save();
+                                              print("Tapped a Container");
+                                              this.pushToCamera(context);
+                                            },
+                                            child: Container(
+                                                margin:
+                                                EdgeInsets.fromLTRB(50, 120, 20, 0),
+                                                child: putcard('膚況檢測', Icons.face)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              _save();
+                                              print("Tapped a Container");
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MoodRecordPage()),
+                                              );
+                                            },
+                                            child: Container(
+                                                margin:
+                                                EdgeInsets.fromLTRB(20, 120, 50, 0),
+                                                child: putcard('心情追蹤', Icons.favorite)),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          flex: 1,
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              _save();
+                                              print("Tapped a Container");
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext context) =>
+                                                          DaymenuPage()));
+                                            },
+                                            child: Container(
+                                                margin:
+                                                EdgeInsets.fromLTRB(50, 60, 20, 0),
+                                                child: putcard('每日養顏', Icons.today)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              _save();
+                                              print('123');
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) => Week(id)),
+                                              );
+                                            },
+                                            child: Container(
+                                                margin:
+                                                EdgeInsets.fromLTRB(20, 60, 50, 0),
+                                                child: putcard('每週養顏', Icons.date_range)),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  //--------------
+                                  Container(
+                                      margin: EdgeInsets.fromLTRB(0, 130, 0, 65),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Text(
+                                            "Beauty & Health,",
+                                            style: TextStyle(
+                                              fontFamily: 'GFSDidot',
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20.0,
+                                              color: const Color(0xFF818181),
+                                            ),
+                                          ),
+                                          Text(
+                                            "Make your day.",
+                                            style: TextStyle(
+                                              fontFamily: 'GFSDidot',
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20.0,
+                                              color: const Color(0xFF818181),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
+                                ],
+                              ),
+                            )),
+                      ],
                     ),
                   ),
-                ),
-              ],
+
+
+
+                ],
+              ),
             ),
           ),
         ),
@@ -191,24 +260,35 @@ class HomePageState extends State {
   }
 }
 
-Card putcard(String name) {
-  return Card(
-    margin: EdgeInsets.fromLTRB(40, 10, 40, 20),
-    elevation: 10,
-    child: Container(
-      width: 200,
-      height: 60,
-      child: Center(
-        child: Text(
-          "$name",
-          textAlign: TextAlign.right,
+Widget putcard(String name, IconData icon) {
+  return Container(
+    decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey[500], width: 2.5),
+        borderRadius: new BorderRadius.all(Radius.circular(20))),
+    width: 120,
+    height: 120,
+    child: Column(
+      children: <Widget>[
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          '$name',
           style: TextStyle(
-            fontSize: 35.0,
+            fontSize: 20,
             fontFamily: 'GFSDidot',
-            color: const Color(0xFF818181),
+            color: Color(0XFF818181),
           ),
         ),
-      ),
+        SizedBox(
+          height: 10,
+        ),
+        Icon(
+          icon,
+          size: 45,
+          color: Color(0XFF818181),
+        )
+      ],
     ),
   );
 }
