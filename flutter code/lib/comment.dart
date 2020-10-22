@@ -103,7 +103,7 @@ class _CommentPageState extends State<CommentPage> {
   }
 
   Future userMenu() async {
-    var url = 'https://beautyagenda.000webhostapp.com/fruit.php';
+    var url = 'http://140.134.26.187/BeautyAgenda/fruit.php';
     test.addAll({"id": id});
     print(test);
     var response = await http.post(url, body: json.encode(test));
