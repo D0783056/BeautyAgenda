@@ -39,7 +39,7 @@ class History_tabsState extends State<History_tabs> {
           ),
           body: TabBarView(
             children: <Widget>[
-              HistoryComment(id),History_problem(),
+              HistoryComment(id),History_problem(id),
             ],
           )
       ),

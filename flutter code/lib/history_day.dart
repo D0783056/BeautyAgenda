@@ -31,7 +31,7 @@ class _History_day extends StatelessWidget {
   List<Date> date = [];
 
   Future _getData() async {
-    var gradeurl = 'http://140.134.27.136:5001/get_testdate.php';
+    var gradeurl = 'http://140.134.26.187/BeautyAgenda/get_testdate.php';
     var User_id = {
       'User_id': ids,
     };
@@ -72,13 +72,13 @@ class _History_day extends StatelessWidget {
                         Center(
                           child: Container(
                             margin: EdgeInsets.fromLTRB(0, 250, 0, 10),
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0XFF818181))),
                           ),
                         ),
                         Text(
                           "loading...",
                           style: TextStyle(
-                              fontSize: 15.0,
+                              fontSize: 20,
                               fontFamily: 'GFDSidot',
                               color: Color(0XFF818181)),
                         ),
@@ -94,7 +94,11 @@ class _History_day extends StatelessWidget {
                           height: 500,
                           child: Center(
                             child: Text(
-                              '尚無資料',
+                              '目前尚無資料',
+                              style: TextStyle(
+                                  fontSize: 25.0,
+                                  color: Color(0xFF818181),
+                                  fontFamily: 'GFSDidot'),
                             ),
                           ),
                         ),

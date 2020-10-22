@@ -9,7 +9,6 @@ import 'mood_trace.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'drawer.dart';
 import 'bar.dart';
-import 'week_menu.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 enum mood { angry, sad, normal, happy, joy }
@@ -132,10 +131,10 @@ class MoodRecordPageState extends State<MoodRecordPage> {
     happy1 = value5;
   }
 
-  DateTime _currentDate = DateTime(2020, 7, 3);
-  DateTime _currentDate2 = DateTime(2020, 7, 3);
-  String _currentMonth = DateFormat.yMMM().format(DateTime(2020, 7, 3));
-  DateTime _targetDateTime = DateTime(2020, 7, 3);
+  DateTime _currentDate = DateTime(2020, 8, 3);
+  DateTime _currentDate2 = DateTime(2020, 8, 3);
+  String _currentMonth = DateFormat.yMMM().format(DateTime(2020, 8, 3));
+  DateTime _targetDateTime = DateTime(2020, 8, 3);
 //  List<DateTime> _markedDate = [DateTime(2018, 9, 20), DateTime(2018, 10, 11)];
   static Widget _eventIcon = new Container(
     decoration: new BoxDecoration(
@@ -221,12 +220,11 @@ class MoodRecordPageState extends State<MoodRecordPage> {
 
   @override
   Widget build(BuildContext context) {
-    Label label = new Label();
     NavDrawerExample navDrawerExample = new NavDrawerExample(id);
 
     /// Example Calendar Carousel without header and custom prev & next button
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
-      todayBorderColor: Colors.green,
+      todayBorderColor: Color(0xFF818181),
       onDayPressed: (DateTime date, List<Event> events) {
         this.setState(() => _currentDate2 = date);
         events.forEach((event) => print(event.title));
@@ -241,11 +239,10 @@ class MoodRecordPageState extends State<MoodRecordPage> {
 //      firstDayOfWeek: 4,
       markedDatesMap: _markedDateMap,
       height: 350.0,
-      selectedDateTime: _currentDate2,
       targetDateTime: _targetDateTime,
       customGridViewPhysics: NeverScrollableScrollPhysics(),
       markedDateCustomShapeBorder:
-          CircleBorder(side: BorderSide(color: Colors.yellow)),
+      CircleBorder(side: BorderSide(color: Colors.yellow)),
       markedDateCustomTextStyle: TextStyle(
         fontSize: 18,
         color: Colors.blue,
@@ -261,7 +258,7 @@ class MoodRecordPageState extends State<MoodRecordPage> {
       // },
       // markedDateMoreShowTotal:
       //     true,
-      todayButtonColor: Colors.green,
+      todayButtonColor: Colors.grey,
       selectedDayTextStyle: TextStyle(
         color: Colors.yellow,
       ),
@@ -321,16 +318,16 @@ class MoodRecordPageState extends State<MoodRecordPage> {
                       });
                     },
                   ),
-                  SizedBox(width: 80.0),
+                  SizedBox(width: 55.0),
                   Expanded(
                       child: Text(
-                    _currentMonth,
-                    style: TextStyle(
-                      fontFamily: 'GFSDidot',
-                      color: const Color(0xFF818181),
-                      fontSize: 30.0,
-                    ),
-                  )),
+                        _currentMonth,
+                        style: TextStyle(
+                          fontFamily: 'GFSDidot',
+                          color: const Color(0xFF818181),
+                          fontSize: 30.0,
+                        ),
+                      )),
                   IconButton(
                     icon: Icon(Icons.chevron_right),
                     iconSize: 40,
@@ -351,6 +348,7 @@ class MoodRecordPageState extends State<MoodRecordPage> {
               margin: EdgeInsets.symmetric(horizontal: 16.0),
               child: _calendarCarouselNoHeader,
             ),
+            SizedBox(height: 10.0),
             Row(
               children: <Widget>[
                 Container(
@@ -359,7 +357,7 @@ class MoodRecordPageState extends State<MoodRecordPage> {
                   color: Color(0xFFFFD0D1),
                 ),
                 SizedBox(
-                  width: 20,
+                  width: 10,
                 ),
                 Text(
                   '${nowTime.year} / ${nowTime.month} / ${nowTime.day}', //TODO 要用變數!!
@@ -370,6 +368,7 @@ class MoodRecordPageState extends State<MoodRecordPage> {
                 ),
               ],
             ),
+            SizedBox(height: 20.0),
             Emoji(
               mood: '憤怒    ヽ(#`Д´)ﾉ',
               onPress: () {
@@ -379,7 +378,7 @@ class MoodRecordPageState extends State<MoodRecordPage> {
                 print(selectedMood);
               },
               colour:
-                  selectedMood == mood.angry ? kActiveColor : kInactiveColor,
+              selectedMood == mood.angry ? kActiveColor : kInactiveColor,
             ), // TODO 表情記得改!!
             Emoji(
               mood: '悲傷..     ( ´;ω;` )',
@@ -400,7 +399,7 @@ class MoodRecordPageState extends State<MoodRecordPage> {
                 });
               },
               colour:
-                  selectedMood == mood.normal ? kActiveColor : kInactiveColor,
+              selectedMood == mood.normal ? kActiveColor : kInactiveColor,
             ),
             Emoji(
               mood: '小開心    (｡◕∀◕｡)',
@@ -410,7 +409,7 @@ class MoodRecordPageState extends State<MoodRecordPage> {
                 });
               },
               colour:
-                  selectedMood == mood.happy ? kActiveColor : kInactiveColor,
+              selectedMood == mood.happy ? kActiveColor : kInactiveColor,
             ),
             Emoji(
               mood: '超歡樂ヽ(✿ﾟ▽ﾟ)ノ',
@@ -422,7 +421,7 @@ class MoodRecordPageState extends State<MoodRecordPage> {
               colour: selectedMood == mood.joy ? kActiveColor : kInactiveColor,
             ),
             Container(
-              margin: EdgeInsets.fromLTRB(135, 30, 50, 15),
+              margin: EdgeInsets.fromLTRB(110, 30, 50, 30),
               height: 55.0,
               width: 150.0,
               child: RaisedButton(
@@ -452,7 +451,7 @@ class MoodRecordPageState extends State<MoodRecordPage> {
                     joy++;
                   } else {
                     Fluttertoast.showToast(
-                        msg: "請先點選今天的心情!", backgroundColor: Colors.grey,);
+                      msg: "請先點選今天的心情!", backgroundColor: Colors.grey,);
                     return;
                   }
                   Navigator.push(

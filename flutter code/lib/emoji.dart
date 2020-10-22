@@ -11,7 +11,7 @@ class Emoji extends StatelessWidget {
     return GestureDetector(
       onTap: onPress,
       child: Card(
-        margin: EdgeInsets.fromLTRB(90, 15, 50, 10),
+        margin: EdgeInsets.fromLTRB(70, 15, 50, 10),
         child: Container(
           padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
           height: 60,

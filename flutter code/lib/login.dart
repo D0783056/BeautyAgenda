@@ -26,7 +26,7 @@ class LoginUserState extends State {
   Future getUserId() async {
     String email = emailController.text;
 
-    var url = 'https://beautyagenda.000webhostapp.com/getTest.php';
+    var url = 'http://140.134.27.136:5001/getTest.php';
     var data = {'email': email};
 
     var response =  await http.post(url, body: json.encode(data));
@@ -50,7 +50,7 @@ class LoginUserState extends State {
     String password = passwordController.text;
 
     // SERVER LOGIN API URL
-    var url = 'https://beautyagenda.000webhostapp.com/login.php';
+    var url = 'http://140.134.27.136:5001/login.php';
 
     // Store all data with Param Name.
     var data = {'email': email, 'password' : password};
@@ -114,19 +114,20 @@ class LoginUserState extends State {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
+        top: false,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
                 color: const Color(0xFFFFD0D1),
-                height: 150.0,
+                height: 190.0,
                 width: 700.0,
                 child: Column(
                   children: <Widget>[
                     Container(
                         width: 500.0,
-                        padding: EdgeInsets.only(left: 48.0),
+                        padding: EdgeInsets.only(top: 30.0, left: 48.0),
                         child: Text(
                           "Beauty",
                           textAlign: TextAlign.left,
@@ -138,7 +139,7 @@ class LoginUserState extends State {
                         )),
                     Container(
                         width: 500.0,
-                        padding: EdgeInsets.only(right: 48.0),
+                        padding: EdgeInsets.only(top: 10.0, right: 48.0),
                         child: Text(
                           "Agenda",
                           textAlign: TextAlign.right,
@@ -152,7 +153,7 @@ class LoginUserState extends State {
                 ),
               ),
               Container(
-                  padding: EdgeInsets.only(left: 25, top: 10.0, bottom: 15.0),
+                  padding: EdgeInsets.only(left: 25, top: 20.0, bottom: 15.0),
                   child: Text(
                     "登入",
                     style: TextStyle(
@@ -235,27 +236,7 @@ class LoginUserState extends State {
                       ),
                       Row(
                         children: <Widget>[
-                          GestureDetector(
-                            onTap: () {
-                              print("Tapped a Container");
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ForgetPasswd()));
-                            },
-                            child: Container(
-                                width: 200,
-                                padding: EdgeInsets.only(left:25,right: 22.0, bottom: 20.0),
-                                child: Text(
-                                  "忘記密碼?",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    fontSize: 20.0,
-                                    fontFamily: 'GFSDidot',
-                                    color: const Color(0xFF818181),
-                                  ),
-                                )),
-                          ),
+                          SizedBox(width: 25,),
                           GestureDetector(
                             onTap: () {
                               print("Tapped a Container");
@@ -265,8 +246,8 @@ class LoginUserState extends State {
                                       builder: (context) => RegisterPage()));
                             },
                             child: Container(
-                                width: 200,
-                                padding: EdgeInsets.only(right: 18.0, bottom: 20.0),
+                                width: 320,
+                                padding: EdgeInsets.only(left: 120, bottom: 20.0),
                                 child: Text(
                                   "尚未註冊?",
                                   textAlign: TextAlign.right,
@@ -280,6 +261,7 @@ class LoginUserState extends State {
                         ],
                       ),
                       Container(
+                        margin: EdgeInsets.only(top: 15),
                         padding: EdgeInsets.only(left: 15),
                         height: 60.0,
                         width: 200.0,
@@ -309,9 +291,9 @@ class LoginUserState extends State {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(top: 70.0, left: 105),
+                padding: EdgeInsets.only(top: 70.0, left: 90),
                 child: Text(
-                  "Beauty & Health ,",
+                  "Beauty & Health",
                   style: TextStyle(
                     fontFamily: 'GFSDidot',
                     fontSize: 25.0,
@@ -320,7 +302,7 @@ class LoginUserState extends State {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(left: 120),
+                padding: EdgeInsets.only(left: 100),
                 child: Text(
                   "Make your day .",
                   style: TextStyle(

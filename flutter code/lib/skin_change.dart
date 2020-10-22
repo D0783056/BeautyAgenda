@@ -76,17 +76,17 @@ class _Skin_changeState extends State<Skin_change> {
               ),
 
               Container(
-                margin: EdgeInsets.fromLTRB(0, 80, 0, 50),//TODO 調整
+                margin: EdgeInsets.fromLTRB(0, 50, 0, 30),//TODO 調整
                 child: CylinderChart(id),
               ),
 
               Container(
-                margin: EdgeInsets.only(bottom: 100),
+                margin: EdgeInsets.only(bottom: 50),
                 child: Text(
                   'Almost there . Hold your horses !',
                   style: TextStyle(
-                    color: Colors.grey[400],
-                    fontSize: 23,
+                    color: Color(0XFF818181),
+                    fontSize: 20,
                     fontFamily: 'GFDSidiot',
                   ),
                 ),

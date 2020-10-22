@@ -89,11 +89,12 @@ class _CommentPageState extends State<CommentPage> {
   }
 
   Future saveHistory() async {
-    var url = 'https://beautyagenda.000webhostapp.com/saveHistory.php';
+    var url = 'http://140.134.27.136:5001/saveHistory.php';
 
     test.addAll({"grade": grade});
     test.addAll({"time": date.toString()});
     test.addAll({"base64": base64Image});
+    test.addAll({"isfront": isFront});
     print(test);
     var response = await http.post(url, body: json.encode(test));
     if (response.statusCode == 200) {
@@ -115,25 +116,25 @@ class _CommentPageState extends State<CommentPage> {
     base64Image = base64Encode(IO.File(imagepath).readAsBytesSync());
     grade = 100;
     if (test['acne'] == true) {
-      grade -= 8;
+      grade -= 9;
     }
     if (test['dark_circle'] == true) {
-      grade -= 8;
+      grade -= 9;
     }
     if (test['forehead'] == true) {
-      grade -= 8;
+      grade -= 5;
     }
     if (test['crow'] == true) {
-      grade -= 8;
+      grade -= 5;
     }
     if (test['smile_line'] == true) {
-      grade -= 8;
+      grade -= 7;
     }
     if (test['freckle'] == true) {
-      grade -= 8;
+      grade -= 7;
     }
     if (test['chuan'] == true) {
-      grade -= 8;
+      grade -= 3;
     }
 
     return SingleChildScrollView(
@@ -150,7 +151,7 @@ class _CommentPageState extends State<CommentPage> {
                         Center(
                           child: Container(
                             margin: EdgeInsets.fromLTRB(0, 250, 0, 10),
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0XFF818181))),
                           ),
                         ),
                         Center(
@@ -168,7 +169,10 @@ class _CommentPageState extends State<CommentPage> {
                   } else {
                     return Column(
                       children: <Widget>[
-                        Card(
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey , width: 2),
+                          ),
                           margin: EdgeInsets.fromLTRB(100, 20, 100, 40),
                           child: Container(
                             width: 200,
@@ -176,23 +180,31 @@ class _CommentPageState extends State<CommentPage> {
                             child: displayImg(imagepath, isFront),
                           ),
                         ),
-                        Card(
+                        Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 210, 10),
                             child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                                  border: Border.all(color: Colors.grey , width: 2),
+                                ),
                                 height: 50,
-                                width: 100,
+                                width: 95,
                                 child: Center(
                                   child: Text(
                                     '$grade',
                                     style: TextStyle(
-                                      fontSize: 30,
+                                      fontSize: 20,
                                       color: Colors.grey,
                                     ),
                                   ),
                                 ))),
-                        Card(
+                        Container(
                             margin: EdgeInsets.fromLTRB(50, 0, 50, 5),
                             child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                                  border: Border.all(color: Colors.grey , width: 2),
+                                ),
                                 padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                                 height: 300,
                                 width: double.maxFinite,

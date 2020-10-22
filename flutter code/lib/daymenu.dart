@@ -100,7 +100,7 @@ class _DaymenuPageState extends State<DaymenuPage> {
 
   Future<List<FruitMenu>> _getMenu() async {
     print(id);
-    var url = "https://beautyagenda.000webhostapp.com/getMenu.php";
+    var url = "http://140.134.27.136:5001/getMenu.php";
     var data = {'id': id};
 
     var response = await http.post(url, body: json.encode(data));
@@ -118,53 +118,56 @@ class _DaymenuPageState extends State<DaymenuPage> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
+          backgroundColor: Colors.grey[250],
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Row(
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Icon(Icons.lightbulb_outline,
-                          color: Color(0xFF818181), size: 30),
-                      SizedBox(width: 5),
-                      Text(
-                        "小提示",
-                        style: TextStyle(
-                            fontFamily: 'GFSDidot',
-                            fontSize: 22,
-                            color: Color(0xFF818181)),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
+                  Icon(Icons.lightbulb_outline,
+                      color: Color(0xFF818181), size: 30),
+                  SizedBox(width: 5),
                   Text(
-                    "這裡會顯示每天需要攝取的營養素，並且介紹營養素相關資訊，讓你安心跟著Beauty Agenda !",
+                    "小提示",
+                    style: TextStyle(
+                        fontFamily: 'GFSDidot',
+                        fontSize: 22,
+                        color: Color(0xFF818181)),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Text(
+                "這裡會顯示每天需要攝取的營養素，並且介紹營養素相關資訊，讓你安心跟著Beauty Agenda !",
+                style: TextStyle(
+                    fontFamily: 'GFSDidot',
+                    fontSize: 20,
+                    color: Color(0xFF818181)),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                children: <Widget>[
+                  Icon(Icons.check_box, color: Color(0xFF818181), size: 35),
+                  SizedBox(width: 10),
+                  Text(
+                    "食用完畢記得打勾",
                     style: TextStyle(
                         fontFamily: 'GFSDidot',
                         fontSize: 20,
                         color: Color(0xFF818181)),
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(Icons.check_box, color: Color(0xFF818181), size: 35),
-                      SizedBox(width: 10),
-                      Text(
-                        "食用完畢記得打勾",
-                        style: TextStyle(
-                            fontFamily: 'GFSDidot',
-                            fontSize: 20,
-                            color: Color(0xFF818181)),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
                 ],
               ),
-            ));
+              SizedBox(
+                height: 5,
+              ),
+            ],
+          ),
+        ));
   }
 
   @override
@@ -190,6 +193,7 @@ class _DaymenuPageState extends State<DaymenuPage> {
               child: Checkbox(
                 tristate: false,
                 value: _isCheck,
+                activeColor: Color(0xFF818181),
                 onChanged: (isCheck) async {
                   setState(() {
                     _save(box, isCheck);
@@ -225,6 +229,9 @@ class _DaymenuPageState extends State<DaymenuPage> {
               showDialog(
                   context: context,
                   child: new AlertDialog(
+                    backgroundColor: Colors.grey[250],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(32.0))),
                     content: nutrient.elements(),
                   ));
             },
@@ -238,135 +245,137 @@ class _DaymenuPageState extends State<DaymenuPage> {
   @override
   Widget build(BuildContext context) {
     NavDrawerExample navDrawerExample = new NavDrawerExample(id);
-
-    return Scaffold(
+    return new Scaffold(
       appBar: Toptitle().Topbar(context,"每日養顏", id),
       body: SingleChildScrollView(
         physics: ScrollPhysics(),
-        child: Column(
-          children: <Widget>[
-            label.label('${nowTime.year} / ${nowTime.month} / ${nowTime.day}'),
-            Container(
-              child: FutureBuilder(
-                  future: _getMenu(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting &&
-                        snapshot.data == null) {
-                      return Column(
-                        children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 250, 0, 10),
-                            child: CircularProgressIndicator(),
-                          ),
-                          Text(
-                            "loading...",
+        child: Container(
+          color: Colors.white,
+          child: Column(
+            children: <Widget>[
+              label.label('${nowTime.year} / ${nowTime.month} / ${nowTime.day}'),
+              Container(
+                child: FutureBuilder(
+                    future: _getMenu(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting &&
+                          snapshot.data == null) {
+                        return Column(
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0, 250, 0, 10),
+                              child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0XFF818181))),
+                            ),
+                            Text(
+                              "loading...",
+                              style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontFamily: 'GFDSidot',
+                                  color: Color(0XFF818181)),
+                            ),
+                            SizedBox(height: 200),
+                          ],
+                        );
+                      } else if (snapshot.hasData) {
+                        return ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (BuildContext context, int id) {
+                              if (id == 0) {
+                                decide = _isCheck1;
+                                text = "box1";
+                              } else if (id == 1) {
+                                decide = _isCheck2;
+                                text = "box2";
+                              } else if (id == 2) {
+                                decide = _isCheck3;
+                                text = "box3";
+                              }
+                              return menuinfo(
+                                  decide,
+                                  text,
+                                  snapshot.data[id].food_name,
+                                  snapshot.data[id].food_nums);
+                            });
+                      } else {
+                        return Container(
+                          margin: EdgeInsets.fromLTRB(0, 250, 0, 180),
+                          child: Text(
+                            "目前尚無資料",
                             style: TextStyle(
-                                fontSize: 15.0,
-                                fontFamily: 'GFDSidot',
-                                color: Color(0XFF818181)),
+                                fontSize: 25.0,
+                                color: Color(0xFF818181),
+                                fontFamily: 'GFSDidot'),
                           ),
-                          SizedBox(height: 200),
-                        ],
-                      );
-                    } else if (snapshot.hasData) {
-                      return ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (BuildContext context, int id) {
-                            if (id == 0) {
-                              decide = _isCheck1;
-                              text = "box1";
-                            } else if (id == 1) {
-                              decide = _isCheck2;
-                              text = "box2";
-                            } else if (id == 2) {
-                              decide = _isCheck3;
-                              text = "box3";
-                            }
-                            return menuinfo(
-                                decide,
-                                text,
-                                snapshot.data[id].food_name,
-                                snapshot.data[id].food_nums);
-                          });
-                    } else {
-                      return Container(
-                        margin: EdgeInsets.fromLTRB(0, 250, 0, 180),
-                        child: Text(
-                          "目前查無資料",
-                          style: TextStyle(
-                              fontSize: 25.0,
-                              color: Color(0xFF818181),
-                              fontFamily: 'GFSDidot'),
-                        ),
-                      );
-                    }
-                  }),
-            ),
-            GestureDetector(
-              onTap: () async {
-                _read("box1");
-                _read("box2");
-                _read("box3");
-                print(_isCheck1);
-                print(_isCheck2);
-                print(_isCheck3);
-                if (_isCheck1 == true) {
-                  flag1 = 1;
-                }
-                if (_isCheck2 == true) {
-                  flag2 = 1;
-                }
-                if (_isCheck3 == true) {
-                  flag3 = 1;
-                }
-                if (flag1 == 1) {
-                  count++;
-                }
-                if (flag2 == 1) {
-                  count++;
-                }
-                if (flag3 == 1) {
-                  count++;
-                }
-                print(count);
-                double cnt = count / 21;
-                print(cnt);
-                _saveCount(cnt);
-                Navigator.of(context).pop();
-              },
-              child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
-                  child: Text('儲存',
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontFamily: 'GFDSidot',
-                          color: Color(0XFF818181)))),
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(
-                    Icons.unfold_more,
-                    size: 20,
-                    color: Colors.grey,
-                  ),
-                  Text(
-                    '上下滑動',
-                    style: TextStyle(
-                      fontSize: 23,
-                      fontFamily: 'GFDSidot',
+                        );
+                      }
+                    }),
+              ),
+              GestureDetector(
+                onTap: () async {
+                  _read("box1");
+                  _read("box2");
+                  _read("box3");
+                  print(_isCheck1);
+                  print(_isCheck2);
+                  print(_isCheck3);
+                  if (_isCheck1 == true) {
+                    flag1 = 1;
+                  }
+                  if (_isCheck2 == true) {
+                    flag2 = 1;
+                  }
+                  if (_isCheck3 == true) {
+                    flag3 = 1;
+                  }
+                  if (flag1 == 1) {
+                    count++;
+                  }
+                  if (flag2 == 1) {
+                    count++;
+                  }
+                  if (flag3 == 1) {
+                    count++;
+                  }
+                  print(count);
+                  double cnt = count / 21;
+                  print(cnt);
+                  _saveCount(cnt);
+                  Navigator.of(context).pop();
+                },
+                child: Container(
+                    margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                    child: Text('儲存',
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontFamily: 'GFDSidot',
+                            color: Color(0XFF818181)))),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
+                alignment: Alignment.bottomCenter,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.unfold_more,
+                      size: 20,
                       color: Colors.grey,
                     ),
-                  ),
-                ],
+                    Text(
+                      '上下滑動',
+                      style: TextStyle(
+                        fontSize: 23,
+                        fontFamily: 'GFDSidot',
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       drawer: navDrawerExample.drawer(context),

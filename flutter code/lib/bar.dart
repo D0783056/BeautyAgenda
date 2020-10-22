@@ -31,6 +31,7 @@ class Bar extends StatelessWidget {
 }
 
 class Toptitle {
+  // ignore: non_constant_identifier_names
   PreferredSize Topbar(BuildContext context, String titlename,int id) {
     return PreferredSize(
         child: AppBar(

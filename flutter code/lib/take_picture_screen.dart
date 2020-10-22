@@ -31,7 +31,8 @@ class _CameraScreenState extends State {
   _CameraScreenState(this.id);
 
   Future uploadFile() async {
-    var request = http.MultipartRequest('POST', Uri.parse("http://140.134.27.136:5000"));
+    var request =
+        http.MultipartRequest('POST', Uri.parse("http://140.134.27.136:5000"));
     request.files.add(await http.MultipartFile.fromPath('image', imgPath));
     var res = await request.send();
     res.stream.transform(utf8.decoder).listen((value) async {
@@ -97,9 +98,10 @@ class _CameraScreenState extends State {
     NavDrawerExample navDrawerExample = new NavDrawerExample(id);
     Toptitle toptitle = new Toptitle();
     return SafeArea(
+      top:false,
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar:toptitle.Topbar(context,'膚況檢測',id),
+        appBar: toptitle.Topbar(context, '膚況檢測', id),
         body: Column(
           children: <Widget>[
             SizedBox(
@@ -134,7 +136,7 @@ class _CameraScreenState extends State {
                   children: <Widget>[
                     Container(
                       width: 330,
-                      height: 520,
+                      height: 500,
                       child: _cameraPreviewWidget(),
                     ),
                     Align(
@@ -258,14 +260,16 @@ class _CameraScreenState extends State {
 
   void _onCapturePressed(context) async {
     try {
-      final path = join((await getTemporaryDirectory()).path, '${DateTime.now()}.jpg');
+      final path =
+          join((await getTemporaryDirectory()).path, '${DateTime.now()}.jpg');
       await controller.takePicture(path);
       imgPath = path;
       //await uploadFile();
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => IntermediateScreen(imgPath, id, isFront)),
+        MaterialPageRoute(
+            builder: (context) => IntermediateScreen(imgPath, id, isFront)),
       );
     } catch (e) {
       _showCameraException(e);

@@ -37,7 +37,7 @@ class RegisterUserState extends State {
     String passwordcheck = passwordcheckController.text;
 
     // SERVER API URL
-    var url = 'https://beautyagenda.000webhostapp.com/register.php';
+    var url = 'http://140.134.27.136:5001/register.php';
 
     // Store all data with Param Name.
     var data = {
@@ -107,19 +107,20 @@ class RegisterUserState extends State {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
+        top: false,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
                 color: const Color(0xFFFFD0D1),
-                height: 150.0,
+                height: 190.0,
                 width: 700.0,
                 child: Column(
                   children: <Widget>[
                     Container(
                         width: 500.0,
-                        padding: EdgeInsets.only(left: 48.0),
+                        padding: EdgeInsets.only(top: 30.0, left: 48.0),
                         child: Text(
                           "Beauty",
                           textAlign: TextAlign.left,
@@ -131,7 +132,7 @@ class RegisterUserState extends State {
                         )),
                     Container(
                         width: 500.0,
-                        padding: EdgeInsets.only(right: 48.0),
+                        padding: EdgeInsets.only(top: 10.0, right: 48.0),
                         child: Text(
                           "Agenda",
                           textAlign: TextAlign.right,
@@ -145,7 +146,7 @@ class RegisterUserState extends State {
                 ),
               ),
               Container(
-                  padding: EdgeInsets.only(left: 20, top: 10.0, bottom: 15.0),
+                  padding: EdgeInsets.only(left: 20, top: 20.0, bottom: 15.0),
                   child: Text(
                     "註冊",
                     style: TextStyle(

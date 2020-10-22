@@ -14,7 +14,7 @@ class _Cylinder extends StatelessWidget {
     return AnimatedContainer(
       duration: Duration(seconds: 1),
       height: height,
-      width: 10.0,
+      width: 8.0,
       color: Color(0XFFFFD0D1),
     );
   }
@@ -131,7 +131,7 @@ class _CylinderChartState extends State<CylinderChart> {
                                     margin: EdgeInsets.fromLTRB(10, 100, 10, 30),
                                     color: Color(0XFFD1CDCD),
                                     child: SizedBox(
-                                      width: 300,
+                                      width: 270,
                                       height:2,
                                     ),
                                   ),
@@ -139,7 +139,7 @@ class _CylinderChartState extends State<CylinderChart> {
                                     margin: EdgeInsets.fromLTRB(10, 50, 10, 30),
                                     color: Color(0XFFD1CDCD),
                                     child: SizedBox(
-                                      width: 300,
+                                      width: 270,
                                       height: 2,
                                     ),
                                   )
@@ -195,23 +195,34 @@ class _CylinderChartState extends State<CylinderChart> {
                       ),
                     ),
                   );
-                }
-                else{
+                } else if(snapshot.connectionState == ConnectionState.waiting &&
+                    snapshot.data == null) {
                   return Column(
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 100, 0, 0),
-                        child: CircularProgressIndicator(),
+                        margin: EdgeInsets.fromLTRB(0, 100, 0, 15),
+                        child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Color(0XFF818181))),
                       ),
                       Text(
                         "loading...",
                         style: TextStyle(
-                            fontSize: 15.0,
+                            fontSize: 20,
                             fontFamily: 'GFDSidot',
                             color: Color(0XFF818181)),
                       ),
                       SizedBox(height: 200),
                     ],
+                  );
+                } else {
+                  return Container(
+                    margin: EdgeInsets.fromLTRB(0, 130, 0, 140),
+                    child: Text(
+                      "目前尚無資料",
+                      style: TextStyle(
+                          fontSize: 25.0,
+                          color: Color(0xFF818181),
+                          fontFamily: 'GFSDidot'),
+                    ),
                   );
                 }
               },

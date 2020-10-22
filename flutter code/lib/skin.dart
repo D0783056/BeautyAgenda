@@ -24,6 +24,7 @@ class MyStatelessWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     NavDrawerExample navDrawerExample = new NavDrawerExample(id);
     return SafeArea(
+      top:false,
       child: Scaffold(
         appBar: Toptitle().Topbar(context,'膚況變化',id),
         body: Skin_change(id),

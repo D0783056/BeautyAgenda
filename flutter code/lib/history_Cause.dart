@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:beauty_agenda/week_menu.dart';
+import 'week_menu.dart';
 
-class Cause {
+class History_Cause {
   var test;
-  Cause(this.test);
+  History_Cause(this.test);
 
   Widget causes1() {
+    if (int.parse(test['acne']) == 1) {
       return Column(
         children: <Widget>[
           symptom("痘痘"),
@@ -13,9 +14,13 @@ class Cause {
           recommend("角質代謝異常", "建議多補充維他命A")
         ],
       );
+    } else {
+      return Container(
+      );
     }
+  }
   Widget causes2() {
-    if(test['freckle'] == true) {
+    if(int.parse(test['freckle']) == 1) {
       return Column(
         children: <Widget>[
           symptom("雀斑"),
@@ -28,7 +33,7 @@ class Cause {
     }
   }
   Widget causes3() {
-    if(test['chuan'] == true) {
+    if(int.parse(test['chuan']) == 1) {
       return Column(
         children: <Widget>[
           symptom("川字紋"),
@@ -41,7 +46,7 @@ class Cause {
     }
   }
   Widget causes4() {
-    if(test['crow'] == true) {
+    if(int.parse(test['crow']) == 1) {
       return Column(
         children: <Widget>[
           symptom("魚尾紋"),
@@ -54,7 +59,7 @@ class Cause {
     }
   }
   Widget causes5() {
-    if(test['smile_line'] == true) {
+    if(int.parse(test['smile_line']) == 1) {
       return Column(
         children: <Widget>[
           symptom("法令紋"),
@@ -67,7 +72,7 @@ class Cause {
     }
   }
   Widget causes6() {
-    if(test['forehead'] == true) {
+    if(int.parse(test['forehead']) == 1) {
       return Column(
         children: <Widget>[
           symptom("抬頭紋"),
@@ -80,7 +85,7 @@ class Cause {
     }
   }
   Widget causes7() {
-    if(test['dark_circle'] == true) {
+    if(int.parse(test['dark_circle']) == 1) {
       return Column(
         children: <Widget>[
           symptom("黑眼圈"),
@@ -117,22 +122,27 @@ Widget symptom(String sname) {
 Widget recommend(String cause,String recommend) {
   return Column(
     children: <Widget>[
+      Container(
+        color: Colors.grey[300],
+        width: double.maxFinite,
+        height: 1,
+      ),
       Row(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.fromLTRB(30, 10, 0, 0),
+            margin: EdgeInsets.fromLTRB(45, 10, 0, 0),
             child: Icon(
               Icons.fiber_manual_record,
-              size: 15,
+              size: 10,//TODO 改大小
               color: Color(0XFF818181),
             ),
           ),
           Container(
-            margin: EdgeInsets.fromLTRB(0, 10, 30, 0),
+            margin: EdgeInsets.fromLTRB(5, 10, 30, 0),
             child: Text(
               '$cause',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 20,//TODO 改大小
                 fontFamily: 'GFDSidot',
                 color: Color(0XFF818181),
               ),
@@ -141,7 +151,7 @@ Widget recommend(String cause,String recommend) {
         ],
       ),
       Container(
-        margin: EdgeInsets.fromLTRB(45, 10, 30, 0),
+        margin: EdgeInsets.fromLTRB(60, 10, 30, 0),
         child: Text(
           '$recommend',
           style: TextStyle(
