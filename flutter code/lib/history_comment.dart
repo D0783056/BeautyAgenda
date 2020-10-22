@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+﻿import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'week_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,7 +52,7 @@ class _HistoryCommentState extends State<HistoryComment> {
   }
 
   Future _getJudgeresult() async {
-    var gradeurl = 'http://140.134.26.187/get_Judge_result.php';
+    var gradeurl = 'http://140.134.26.187/BeautyAgenda/get_Judge_result.php';
     var User = {
       'User_id': id,
       'nowtime' : nowtime,

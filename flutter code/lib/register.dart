@@ -1,4 +1,4 @@
-import 'package:beauty_agenda/login.dart';
+﻿import 'package:beauty_agenda/login.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -37,7 +37,7 @@ class RegisterUserState extends State {
     String passwordcheck = passwordcheckController.text;
 
     // SERVER API URL
-    var url = 'http://140.134.27.136:5001/register.php';
+    var url = 'http://140.134.26.187/BeautyAgenda/register.php';
 
     // Store all data with Param Name.
     var data = {

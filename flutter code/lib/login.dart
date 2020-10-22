@@ -1,4 +1,4 @@
-import 'package:beauty_agenda/register.dart';
+﻿import 'package:beauty_agenda/register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'forgetpasswd.dart';
@@ -26,7 +26,7 @@ class LoginUserState extends State {
   Future getUserId() async {
     String email = emailController.text;
 
-    var url = 'http://140.134.27.136:5001/getTest.php';
+    var url = 'http://140.134.26.187/BeautyAgenda/getTest.php';
     var data = {'email': email};
 
     var response =  await http.post(url, body: json.encode(data));
@@ -50,7 +50,7 @@ class LoginUserState extends State {
     String password = passwordController.text;
 
     // SERVER LOGIN API URL
-    var url = 'http://140.134.27.136:5001/login.php';
+    var url = 'http://140.134.26.187/BeautyAgenda/login.php';
 
     // Store all data with Param Name.
     var data = {'email': email, 'password' : password};

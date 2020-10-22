@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -103,7 +103,7 @@ class _WeekmenuPageState extends State<WeekmenuPage> {
   }
 
   Future<List<Intake>> _getIntake() async {
-    var url = "http://140.134.27.136:5001/intake.php";
+    var url = "http://140.134.26.187/BeautyAgenda/intake.php";
     var data = {'id': id};
 
     var response = await http.post(url, body: json.encode(data));

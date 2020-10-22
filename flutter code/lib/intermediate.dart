@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'dart:io' as IO;
 import 'dart:math' as math;
 import 'dart:convert';
@@ -38,7 +38,7 @@ class IntermediateScreenState extends State {
   }
 
   Future uploadFile() async {
-    var request = http.MultipartRequest('POST', Uri.parse("http://140.134.27.136:5000"));
+    var request = http.MultipartRequest('POST', Uri.parse("http://140.134.26.187:5000"));
     request.files.add(await http.MultipartFile.fromPath('image', imagePath));
     var res = await request.send();
     res.stream.transform(utf8.decoder).listen((value) async {

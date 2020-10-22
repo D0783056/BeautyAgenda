@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,7 +37,7 @@ class _CylinderChartState extends State<CylinderChart> {
 
 
   Future getData() async{
-    var gradeurl = 'http://140.134.27.136:5001/grade.php';
+    var gradeurl = 'http://140.134.26.187/BeautyAgenda/grade.php';
     var User_id = {
       'User_id': id,
     };

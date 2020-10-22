@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:flutter/material.dart';
 import 'week_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -100,7 +100,7 @@ class _DaymenuPageState extends State<DaymenuPage> {
 
   Future<List<FruitMenu>> _getMenu() async {
     print(id);
-    var url = "http://140.134.27.136:5001/getMenu.php";
+    var url = "http://140.134.26.187/BeautyAgenda/getMenu.php";
     var data = {'id': id};
 
     var response = await http.post(url, body: json.encode(data));

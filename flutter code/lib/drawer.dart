@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'skin.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -11,7 +11,7 @@ class NavDrawerExample extends StatelessWidget {
   NavDrawerExample(this.id);
 
   Future getName() async {
-    var gradeurl = 'http://140.134.27.136:5001/getName.php';
+    var gradeurl = 'http://140.134.26.187/BeautyAgenda/getName.php';
 
     var User_id = {
       'id': id,
