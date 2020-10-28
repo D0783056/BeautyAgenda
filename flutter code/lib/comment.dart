@@ -68,7 +68,7 @@ class _CommentPageState extends State<CommentPage> {
   }
 
   Future userDisease() async {
-    var url = 'https://beautyagenda.000webhostapp.com/InsertDisease.php';
+    var url = 'https://140.134.26.187/BeautyAgenda/InsertDisease.php';
     print(test);
     var response = await http.post(url, body: json.encode(test));
     if (response.statusCode == 200) {
@@ -77,7 +77,7 @@ class _CommentPageState extends State<CommentPage> {
   }
 
   Future<List<Symptoms>> getSymptoms() async {
-    var url = "https://beautyagenda.000webhostapp.com/symptom.php";
+    var url = "https://140.134.26.187/BeautyAgenda/symptom.php";
     var response = await http.post(url, body: json.encode(test));
     var message = json.decode(response.body);
     List<Symptoms> symp = [];
@@ -89,7 +89,7 @@ class _CommentPageState extends State<CommentPage> {
   }
 
   Future saveHistory() async {
-    var url = 'http://140.134.27.136:5001/saveHistory.php';
+    var url = 'http://140.134.26.187:5000/saveHistory.php';
 
     test.addAll({"grade": grade});
     test.addAll({"time": date.toString()});
