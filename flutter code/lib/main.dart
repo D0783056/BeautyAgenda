@@ -3,9 +3,9 @@ import "package:flutter/material.dart";
 import 'SplashScreen.dart';
 import 'package:flutter/services.dart';
 
-void main() => runApp(History_day(19));
+void main() => runApp(MyApp());
 
-class Myapp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
