@@ -1,14 +1,12 @@
 import 'take_picture_screen.dart';
 import 'package:flutter/material.dart';
-import 'mood_record.dart';
-import 'daymenu.dart';
-import 'week.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'login.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
-  int id = 0;
+  int id;
   HomePage(int id) {
     this.id = id;
   }
@@ -16,8 +14,24 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State {
-  int id = 0;
+  int id;
+  int useday = 0;
+  String username;
+
   HomePageState(this.id);
+  GlobalKey<NavigatorState> _key = GlobalKey();
+  Future getName() async {
+    var gradeurl = 'http://140.134.26.187/BeautyAgenda/getName.php';
+
+    var User_id = {
+      'id': id,
+    };
+    http.Response res = await http.post(gradeurl, body: json.encode(User_id));
+    String jsonDataString = res.body.toString();
+    var getName = jsonDecode(jsonDataString);
+    username = getName.toString().substring(7, getName.toString().length - 2);
+    return username;
+  }
 
   void pushToCamera(BuildContext context) async {
     Navigator.push(
@@ -28,18 +42,6 @@ class HomePageState extends State {
     );
   }
 
-  _save() async {
-    final prefs = await SharedPreferences.getInstance();
-    try {
-      setState(() async {
-        await prefs.setInt("id", id);
-        print('saved $id');
-      });
-    } catch (err) {
-      err.toString();
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -48,35 +50,7 @@ class HomePageState extends State {
   @override
   Widget build(BuildContext context) {
     print(id);
-    return WillPopScope(
-      onWillPop: () => showDialog<bool>(
-        context: context,
-        builder: (c) => AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0))),
-          title: Text('Do you want to log out?'),
-          actions: [
-            FlatButton(
-                child: Text('Yes',style: TextStyle(color: const Color(0xFF818181))),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginPage(),
-                    ),
-                  );
-                }
-            ),
-            FlatButton(
-              child: Text('No',style: TextStyle(color: const Color(0xFF818181))),
-              onPressed: () => Navigator.pop(c, false),
-            ),
-          ],
-        ),
-      ),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
+    return Scaffold(
           backgroundColor: Colors.white,
           body: SafeArea(
             top: false,
@@ -85,15 +59,15 @@ class HomePageState extends State {
                 children: <Widget>[
                   Container(
                     color: const Color(0xFFFFD0D1),
-                    height: 190.0,
+                    height: 140.0,
                     width: double.maxFinite,
                     child: Column(
                       children: <Widget>[
                         Container(
                             width: 500.0,
-                            padding: EdgeInsets.fromLTRB(80, 50, 0, 0),
+                            padding: EdgeInsets.fromLTRB(30, 60, 0, 0),
                             child: Text(
-                              "Beauty",
+                              "Beauty Agenda",
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontFamily: 'GFSDidot',
@@ -102,161 +76,64 @@ class HomePageState extends State {
                                 color: Colors.white,
                               ),
                             )),
-                        Container(
-                            width: 500.0,
-                            padding: EdgeInsets.fromLTRB(0, 10, 80, 20),
-                            child: Text(
-                              "Agenda",
-                              textAlign: TextAlign.right,
-                              style: new TextStyle(
-                                fontFamily: 'GFSDidot',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 40.0,
-                                color: Colors.white,
-                              ),
-                            )),
+
+
                       ],
                     ),
                   ),
                   Container(
-                    child: Stack(
-                      children: <Widget>[
-                        Positioned(
-                            child: Container(
-                              color: Color(0XFFFFD0D1),
-                              height: 500,
-                            )),
-                        Positioned(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: new BorderRadius.vertical(
-                                    top: Radius.elliptical(50, 50)),
-                              ),
-                              child: Column(
-                                children: <Widget>[
-                                  Container(
-                                    child: Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 1,
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              _save();
-                                              print("Tapped a Container");
-                                              this.pushToCamera(context);
-                                            },
-                                            child: Container(
-                                                margin:
-                                                EdgeInsets.fromLTRB(45, 110, 25, 0),
-                                                child: putcard('膚況檢測', Icons.face)),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              _save();
-                                              print("Tapped a Container");
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        MoodRecordPage()),
-                                              );
-                                            },
-                                            child: Container(
-                                                margin:
-                                                EdgeInsets.fromLTRB(25, 110, 45, 0),
-                                                child: putcard('心情追蹤', Icons.favorite)),
-                                          ),
-                                        )
-                                      ],
+                      child: FutureBuilder<dynamic>(
+                        future: getName(),
+                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting &&
+                              snapshot.data == null) {
+                            return Container(
+                            );
+                          } else {
+                            return Container(
+                              margin: EdgeInsets.fromLTRB(50, 50, 20, 0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Dear$username,   你成功堅持$useday天',
+                                    style: TextStyle(
+                                      color: Color(0XFF818181),
+                                      fontFamily: 'GFSDidot',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25.0,
                                     ),
                                   ),
-                                  Container(
-                                    child: Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 1,
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              _save();
-                                              print("Tapped a Container");
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (BuildContext context) =>
-                                                          DaymenuPage()));
-                                            },
-                                            child: Container(
-                                                margin:
-                                                EdgeInsets.fromLTRB(45, 60, 25, 0),
-                                                child: putcard('每日養顏', Icons.today)),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              _save();
-                                              print('123');
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) => Week(id)),
-                                              );
-                                            },
-                                            child: Container(
-                                                margin:
-                                                EdgeInsets.fromLTRB(25, 60, 45, 0),
-                                                child: putcard('每週養顏', Icons.date_range)),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  //--------------
-                                  Container(
-                                      margin: EdgeInsets.fromLTRB(0, 70, 0, 65),
-                                      child: Column(
-                                        children: <Widget>[
-                                          Text(
-                                            "Beauty & Health,",
-                                            style: TextStyle(
-                                              fontFamily: 'GFSDidot',
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20.0,
-                                              color: const Color(0xFF818181),
-                                            ),
-                                          ),
-                                          Text(
-                                            "Make your day.",
-                                            style: TextStyle(
-                                              fontFamily: 'GFSDidot',
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20.0,
-                                              color: const Color(0xFF818181),
-                                            ),
-                                          ),
-                                        ],
-                                      )),
+                                  Icon(Icons.favorite)
                                 ],
                               ),
-                            )),
-                      ],
-                    ),
+                            );
+                          }
+                        },
+                      ),
                   ),
 
-
-
+                  Container(
+                    child: Row(
+                      children: [
+                        Container(
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                height: 100,
+                                  width: 100,
+                                  child:Image.asset('images/icon.jpg'),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
           ),
-        ),
-      ),
-    );
+        );
   }
 }
 
@@ -266,7 +143,7 @@ Widget putcard(String name, IconData icon) {
         border: Border.all(color: Colors.grey[500], width: 2.5),
         borderRadius: new BorderRadius.all(Radius.circular(20))),
     width: 120,
-    height: 120,
+    height: 60,
     child: Column(
       children: <Widget>[
         SizedBox(

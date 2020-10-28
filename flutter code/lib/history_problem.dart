@@ -32,7 +32,7 @@ class _History_problemState extends State<History_problem> {
 
   Future getproblem() async {
 
-    var gradeurl = 'http://140.134.27.136:5001/get_problem.php';
+    var gradeurl = 'http://140.134.26.187/BeautyAgenda/get_problem.php';
     var User = {
       'User_id': id,
       'nowtime' : nowtime,

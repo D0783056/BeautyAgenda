@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'dart:io' as IO;
 import 'dart:math' as math;
 import 'dart:convert';
@@ -48,7 +48,7 @@ class IntermediateScreenState extends State {
   }
 
   Future userMenu() async {
-    var url = 'https://beautyagenda.000webhostapp.com/fruit.php';
+    var url = 'https://140.134.26.187/BeautyAgenda/fruit.php';
 
     var response = await http.post(url, body: json.encode(test));
     if (response.statusCode == 200) {

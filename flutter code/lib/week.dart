@@ -6,9 +6,13 @@ import 'drawer.dart';
 
 class Week extends StatelessWidget {
   int id;
-  Week(this.id);
+  Week(int id){
+    this.id = id;
+  }
   @override
   Widget build(BuildContext context) {
+    print("id:");
+    print(id);
     return  MyStatelessWidget(id);
   }
 }
@@ -17,12 +21,16 @@ class Week extends StatelessWidget {
 // ignore: must_be_immutable
 class MyStatelessWidget extends StatelessWidget {
   int id;
-  MyStatelessWidget(this.id);
+  MyStatelessWidget(int id){
+   this.id = id;
+  }
   Tabs tabs = new Tabs("dd",1,1,1);
   Toptitle weektitle = Toptitle();
 
   @override
   Widget build(BuildContext context) {
+    print("-----------");
+    print(id);
     NavDrawerExample navDrawerExample = new NavDrawerExample(id);
     return Scaffold(
       appBar: weektitle.Topbar(context,'每週養顏',id),

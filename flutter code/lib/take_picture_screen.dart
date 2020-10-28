@@ -1,4 +1,4 @@
-﻿import 'package:camera/camera.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
@@ -136,7 +136,7 @@ class _CameraScreenState extends State {
                   children: <Widget>[
                     Container(
                       width: 330,
-                      height: 500,
+                      height: 440,
                       child: _cameraPreviewWidget(),
                     ),
                     Align(

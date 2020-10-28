@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'week_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';

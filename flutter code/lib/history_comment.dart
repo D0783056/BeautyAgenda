@@ -1,4 +1,4 @@
-﻿import 'dart:typed_data';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'week_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';

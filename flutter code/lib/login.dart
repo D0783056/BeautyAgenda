@@ -1,6 +1,8 @@
-﻿import 'package:beauty_agenda/register.dart';
+import 'package:beauty_agenda/BottomNavigationBar.dart';
+import 'package:beauty_agenda/register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'forgetpasswd.dart';
 import 'homepage.dart';
 import 'dart:convert';
@@ -37,7 +39,17 @@ class LoginUserState extends State {
       print('login $ii');
     }
   }
-
+  _save() async {
+    final prefs = await SharedPreferences.getInstance();
+    try {
+      setState(() async {
+        await prefs.setInt("id", ii);
+        print('saved $ii');
+      });
+    } catch (err) {
+      err.toString();
+    }
+  }
   Future userLogin() async{
 
     // Showing CircularProgressIndicator.
@@ -76,9 +88,10 @@ class LoginUserState extends State {
               FlatButton(
                 child: new Text("OK"),
                 onPressed: () {
+                  _save();
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HomePage(ii))
+                      MaterialPageRoute(builder: (context) => BottomNavigation(ii) )
                   );
                 },
               ),
@@ -108,7 +121,10 @@ class LoginUserState extends State {
       );
     }
   }
-
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,4 +1,4 @@
-﻿import 'dart:convert';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'dart:io' as IO;
 import 'package:http/http.dart' as http;
@@ -38,7 +38,7 @@ class _CommentPageState extends State<CommentPage> {
   var date = DateTime.now();
 
   Future userRegistration(String fileName) async {
-    var url = 'http://140.134.26.187/BeautyAgenda/upload.php';
+    var url = 'https://140.134.26.187/BeautyAgenda/upload.php';
 
     var data = {
       'users_id': id,
@@ -103,7 +103,7 @@ class _CommentPageState extends State<CommentPage> {
   }
 
   Future userMenu() async {
-    var url = 'http://140.134.26.187/BeautyAgenda/fruit.php';
+    var url = 'https://140.134.26.187/BeautyAgenda/fruit.php';
     test.addAll({"id": id});
     print(test);
     var response = await http.post(url, body: json.encode(test));
