@@ -1,3 +1,6 @@
+import 'package:beauty_agenda/history_day.dart';
+import 'package:beauty_agenda/skin.dart';
+
 import 'take_picture_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -91,7 +94,7 @@ class HomePageState extends State {
                             );
                           } else {
                             return Container(
-                              margin: EdgeInsets.fromLTRB(50, 50, 20, 0),
+                              margin: EdgeInsets.fromLTRB(50, 80, 20, 0),
                               child: Row(
                                 children: [
                                   Text(
@@ -100,7 +103,7 @@ class HomePageState extends State {
                                       color: Color(0XFF818181),
                                       fontFamily: 'GFSDidot',
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 25.0,
+                                      fontSize: 23.0,
                                     ),
                                   ),
                                   Icon(Icons.favorite)
@@ -115,20 +118,85 @@ class HomePageState extends State {
                   Container(
                     child: Row(
                       children: [
-                        Container(
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                height: 100,
-                                  width: 100,
-                                  child:Image.asset('images/icon.jpg'),
-                              )
-                            ],
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            margin: EdgeInsets.fromLTRB(50, 60, 20, 0),
+                            height: 130,
+                            width: 130,
+                            child:Image.asset('images/icon.jpg'),
                           ),
                         ),
+                        Expanded(
+                          child: Container(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Container(
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => History_day(id),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                      child: putcard('檢測歷史')),
+                                ),
+                              ),
+                              Container(
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => Skin(id)),
+                                    );
+                                  },
+                                  child: Container(
+                                      child: putcard('膚況變化')),
+                                ),
+                              ),
+                              Container(
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    print("Tapped a Container");
+                                  },
+                                  child: Container(
+                                      child: putcard('體質問卷')),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),)
                       ],
                     ),
-                  )
+                  ),
+                  Container(
+                      margin: EdgeInsets.fromLTRB(0, 70, 0, 0),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            "Beauty & Health,",
+                            style: TextStyle(
+                              fontFamily: 'GFSDidot',
+                              fontSize: 20.0,
+                              color: const Color(0xFF818181),
+                            ),
+                          ),
+                          Text(
+                            "Make your Day.",
+                            style: TextStyle(
+                              fontFamily: 'GFSDidot',
+                              fontSize: 20.0,
+                              color: const Color(0xFF818181),
+                            ),
+                          ),
+                        ],
+                      )),
                 ],
               ),
             ),
@@ -137,34 +205,31 @@ class HomePageState extends State {
   }
 }
 
-Widget putcard(String name, IconData icon) {
+Widget putcard(String name) {
   return Container(
+    margin: EdgeInsets.only(bottom: 10,top: 30),
     decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[500], width: 2.5),
-        borderRadius: new BorderRadius.all(Radius.circular(20))),
+      color: Colors.grey[300],
+        borderRadius: new BorderRadius.all(Radius.circular(10))),
     width: 120,
-    height: 60,
+    height: 40,
     child: Column(
       children: <Widget>[
         SizedBox(
-          height: 10,
+          height: 5,
         ),
         Text(
           '$name',
           style: TextStyle(
             fontSize: 20,
             fontFamily: 'GFDSidiot',
-            color: Color(0XFF818181),
+            color: Colors.grey[700],
           ),
         ),
         SizedBox(
-          height: 10,
+          height: 5,
         ),
-        Icon(
-          icon,
-          size: 45,
-          color: Color(0XFF818181),
-        )
+
       ],
     ),
   );

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:beauty_agenda/BottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'week_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -342,7 +343,12 @@ class _DaymenuPageState extends State<DaymenuPage> {
                   double cnt = count / 21;
                   print(cnt);
                   _saveCount(cnt);
-                  Navigator.of(context).pop();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BottomNavigation(id),
+                    ),
+                  );
                 },
                 child: Container(
                     margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
@@ -378,7 +384,6 @@ class _DaymenuPageState extends State<DaymenuPage> {
           ),
         ),
       ),
-      drawer: navDrawerExample.drawer(context),
     );
   }
 }

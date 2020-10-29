@@ -1,3 +1,4 @@
+import 'package:beauty_agenda/BottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'drawer.dart';
 import 'skin_change.dart';
@@ -26,9 +27,35 @@ class MyStatelessWidget extends StatelessWidget {
     return SafeArea(
       top:false,
       child: Scaffold(
-        appBar: Toptitle().Topbar(context,'膚況變化',id),
+        appBar:AppBar(
+          backgroundColor: Color(0xFFFFD0D1),
+          leading: IconButton(
+            icon: const Icon(
+              Icons.keyboard_arrow_left,
+              size: 40,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BottomNavigation(id),
+                ),
+              );
+            },
+            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+          ),
+          title: Center(
+            child: Text(
+              '膚況變化',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 35,
+                fontFamily: 'GFSDidot',
+              ),
+            ),
+          ),
+        ),
         body: Skin_change(id),
-        drawer: navDrawerExample.drawer(context),
       ),
     );
   }

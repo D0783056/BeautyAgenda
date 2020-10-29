@@ -468,7 +468,6 @@ class MoodRecordPageState extends State<MoodRecordPage> {
           ],
         ),
       ),
-      drawer: navDrawerExample.drawer(context),
     );
   }
 }

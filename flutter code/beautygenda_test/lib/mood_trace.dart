@@ -314,7 +314,6 @@ class MoodTracePageState extends State<MoodTracePage> {
           ],
         ),
       ),
-      drawer: navDrawerExample.drawer(context),
     );
   }
 }

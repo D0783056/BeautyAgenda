@@ -35,7 +35,6 @@ class MyStatelessWidget extends StatelessWidget {
     return Scaffold(
       appBar: weektitle.Topbar(context,'每週養顏',id),
       body: WeekmenuPage(),
-      drawer: navDrawerExample.drawer(context),
     );
   }
 }

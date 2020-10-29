@@ -1,3 +1,4 @@
+import 'package:beauty_agenda/history_day.dart';
 import 'package:flutter/material.dart';
 import 'drawer.dart';
 import 'history_choose.dart';
@@ -31,9 +32,35 @@ class _History_bar extends StatelessWidget {
     NavDrawerExample navDrawerExample = new NavDrawerExample(id);
     History_tabs history_tabs = new History_tabs(id);
     return Scaffold(
-      appBar: toptitle.Topbar(context,'檢測歷史',id),
+      appBar: AppBar(
+        backgroundColor: Color(0xFFFFD0D1),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.keyboard_arrow_left,
+            size: 40,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => History_day(id),
+              ),
+            );
+          },
+          tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+        ),
+        title: Center(
+          child: Text(
+            '檢測歷史',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 35,
+              fontFamily: 'GFSDidot',
+            ),
+          ),
+        ),
+      ),
       body: history_tabs,
-      drawer: navDrawerExample.drawer(context),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:beauty_agenda/BottomNavigationBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'date.dart';
@@ -56,7 +57,34 @@ class _History_day extends StatelessWidget {
     print("history $ids");
     NavDrawerExample navDrawerExample = new NavDrawerExample(ids);
     return Scaffold(
-      appBar: Toptitle().Topbar(context, '檢測歷史', ids),
+      appBar: AppBar(
+        backgroundColor: Color(0xFFFFD0D1),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.keyboard_arrow_left,
+            size: 40,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BottomNavigation(ids),
+              ),
+            );
+          },
+          tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+        ),
+        title: Center(
+          child: Text(
+            '檢測歷史',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 35,
+              fontFamily: 'GFSDidot',
+            ),
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         physics: ScrollPhysics(),
         child: Column(

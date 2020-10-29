@@ -25,7 +25,6 @@ class Bar extends StatelessWidget {
     return Scaffold(
       appBar:toptitle.Topbar(context,'膚況報告',id),
       body: tabs,
-      drawer: navDrawerExample.drawer(context),
     );
   }
 }
@@ -36,7 +35,6 @@ class Toptitle {
     return PreferredSize(
         child: AppBar(
           backgroundColor: Color(0xFFFFD0D1),
-          leading: NavDrawerExample(id),
           title: Center(
             child: Text(
               '$titlename',
@@ -47,18 +45,6 @@ class Toptitle {
               ),
             ),
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.home),
-              iconSize: 40,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage(id)),
-                );
-              },
-            ),
-          ],
         ),
         preferredSize: Size.fromHeight(60));
   }

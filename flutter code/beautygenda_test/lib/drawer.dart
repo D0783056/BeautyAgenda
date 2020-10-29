@@ -29,11 +29,10 @@ class NavDrawerExample extends StatelessWidget {
       builder: (BuildContext context) {
         return IconButton(
           icon: const Icon(
-            Icons.person,
+            Icons.keyboard_arrow_left,
             size: 40,
           ),
           onPressed: () {
-            Scaffold.of(context).openDrawer();
           },
           tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
         );
