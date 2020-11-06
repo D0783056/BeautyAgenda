@@ -1,23 +1,68 @@
+import 'login.dart';
 import 'package:flutter/material.dart';
 import 'Question.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'function.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
+// ignore: must_be_immutable
 class Questionnaire extends StatefulWidget {
-  QuestionnaireState createState() => QuestionnaireState();
+  int id;
+  Questionnaire(int id) {
+    this.id = id;
+  }
+  QuestionnaireState createState() => QuestionnaireState(id);
 }
 
 class QuestionnaireState extends State {
+  int id;
   List<String> _checked1 = [];
   List<String> _checked2 = [];
   List<String> _checked3 = [];
   List<String> _checked4 = [];
   List<String> _checked5 = [];
-
-  QuestionnaireState();
+  List<String> _checked6 = [];
+  List<String> _checked7 = [];
+  List<String> _checked8 = [];
+  String bodySituation;
+  int score;
+  QuestionnaireState(this.id);
 
   @override
   void initState() {
     super.initState();
+  }
+
+  Future insertBody() async {
+    //TODO 阿吉要改成你自己SERVER的PHP檔名稱
+    var url = 'https://beautyagenda.000webhostapp.com/body.php';
+    var data = {'id': id, 'body': bodySituation};
+    var response = await http.post(url, body: json.encode(data));
+    var message = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            title: new Text(message,textAlign: TextAlign.center),
+            actions: <Widget>[
+              FlatButton(
+                child: new Text("OK"),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage())
+                  );
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -138,6 +183,42 @@ class QuestionnaireState extends State {
                           }
                           _checked5 = selected;
                         }), alignText: 120),
+                    Question(
+                        name: "Q6. 最近常常熬夜?",
+                        checked: _checked6,
+                        onSelected: (List selected) => setState(() {
+                          if (selected.length > 1) {
+                            selected.removeAt(0);
+                            print('selected length  ${selected.length}');
+                          } else {
+                            print("only one");
+                          }
+                          _checked6 = selected;
+                        }), alignText: 120),
+                    Question(
+                        name: "Q7. 最近三餐時間不固定?",
+                        checked: _checked7,
+                        onSelected: (List selected) => setState(() {
+                          if (selected.length > 1) {
+                            selected.removeAt(0);
+                            print('selected length  ${selected.length}');
+                          } else {
+                            print("only one");
+                          }
+                          _checked7 = selected;
+                        }), alignText: 50),
+                    Question(
+                        name: "Q8. 最近常常吃消夜?",
+                        checked: _checked8,
+                        onSelected: (List selected) => setState(() {
+                          if (selected.length > 1) {
+                            selected.removeAt(0);
+                            print('selected length  ${selected.length}');
+                          } else {
+                            print("only one");
+                          }
+                          _checked8 = selected;
+                        }), alignText: 100),
                     Container(
                       margin: EdgeInsets.fromLTRB(40, 30, 50, 30),
                       height: 50.0,
@@ -152,12 +233,14 @@ class QuestionnaireState extends State {
                               fontSize: 25.0,
                               color: Colors.grey[700]),
                         ),
-                        onPressed: ()  {
-                          if(isAllChecked(_checked1, _checked2, _checked3, _checked4, _checked5) == true) {
-                            print(getScore(_checked1, _checked2, _checked3, _checked4, _checked5));
+                        onPressed: () async {
+                          if(isAllChecked(_checked1, _checked2, _checked3, _checked4, _checked5, _checked6, _checked7, _checked8) == true) {
+                            score = getScore(_checked1, _checked2, _checked3, _checked4, _checked5, _checked6, _checked7, _checked8);
+                            bodySituation = bodySituations(score);
+                            await insertBody();
                           } else {
-                            Fluttertoast.showToast(
-                              msg: "上有選項尚未勾選!", backgroundColor: Colors.grey,);
+                            Fluttertoast.showToast(msg: "上有選項尚未勾選!", backgroundColor: Colors.grey,);
+                            return;
                           }
                         },
                       ),
@@ -171,25 +254,4 @@ class QuestionnaireState extends State {
       ),
     );
   }
-}
-
-bool isAllChecked(List<String> c1, List<String> c2, List<String> c3, List<String> c4, List<String> c5) {
-  if(c1.length == 0 || c2.length == 0 || c3.length == 0 || c4.length == 0 || c5.length == 0) {
-    return false;
-  } else {
-    return true;
-  }
-}
-
-int getScore(List<String> c1, List<String> c2, List<String> c3, List<String> c4, List<String> c5) {
-  int sum = 0;
-  var score = {
-    "完全不會": 0,
-    "幾乎不會": 1,
-    "經常會": 2,
-    "偶爾會": 3,
-    "會": 4
-  };
-  sum = score[c1[0]] + score[c2[0]] + score[c3[0]] + score[c4[0]] + score[c5[0]];
-  return sum;
 }

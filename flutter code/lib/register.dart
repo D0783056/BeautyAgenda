@@ -1,4 +1,4 @@
-import 'login.dart';
+import 'questionnaire.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -13,6 +13,7 @@ class RegisterUserState extends State {
   String email;
   String password;
   String passwordcheck;
+  int ii;
   bool visible = false;
 
   final nameController = TextEditingController();
@@ -23,6 +24,21 @@ class RegisterUserState extends State {
   final String regexEmail =
       "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\$";
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
+  Future getUserId() async {
+    String email = emailController.text;
+
+    var url = 'http://140.134.26.187/BeautyAgenda/getTest.php';
+    var data = {'email': email};
+
+    var response =  await http.post(url, body: json.encode(data));
+    var message = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      ii = int.parse(message['id']);
+      print('login $ii');
+    }
+  }
 
   Future userRegistration() async {
     // Showing CircularProgressIndicator.
@@ -78,6 +94,7 @@ class RegisterUserState extends State {
         },
       );
     } else {
+      getUserId();
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -90,7 +107,7 @@ class RegisterUserState extends State {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LoginPage(),
+                      builder: (context) => Questionnaire(ii),
                     ),
                   );
                 },
